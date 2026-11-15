@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>On Your Call – Home services in Hyderabad</title>
+<meta name="description" content="Book AC repair, cleaning, salon, electrician, plumber, carpenter, pest control and painting at home in Hyderabad. One call. Every solution.">
+<meta property="og:title" content="On Your Call – Home services at your doorstep">
+<meta property="og:description" content="Book trusted home services in Hyderabad in a few taps. Confirmed on WhatsApp.">
+<meta property="og:image" content="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link rel="icon" href="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link rel="apple-touch-icon" href="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--ink2:#545454;--mute:#8a8a8a;--line:#ececec;--soft:#f6f6f6;--gold:#c89b3c;--gold2:#a77d24;--goldbg:#fbf4e4;--ok:#0f8a4c;--okbg:#e9f7ef;--warn:#b26a00;--warnbg:#fff4e0;--bad:#c2341f;--badbg:#fdecea;--wa:#1faa59;--ff-accent:#111;--ff-accent-hover:#000;--ff-btn-text:#fff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#fff;color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}
+img{max-width:100%;display:block}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;padding:13px 18px;font-weight:700;cursor:pointer;background:var(--ink);color:#fff;font-size:15px;min-height:46px;text-align:center}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.gold{background:var(--gold);color:#fff}.btn.wa{background:var(--wa);color:#fff}
+.btn.line{background:#fff;color:var(--ink);border:1px solid #d9d9d9}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btn.sm{padding:8px 12px;min-height:36px;font-size:13px;border-radius:8px}
+.btn.block{width:100%}
+.inp{width:100%;padding:13px 14px;border:1px solid #dcdcdc;border-radius:10px;background:#fff;font-size:15px;outline:none}
+.inp:focus{border-color:var(--ink)}
+textarea.inp{min-height:80px;resize:vertical}
+.lbl{display:block;font-size:13px;font-weight:600;margin:14px 0 6px;color:var(--ink2)}
+.muted{color:var(--mute);font-size:13px}.small{font-size:12px}
+.row{display:flex;align-items:center;gap:10px}.between{justify-content:space-between}.wrapf{flex-wrap:wrap}
+.grow{flex:1;min-width:0}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;font-size:13px;background:#fff;white-space:nowrap;cursor:pointer}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.st-pending{background:var(--warnbg);color:var(--warn)}.st-assigned,.st-accepted{background:#eaf1ff;color:#2754c5}.st-ontheway,.st-inprogress{background:var(--goldbg);color:var(--gold2)}.st-completed{background:var(--okbg);color:var(--ok)}.st-cancelled{background:var(--badbg);color:var(--bad)}.st-active{background:var(--okbg);color:var(--ok)}.st-blocked{background:var(--badbg);color:var(--bad)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.sep{height:8px;background:var(--soft);margin:0 -16px}
+.hr{height:1px;background:var(--line);margin:14px 0}
+.hide{display:none!important}
+.spin{width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:inline-block;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:999;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}
+.logo{object-fit:contain;background:#fff;border-radius:10px}
+.sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80;display:none;align-items:flex-end;justify-content:center}
+.sheetbg.open{display:flex}
+.sheet{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.sheet .x{position:sticky;top:0;float:right;width:34px;height:34px;border-radius:50%;border:0;background:var(--soft);display:grid;place-items:center;cursor:pointer}
+.map{width:100%;height:190px;border:0;border-radius:12px;background:var(--soft)}
+.tl{position:relative;padding-left:26px}
+.tl .s{position:relative;padding:0 0 16px}
+.tl .s:before{content:'';position:absolute;left:-21px;top:4px;width:12px;height:12px;border-radius:50%;background:#d6d6d6}
+.tl .s:after{content:'';position:absolute;left:-16px;top:18px;bottom:-2px;width:2px;background:#e3e3e3}
+.tl .s:last-child:after{display:none}
+.tl .s.done:before{background:var(--ok)}.tl .s.done:after{background:var(--ok)}
+.tl .s.now:before{background:var(--gold);box-shadow:0 0 0 4px var(--goldbg)}
+.tl .s b{display:block;font-size:14px}
+.empty{text-align:center;padding:50px 20px;color:var(--mute)}
+.empty svg{color:#c9c9c9;margin:0 auto 10px}
+
+body{background:#f2f2f2}
+.app{max-width:520px;margin:0 auto;min-height:100vh;background:#fff;position:relative;box-shadow:0 0 40px rgba(0,0,0,.06)}
+.scr{display:none;padding-bottom:84px;min-height:100vh}.scr.on{display:block}
+.top{position:sticky;top:0;z-index:20;background:#fff;padding:12px 16px 10px;display:flex;align-items:center;gap:12px}
+.top.bd{border-bottom:1px solid var(--line)}
+.top h2{font-size:18px}
+.ib{width:38px;height:38px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;flex:none;position:relative}
+.ib.bgw{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.cnt{position:absolute;top:1px;right:0;background:var(--gold);color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.loc{display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1}
+.loc b{display:flex;align-items:center;gap:2px;font-size:16px}
+.loc span{display:block;font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search{margin:0 16px 6px;display:flex;align-items:center;gap:10px;border:1px solid #dedede;border-radius:10px;padding:12px 14px;color:var(--mute);cursor:text;background:#fff}
+.pad{padding:0 16px}
+.sec{padding:22px 16px 6px}
+.sec h3{font-size:20px;margin-bottom:14px;font-weight:700}
+.catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 10px;border:1px solid var(--line);border-radius:16px;padding:16px 10px;margin:8px 16px 0}
+.cat{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;font-size:12px;line-height:1.25;cursor:pointer;font-weight:500}
+.cat .ci{width:64px;height:64px;border-radius:14px;background:var(--goldbg);display:grid;place-items:center;color:var(--ink)}
+.cat .ci svg{color:var(--gold2)}
+.hs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 4px;scrollbar-width:none}
+.hs::-webkit-scrollbar{display:none}
+.banner{flex:0 0 86%;scroll-snap-align:start;border-radius:16px;overflow:hidden;position:relative;height:170px;cursor:pointer;background:#222}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.55) 55%,rgba(0,0,0,0) 100%);color:#fff;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.banner .ov b{font-size:20px;line-height:1.15;max-width:62%}
+.banner .ov small{color:#f0d79f;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.banner .ov i{font-style:normal;background:#fff;color:#111;border-radius:8px;padding:7px 12px;font-weight:700;font-size:13px;align-self:flex-start;margin-top:4px}
+.mini{flex:0 0 150px;scroll-snap-align:start;cursor:pointer}
+.mini img{width:150px;height:150px;object-fit:cover;border-radius:12px;background:var(--soft)}
+.mini b{display:block;font-size:13.5px;font-weight:600;margin-top:8px;line-height:1.3;min-height:35px}
+.mini span{font-size:13px;color:var(--ink2)}
+.promise{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+.promise div{background:var(--soft);border-radius:12px;padding:14px;font-size:13px}
+.promise svg{color:var(--gold2);margin-bottom:6px}
+.promise b{display:block;font-size:14px;margin-bottom:2px}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+.bnav button{border:0;background:none;padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mute);cursor:pointer;font-weight:500}
+.bnav button.on{color:var(--ink);font-weight:700}
+.bnav .logo-tab img{width:24px;height:24px;border-radius:6px}
+/* category */
+.chero{position:relative;height:200px;background:#222}
+.chero img{width:100%;height:100%;object-fit:cover;opacity:.9}
+.chero .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75),rgba(0,0,0,0) 60%);display:flex;align-items:flex-end;padding:16px;color:#fff}
+.chero h1{font-size:24px;line-height:1.15}
+.chero .bk{position:absolute;top:12px;left:12px}
+.chero .ct{position:absolute;top:12px;right:12px}
+.subs{display:flex;gap:8px;overflow-x:auto;padding:14px 16px;position:sticky;top:0;background:#fff;z-index:15;border-bottom:1px solid var(--line);scrollbar-width:none}
+.subs::-webkit-scrollbar{display:none}
+.svc{display:flex;gap:14px;padding:18px 16px;border-bottom:1px solid var(--line)}
+.svc h4{font-size:16px;font-weight:600;margin-bottom:4px}
+.svc .pr{font-size:14px;font-weight:600;margin:4px 0}
+.svc .pr span{color:var(--mute);font-weight:400}
+.svc ul{margin:8px 0 6px;padding-left:16px;color:var(--ink2);font-size:13px}
+.svc ul li{margin:2px 0}
+.svc .vd{color:var(--gold2);font-weight:600;font-size:13px;cursor:pointer;background:none;border:0;padding:0}
+.svc .ph{flex:none;width:112px;position:relative;padding-bottom:16px}
+.svc .ph img{width:112px;height:112px;border-radius:12px;object-fit:cover;background:var(--soft)}
+.add{position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:#fff;color:var(--gold2);border:1px solid #e3d3ad;border-radius:8px;padding:7px 0;width:84px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.step{position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:var(--goldbg);border:1px solid #e3d3ad;border-radius:8px;width:84px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.step button{border:0;background:none;width:28px;height:32px;font-size:18px;font-weight:700;color:var(--gold2);cursor:pointer}
+.step b{font-size:14px;color:var(--gold2)}
+.step.inline{position:static;transform:none}
+.cartbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);z-index:45;display:none}
+.cartbar.on{display:block}
+.cartbar .btn{width:100%;justify-content:space-between}
+/* cart */
+.ci-row{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.ci-row:last-child{border:0}
+.ci-row .nm{flex:1;min-width:0;font-size:14.5px;font-weight:500}
+.sumrow{display:flex;justify-content:space-between;padding:5px 0;font-size:14px}
+.sumrow.t{font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:8px;padding-top:12px}
+.opt{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;margin-bottom:10px}
+.opt.on{border-color:var(--ink);background:#fafafa}
+.opt .rd{width:20px;height:20px;border-radius:50%;border:2px solid #bbb;flex:none}
+.opt.on .rd{border:6px solid var(--ink)}
+.selrow{display:flex;align-items:center;gap:12px;padding:14px 0;cursor:pointer}
+.selrow .ic{width:40px;height:40px;border-radius:10px;background:var(--soft);display:grid;place-items:center;flex:none}
+.days{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.day{flex:none;width:64px;border:1px solid var(--line);border-radius:12px;padding:10px 0;text-align:center;cursor:pointer;font-size:12px;color:var(--ink2)}
+.day b{display:block;font-size:18px;color:var(--ink)}
+.day.on{border-color:var(--ink);background:var(--ink);color:#fff}.day.on b{color:#fff}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.slot{border:1px solid var(--line);border-radius:10px;padding:12px 4px;text-align:center;font-size:13.5px;font-weight:600;cursor:pointer;background:#fff}
+.slot.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.slot:disabled{color:#c4c4c4;background:#fafafa;cursor:not-allowed;text-decoration:line-through}
+/* thank you */
+.okc{width:84px;height:84px;border-radius:50%;background:var(--ok);display:grid;place-items:center;color:#fff;margin:30px auto 16px;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.otp{display:flex;gap:8px;justify-content:center}
+.otp span{width:44px;height:52px;border-radius:10px;background:var(--goldbg);border:1px solid #ecd9ae;display:grid;place-items:center;font-size:24px;font-weight:800;color:var(--ink)}
+.bk{padding:16px;border-bottom:8px solid var(--soft);cursor:pointer}
+.login{min-height:100vh;display:flex;flex-direction:column;padding:28px 22px}
+.login .lg{width:96px;height:96px;margin:24px auto 14px;border-radius:22px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.phone{display:flex;border:1px solid #dcdcdc;border-radius:10px;overflow:hidden}
+.phone span{padding:13px 12px;background:var(--soft);font-weight:600;border-right:1px solid #dcdcdc}
+.phone input{border:0;flex:1;padding:13px;outline:none;font-size:16px;min-width:0}
+.stars{display:flex;gap:6px}.stars button{border:0;background:none;cursor:pointer;color:#d0d0d0;padding:2px}.stars button.on{color:var(--gold)}
+.stars button.on svg{fill:var(--gold)}
+.acc-row{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line);cursor:pointer}
+.sres{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;cursor:pointer}
+.sres img{width:52px;height:52px;border-radius:10px;object-fit:cover}
+.demo{background:var(--warnbg);color:var(--warn);font-size:12px;padding:8px 16px;text-align:center}
+@media(min-width:700px){.banner{flex-basis:70%}}
+</style></head>
+<body>
+<div class="app">
+<div id="demoBar" class="demo hide">Demo mode – bookings are saved on this device only until the Google Sheet is connected.</div>
+
+<!-- LOGIN -->
+<section class="scr" id="s-login"><div class="login">
+  <img class="lg logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="On Your Call logo" width="96" height="96">
+  <h1 style="text-align:center;font-size:24px">On Your Call</h1>
+  <p class="muted" style="text-align:center;margin:4px 0 26px;font-size:14px">One call. Every solution.<br>Home services at your doorstep in Hyderabad.</p>
+  <label class="lbl">Enter your mobile number</label>
+  <div class="phone"><span>+91</span><input id="lgPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Mobile number" autocomplete="tel-national"></div>
+  <label class="lbl">Your name</label>
+  <input class="inp" id="lgName" placeholder="Full name" autocomplete="name">
+  <button class="btn block" style="margin-top:22px" onclick="doLogin()">Continue</button>
+  <button class="btn line block" style="margin-top:10px" onclick="skipLogin()">Skip for now</button>
+  <p class="muted small" style="text-align:center;margin-top:auto;padding-top:24px">By continuing, you agree that On Your Call may contact you on call or WhatsApp about your bookings.</p>
+</div></section>
+
+<!-- HOME -->
+<section class="scr" id="s-home">
+  <div class="top">
+    <div class="loc" onclick="openAddr()"><span style="color:var(--gold2)" id="pinIc"></span><div class="grow"><b><span id="locLabel">Select location</span><span id="dnIc"></span></b><span id="locText">Tap to add your address</span></div></div>
+    <button class="ib" onclick="go('cart')" aria-label="Cart"><span id="cartIc"></span><i class="cnt hide" id="cartCnt">0</i></button>
+  </div>
+  <div class="search" onclick="go('search')"><span id="srIc"></span><span>Search for ‘AC service’</span></div>
+  <div class="sec" style="padding-bottom:0"><h3 style="margin:0">What are you looking for?</h3></div>
+  <div class="catgrid" id="catGrid"></div>
+  <div class="sec"></div>
+  <div class="hs" id="banners"></div>
+  <div class="sec"><h3>Most booked services</h3></div>
+  <div class="hs" id="mostBooked"></div>
+  <div class="sec"><h3>Salon for Women</h3></div>
+  <div class="hs" id="rowSalon"></div>
+  <div class="sec"><h3>Cleaning & pest control</h3></div>
+  <div class="hs" id="rowClean"></div>
+  <div class="sec"><h3>Home repairs</h3></div>
+  <div class="hs" id="rowRepair"></div>
+  <div class="sec"><h3>Why book with OYC</h3></div>
+  <div class="promise">
+    <div><span class="pi" data-i="tag"></span><b>Prices upfront</b>See the price before you book.</div>
+    <div><span class="pi" data-i="wallet"></span><b>Pay after service</b>Cash or UPI when the job is done.</div>
+    <div><span class="pi" data-i="shield"></span><b>Start-code safety</b>Work starts only after you share your 4-digit code.</div>
+    <div><span class="pi" data-i="clock"></span><b>Pick your slot</b>Choose a date and time that suits you.</div>
+  </div>
+  <div class="sec" style="padding-bottom:24px">
+    <div class="card row" style="background:var(--ink);color:#fff;border:0">
+      <div class="grow"><b style="font-size:16px">Need help choosing?</b><div style="color:#cfcfcf;font-size:13px;margin-top:2px">Chat with OYC on WhatsApp</div></div>
+      <a class="btn wa sm" id="helpWa" target="_blank" rel="noopener"></a>
+    </div>
+    <p class="muted small" style="text-align:center;margin-top:18px">© On Your Call · Hyderabad · <a href="tel:9866689196">9866689196</a><br><a href="https://theadweb.flexifunnels.com/oyc-partner" style="text-decoration:underline">Join OYC as a service partner</a></p>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="scr" id="s-search">
+  <div class="top bd"><button class="ib" onclick="back()" data-ic="back"></button><input class="inp" id="q" placeholder="Search for a service" oninput="doSearch()" style="padding:10px 12px"></div>
+  <div id="sresults"></div>
+</section>
+
+<!-- CATEGORY -->
+<section class="scr" id="s-cat">
+  <div class="chero"><img id="cImg" alt=""><div class="ov"><div><h1 id="cTitle"></h1><div style="font-size:13px;color:#e6e6e6;margin-top:4px">Hyderabad · Pay after service</div></div></div>
+    <button class="ib bgw bk" onclick="back()" data-ic="back"></button><button class="ib bgw ct" onclick="go('search')" data-ic="search"></button></div>
+  <div class="subs" id="cSubs"></div>
+  <div id="cList"></div>
+</section>
+
+<!-- CART / CHECKOUT -->
+<section class="scr" id="s-cart">
+  <div class="top bd"><button class="ib" onclick="back()" data-ic="back"></button><h2>Summary</h2></div>
+  <div id="cartBody" class="pad"></div>
+</section>
+
+<!-- THANK YOU -->
+<section class="scr" id="s-done"><div id="doneBody" class="pad"></div></section>
+
+<!-- BOOKINGS -->
+<section class="scr" id="s-bookings">
+  <div class="top bd"><h2 class="grow">My bookings</h2><button class="ib" onclick="loadBookings(true)" data-ic="refresh"></button></div>
+  <div id="bkList"></div>
+</section>
+
+<!-- BOOKING DETAIL -->
+<section class="scr" id="s-booking">
+  <div class="top bd"><button class="ib" onclick="back()" data-ic="back"></button><h2 class="grow" id="bdTitle">Booking</h2><button class="ib" onclick="refreshDetail()" data-ic="refresh"></button></div>
+  <div id="bdBody" class="pad"></div>
+</section>
+
+<!-- ACCOUNT -->
+<section class="scr" id="s-account">
+  <div class="top bd"><h2>Account</h2></div>
+  <div id="accBody"></div>
+</section>
+
+<nav class="bnav" id="bnav">
+  <button data-t="home" onclick="tab('home')" class="logo-tab"><img class="logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="">OYC</button>
+  <button data-t="bookings" onclick="tab('bookings')"><span data-ic="cal"></span>Bookings</button>
+  <button data-t="help" onclick="openHelp()"><span data-ic="help"></span>Help</button>
+  <button data-t="account" onclick="tab('account')"><span data-ic="user"></span>Account</button>
+</nav>
+<div class="cartbar" id="cartbar"><button class="btn" onclick="go('cart')"><span id="cbTotal">₹0</span><span>View cart</span></button></div>
+</div>
+
+<!-- SHEETS -->
+<div class="sheetbg" id="sh-addr" onclick="if(event.target===this)closeSheet()"><div class="sheet">
+  <button class="x" onclick="closeSheet()" data-ic="x"></button>
+  <h3 style="font-size:19px;margin-bottom:14px">Service address</h3>
+  <div id="savedAddr"></div>
+  <button class="btn line block" onclick="useGPS(this)" style="justify-content:flex-start;color:var(--gold2)"><span data-ic="nav"></span>Use my current location</button>
+  <iframe class="map" id="addrMap" style="margin-top:12px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+  <label class="lbl">House / flat no., building, street, area</label>
+  <textarea class="inp" id="aText" placeholder="e.g. Flat 204, Sai Residency, Road no. 36, Jubilee Hills" style="min-height:70px"></textarea>
+  <button class="btn ghost sm" style="margin-top:8px" onclick="previewMap()"><span data-ic="pin"></span>Show on map</button>
+  <label class="lbl">Landmark (optional)</label>
+  <input class="inp" id="aLand" placeholder="Near…">
+  <label class="lbl">Save as</label>
+  <div class="row" id="aTag"><span class="chip on" data-v="Home">Home</span><span class="chip" data-v="Work">Work</span><span class="chip" data-v="Other">Other</span></div>
+  <button class="btn block" style="margin-top:18px" onclick="saveAddr()">Save and proceed</button>
+</div></div>
+
+<div class="sheetbg" id="sh-slot" onclick="if(event.target===this)closeSheet()"><div class="sheet">
+  <button class="x" onclick="closeSheet()" data-ic="x"></button>
+  <h3 style="font-size:19px">When should the professional arrive?</h3>
+  <p class="muted" style="margin:4px 0 14px">Service will take approx. <span id="slDur">1 hr</span></p>
+  <div class="days" id="slDays"></div>
+  <h4 style="margin:18px 0 10px">Select start time of service</h4>
+  <div class="slots" id="slTimes"></div>
+  <button class="btn block" style="margin-top:20px" onclick="confirmSlot()">Proceed to checkout</button>
+</div></div>
+
+<div class="sheetbg" id="sh-svc" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="svcBody"></div></div>
+
+<script>
+/* OYC shared booking logic. Runs in the browser (demo mode) AND in Google Apps Script. */
+function oycDigits(p){return String(p||'').replace(/\D/g,'').slice(-10)}
+function oycNow(){return new Date().toISOString()}
+function oycErr(m){return {ok:false,error:m}}
+function oycOk(d,dirty){return {ok:true,data:d,dirty:dirty||[]}}
+function oycPub(b){var c=JSON.parse(JSON.stringify(b));return c}
+function oycForPartner(b){var c=oycPub(b);delete c.otp;return c}
+function oycPartnerSafe(p){var c=JSON.parse(JSON.stringify(p));delete c.pin;return c}
+function oycHist(b,s,by){b.history=b.history||[];b.history.push({s:s,t:oycNow(),by:by||''});b.status=s;b.updated=oycNow()}
+
+function oycHandle(db,req){
+  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};
+  var S=db.settings,a=req.action;
+  if(!S.adminPin)S.adminPin='1234';
+  function findB(id){for(var i=0;i<db.bookings.length;i++)if(db.bookings[i].id===id)return db.bookings[i];return null}
+  function findP(id){for(var i=0;i<db.partners.length;i++)if(db.partners[i].id===id)return db.partners[i];return null}
+  function authPartner(){var ph=oycDigits(req.phone);for(var i=0;i<db.partners.length;i++){var p=db.partners[i];if(oycDigits(p.phone)===ph&&String(p.pin)===String(req.pin))return p}return null}
+  function isAdmin(){return String(req.pin||'')===String(S.adminPin)}
+  function newId(){var n=1001+db.bookings.length;var id='OYC'+n;while(findB(id)){n++;id='OYC'+n}return id}
+  function makeBooking(src,by){
+    var b=req.booking||{};
+    if(!b.name||oycDigits(b.phone).length!==10)return oycErr('Please enter name and a 10-digit mobile number');
+    if(!b.address)return oycErr('Please add the service address');
+    if(!b.items||!b.items.length)return oycErr('Please add at least one service');
+    var nb={id:newId(),created:oycNow(),source:src,name:String(b.name).slice(0,80),phone:oycDigits(b.phone),
+      address:String(b.address).slice(0,300),landmark:String(b.landmark||'').slice(0,120),lat:b.lat||'',lng:b.lng||'',
+      category:b.category||'',items:b.items,total:Number(b.total)||0,date:b.date||'',slot:b.slot||'',
+      notes:String(b.notes||'').slice(0,500),payMode:b.payMode||'Pay after service',status:'Pending',
+      partnerId:'',partnerName:'',partnerPhone:'',otp:String(Math.floor(1000+Math.random()*9000)),
+      amountPaid:'',rating:'',review:'',adminNotes:b.adminNotes||'',updated:oycNow(),history:[]};
+    oycHist(nb,'Pending',by);db.bookings.push(nb);return oycOk(oycPub(nb),['bookings'])
+  }
+  switch(a){
+  /* ---------- customer ---------- */
+  case 'catalog': return oycOk({prices:S.prices||{},off:S.off||{},wa:S.wa||'',fee:S.fee||0});
+  case 'createBooking': return makeBooking('App','customer');
+  case 'myBookings': {var ph=oycDigits(req.phone);if(ph.length!==10)return oycErr('Login required');
+    return oycOk(db.bookings.filter(function(b){return oycDigits(b.phone)===ph}).map(oycPub).reverse())}
+  case 'cancelBooking': {var b=findB(req.id);if(!b||oycDigits(b.phone)!==oycDigits(req.phone))return oycErr('Booking not found');
+    if(['Pending','Assigned','Accepted'].indexOf(b.status)<0)return oycErr('This booking can no longer be cancelled in the app. Please call us.');
+    oycHist(b,'Cancelled','customer');return oycOk(oycPub(b),['bookings'])}
+  case 'rateBooking': {var b=findB(req.id);if(!b||oycDigits(b.phone)!==oycDigits(req.phone))return oycErr('Booking not found');
+    if(b.status!=='Completed')return oycErr('You can rate after the service is completed');
+    b.rating=Math.max(1,Math.min(5,Number(req.rating)||5));b.review=String(req.review||'').slice(0,500);b.updated=oycNow();return oycOk(oycPub(b),['bookings'])}
+  /* ---------- partner ---------- */
+  case 'partnerApply': {var p=req.partner||{};if(!p.name||oycDigits(p.phone).length!==10||!/^\d{4}$/.test(String(p.pin||'')))return oycErr('Enter name, 10-digit mobile and a 4-digit PIN');
+    for(var i=0;i<db.partners.length;i++)if(oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('This mobile number is already registered');
+    var np={id:'P'+(101+db.partners.length),name:String(p.name).slice(0,80),phone:oycDigits(p.phone),pin:String(p.pin),skills:String(p.skills||''),zone:String(p.zone||''),status:'Pending',online:'no',joined:oycNow(),notes:String(p.notes||'').slice(0,300)};
+    db.partners.push(np);return oycOk(oycPartnerSafe(np),['partners'])}
+  case 'partnerLogin': {var p=authPartner();if(!p)return oycErr('Wrong mobile number or PIN');
+    if(p.status!=='Active')return oycErr(p.status==='Pending'?'Your registration is under review by OYC. We will call you.':'Your account is not active. Please contact OYC.');
+    return oycOk(oycPartnerSafe(p))}
+  case 'partnerJobs': {var p=authPartner();if(!p||p.status!=='Active')return oycErr('Session expired. Please log in again.');
+    return oycOk({partner:oycPartnerSafe(p),jobs:db.bookings.filter(function(b){return b.partnerId===p.id}).map(oycForPartner).reverse()})}
+  case 'partnerOnline': {var p=authPartner();if(!p)return oycErr('Session expired');p.online=req.online?'yes':'no';return oycOk(oycPartnerSafe(p),['partners'])}
+  case 'partnerAction': {var p=authPartner();if(!p||p.status!=='Active')return oycErr('Session expired');
+    var b=findB(req.id);if(!b||b.partnerId!==p.id)return oycErr('Job not found');
+    var act=req.act,who='partner:'+p.name;
+    if(act==='accept'){if(b.status!=='Assigned')return oycErr('Job is not waiting for acceptance');oycHist(b,'Accepted',who)}
+    else if(act==='decline'){if(['Assigned','Accepted'].indexOf(b.status)<0)return oycErr('Cannot decline now');b.partnerId='';b.partnerName='';b.partnerPhone='';oycHist(b,'Pending','declined by '+p.name)}
+    else if(act==='onway'){if(b.status!=='Accepted')return oycErr('Accept the job first');oycHist(b,'On the way',who)}
+    else if(act==='start'){if(['Accepted','On the way'].indexOf(b.status)<0)return oycErr('Job cannot be started now');
+      if(String(req.otp)!==String(b.otp))return oycErr('Wrong start code. Ask the customer for the 4-digit code shown in their OYC app.');oycHist(b,'In progress',who)}
+    else if(act==='complete'){if(b.status!=='In progress')return oycErr('Start the job first');b.amountPaid=Number(req.amount)||b.total;b.payMode=req.mode||b.payMode;oycHist(b,'Completed',who)}
+    else return oycErr('Unknown action');
+    return oycOk(oycForPartner(b),['bookings'])}
+  /* ---------- admin ---------- */
+  case 'adminLogin': return isAdmin()?oycOk({ok:1}):oycErr('Wrong admin PIN');
+  case 'adminData': {if(!isAdmin())return oycErr('Wrong admin PIN');var st=JSON.parse(JSON.stringify(S));delete st.adminPin;
+    return oycOk({bookings:db.bookings.map(oycPub).reverse(),partners:db.partners.map(function(p){return JSON.parse(JSON.stringify(p))}),settings:st})}
+  case 'adminCreateBooking': {if(!isAdmin())return oycErr('Wrong admin PIN');return makeBooking(req.booking&&req.booking.source||'WhatsApp','admin')}
+  case 'adminUpdateBooking': {if(!isAdmin())return oycErr('Wrong admin PIN');var b=findB(req.id);if(!b)return oycErr('Booking not found');var f=req.fields||{};
+    if(f.partnerId!==undefined){if(f.partnerId){var pp=findP(f.partnerId);if(!pp)return oycErr('Partner not found');b.partnerId=pp.id;b.partnerName=pp.name;b.partnerPhone=pp.phone;oycHist(b,'Assigned','admin → '+pp.name)}
+      else{b.partnerId='';b.partnerName='';b.partnerPhone='';oycHist(b,'Pending','admin unassigned')}}
+    ['date','slot','address','landmark','notes','adminNotes','total','payMode','name'].forEach(function(k){if(f[k]!==undefined)b[k]=f[k]});
+    if(f.status&&f.status!==b.status)oycHist(b,f.status,'admin');b.updated=oycNow();return oycOk(oycPub(b),['bookings'])}
+  case 'adminSavePartner': {if(!isAdmin())return oycErr('Wrong admin PIN');var p=req.partner||{};
+    if(!p.name||oycDigits(p.phone).length!==10)return oycErr('Partner needs a name and 10-digit mobile');
+    var ex=p.id?findP(p.id):null;
+    for(var i=0;i<db.partners.length;i++)if(db.partners[i]!==ex&&oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('Another partner has this mobile number');
+    if(!ex){ex={id:'P'+(101+db.partners.length),joined:oycNow(),online:'no'};while(findP(ex.id))ex.id='P'+(Number(ex.id.slice(1))+1);db.partners.push(ex)}
+    ex.name=p.name;ex.phone=oycDigits(p.phone);ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
+    if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';
+    return oycOk(JSON.parse(JSON.stringify(ex)),['partners'])}
+  case 'adminSaveSettings': {if(!isAdmin())return oycErr('Wrong admin PIN');var ns=req.settings||{};
+    ['prices','off','wa','fee','commission'].forEach(function(k){if(ns[k]!==undefined)S[k]=ns[k]});
+    if(ns.newPin){if(!/^\d{4,8}$/.test(ns.newPin))return oycErr('PIN must be 4–8 digits');S.adminPin=ns.newPin}
+    return oycOk({saved:1},['settings'])}
+  }
+  return oycErr('Unknown request')
+}
+
+/* ===== OYC client core (shared by customer, partner, admin apps) ===== */
+var OYC={
+  API:'%%API_URL%%',            /* Google Apps Script web-app URL. Empty = demo mode (data stays in this browser) */
+  WA:'919866689196',            /* WhatsApp number bookings are sent to */
+  PHONE:'9866689196',
+  LOGO:'https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png',
+  APP:'https://theadweb.flexifunnels.com/oyc-app',
+  PARTNER:'https://theadweb.flexifunnels.com/oyc-partner',
+  ADMIN:'https://theadweb.flexifunnels.com/oyc-admin'
+};
+if(OYC.API.indexOf('%%')===0)OYC.API='';
+var IMG={
+  ac:'https://media.flexifunnels.io/33238/images/appliance-repair_ql9j68ai.png',
+  repair:'https://media.flexifunnels.io/33238/images/home-repairs_psopbefv.png',
+  clean:'https://media.flexifunnels.io/33238/images/cleaning-pest_khht06zp.png',
+  salonw:'https://media.flexifunnels.io/33238/images/salon-spa_ej1vrnip.png',
+  salonm:'https://media.flexifunnels.io/33238/images/mens-grooming_an7ocvxn.png',
+  paint:'https://media.flexifunnels.io/33238/images/painting-waterproofing_sq1qbp7u.png'
+};
+var ICON={
+  salonw:'<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>',
+  salonm:'<circle cx="6" cy="6" r="3"/><path d="M8.12 8.12 12 12M20 4 8.12 15.88M14.8 14.8 20 20"/><circle cx="6" cy="18" r="3"/>',
+  clean:'<path d="M3 3h.01M7 5h.01M11 7h.01M3 7h.01M7 9h.01M3 11h.01"/><rect width="4" height="4" x="15" y="5"/><path d="m19 9 2 2v10c0 .6-.4 1-1 1h-6c-.6 0-1-.4-1-1V11l2-2M13 14l8-2M13 19l8-2"/>',
+  pest:'<path d="m8 2 1.88 1.88M14.12 3.88 16 2M9 7.13v-1a3 3 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6M12 20v-9M6.53 9C4.6 8.8 3 7.1 3 5M6 13H2M3 21c0-2.1 1.7-3.9 3.8-4M20.97 5c0 2.1-1.6 3.8-3.5 4M22 13h-4M17.2 17c2.1.1 3.8 1.9 3.8 4"/>',
+  elec:'<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  plumb:'<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  carp:'<path d="m15 12-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>',
+  ac:'<path d="M2 12h20M12 2v20M20 16l-4-4 4-4M4 8l4 4-4 4M16 4l-4 4-4-4M8 20l4-4 4 4"/>',
+  paint:'<rect width="16" height="6" x="2" y="2" rx="2"/><path d="M10 16v-2a2 2 0 0 1 2-2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect width="4" height="6" x="8" y="16" rx="1"/>',
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  help:'<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  pin:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  cart:'<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+  back:'<path d="m15 18-6-6 6-6"/>',
+  right:'<path d="m9 18 6-6-6-6"/>',
+  down:'<path d="m6 9 6 6 6-6"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  x:'<path d="M18 6 6 18M6 6l12 12"/>',
+  phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  shield:'<path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  wallet:'<path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/>',
+  star:'<path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+  nav:'<path d="M3 11 22 2l-9 19-2-8z"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  grid:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  tag:'<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r=".5"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/>'
+};
+var WA_SVG='<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-1 1.2-.4.2-.7.1a8.2 8.2 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.8.4 3.6 3.6 0 0 0-1.1 2.6 6.2 6.2 0 0 0 1.3 3.3 14.3 14.3 0 0 0 5.5 4.8c2 .9 2.8.9 3.8.8a3.2 3.2 0 0 0 2.1-1.5 2.6 2.6 0 0 0 .2-1.5c-.1-.1-.3-.2-.6-.3zM12 21.8a9.9 9.9 0 0 1-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm8.4-18.3A11.8 11.8 0 0 0 1.8 17.8L.2 24l6.3-1.7a11.8 11.8 0 0 0 5.6 1.4A11.8 11.8 0 0 0 20.4 3.5z"/></svg>';
+function ic(n,s,w){return '<svg viewBox="0 0 24 24" width="'+(s||20)+'" height="'+(s||20)+'" fill="none" stroke="currentColor" stroke-width="'+(w||2)+'" stroke-linecap="round" stroke-linejoin="round">'+(ICON[n]||'')+'</svg>'}
+
+var CATS=[
+ {id:'salonw',name:"Women's Salon & Spa",short:'Salon for Women',img:IMG.salonw},
+ {id:'salonm',name:"Men's Salon & Massage",short:'Salon for Men',img:IMG.salonm},
+ {id:'clean',name:'Cleaning',short:'Cleaning',img:IMG.clean},
+ {id:'pest',name:'Pest Control',short:'Pest Control',img:IMG.clean},
+ {id:'elec',name:'Electrician',short:'Electrician',img:IMG.repair},
+ {id:'plumb',name:'Plumber',short:'Plumber',img:IMG.repair},
+ {id:'carp',name:'Carpenter',short:'Carpenter',img:IMG.repair},
+ {id:'ac',name:'AC & Appliance Repair',short:'AC & Appliance',img:IMG.ac},
+ {id:'paint',name:'Painting & Waterproofing',short:'Painting',img:IMG.paint}
+];
+/* Starting prices based on Urban Company Hyderabad rates (Nov 2026) — edit any time from Admin › Services & prices */
+var SERVICES=[
+ ['ac1','ac','AC','Foam-jet AC service',599,'60 mins','Foam-jet cleaning of indoor unit|Filter, coil & drain tray cleaned|Cooling checked after service'],
+ ['ac2','ac','AC','AC less / no cooling repair',299,'Visit','Technician diagnoses the problem|Repair quote shared before any work|Visit charge adjusted in final bill'],
+ ['ac3','ac','AC','AC gas refill & leak check',2800,'90 mins','Leak detection and fixing|Gas top-up as required|Cooling performance test'],
+ ['ac4','ac','AC','Split AC installation',1699,'90 mins','Indoor & outdoor unit mounting|Standard copper piping connection|Demo after installation'],
+ ['ac5','ac','AC','Split AC uninstallation',699,'45 mins','Gas pumped down safely|Indoor & outdoor units removed|Units packed for moving'],
+ ['ac6','ac','Appliances','Refrigerator repair',299,'Visit','Not cooling, noise, water leakage|Quote shared before repair|Genuine spare parts on request'],
+ ['ac7','ac','Appliances','Washing machine repair',299,'Visit','Not spinning, draining or starting|Top & front load machines|Quote shared before repair'],
+ ['ac8','ac','Appliances','Water purifier (RO) service',399,'45 mins','Filter check & cleaning|TDS check|Filter replacement at extra cost'],
+ ['ac9','ac','Appliances','Geyser repair',299,'Visit','Not heating, leakage, tripping|Electric & gas geysers|Quote shared before repair'],
+ ['ac10','ac','Appliances','Microwave repair',299,'Visit','Not heating or not starting|Solo, grill & convection|Quote shared before repair'],
+ ['el1','elec','Switch & socket','Switchboard / socket repair',99,'30 mins','Repair or replace 1 switch / socket|Loose connection fixing|Spare parts at extra cost'],
+ ['el2','elec','Fan','Ceiling fan installation',149,'30 mins','Installation of 1 ceiling fan|Old fan removal on request|Speed & wobble check'],
+ ['el3','elec','Fan','Fan repair',199,'45 mins','Noise, slow speed, not working|Capacitor replacement at extra cost|Regulator check'],
+ ['el4','elec','Lights','Light / tube installation',99,'20 mins','Install 1 light, tube or LED panel|Holder fitting|Wiring check'],
+ ['el5','elec','Wiring','MCB / fuse replacement',199,'30 mins','Replace 1 MCB or fuse|Tripping diagnosis|Spare parts at extra cost'],
+ ['el6','elec','Inverter','Inverter check-up',349,'45 mins','Battery & connection check|Backup diagnosis|Distilled water top-up'],
+ ['el7','elec','Visit','Electrician visit & inspection',149,'Visit','For any other electrical work|Inspection and quote|Visit charge adjusted in final bill'],
+ ['pl1','plumb','Taps','Tap repair',99,'30 mins','Fix 1 leaking tap|Washer / spindle change|Spare parts at extra cost'],
+ ['pl2','plumb','Taps','Tap replacement',149,'30 mins','Replace 1 tap or mixer|Old tap removal|Leak check'],
+ ['pl3','plumb','Leakage','Leakage repair',199,'45 mins','Pipe joint & connection leaks|Sealant application|Quote for concealed leaks'],
+ ['pl4','plumb','Blockage','Drain blockage removal',249,'45 mins','Sink, basin or bathroom drain|Manual / machine clearing|Flow check after work'],
+ ['pl5','plumb','Toilet','Toilet flush repair',299,'45 mins','Flush tank repair|Leak fixing|Spare parts at extra cost'],
+ ['pl6','plumb','Installation','Wash basin installation',499,'60 mins','Installation of 1 wash basin|Waste pipe & tap connection|Leak check'],
+ ['pl7','plumb','Visit','Plumber visit & inspection',149,'Visit','For any other plumbing work|Inspection and quote|Visit charge adjusted in final bill'],
+ ['cp1','carp','Locks & doors','Door lock repair / replacement',199,'45 mins','Repair or fit 1 lock|Alignment & latch fixing|Lock cost extra'],
+ ['cp2','carp','Furniture','Furniture assembly',349,'60 mins','Bed, wardrobe, table or shelf|Tools brought by professional|Per item'],
+ ['cp3','carp','Furniture','Hinge / drawer channel repair',149,'30 mins','Cupboard hinges & drawer channels|Up to 2 hinges / channels|Spare parts at extra cost'],
+ ['cp4','carp','Installation','Curtain rod installation',199,'30 mins','Drilling & fitting of 1 rod|Brackets fixed securely|Rod cost extra'],
+ ['cp5','carp','Visit','Carpenter visit & inspection',149,'Visit','For any other carpentry work|Inspection and quote|Visit charge adjusted in final bill'],
+ ['cl1','clean','Bathroom','Bathroom intense cleaning',529,'90 mins','Tiles, floor, fittings & mirror|Hard-water stain removal|Per bathroom'],
+ ['cl2','clean','Kitchen','Kitchen deep cleaning',1199,'3 hrs','Cabinets inside-out, slab & sink|Chimney & stove exterior|Grease removal'],
+ ['cl3','clean','Sofa & carpet','Sofa cleaning (3 seats)',699,'60 mins','Vacuum & shampoo cleaning|Stain treatment|Fabric sofas'],
+ ['cl4','clean','Full home','Full home deep cleaning – 1 BHK',3499,'5 hrs','All rooms, kitchen & bathrooms|Floor scrubbing & dusting|Team of professionals'],
+ ['cl5','clean','Full home','Full home deep cleaning – 2 BHK',4499,'6 hrs','All rooms, kitchen & bathrooms|Floor scrubbing & dusting|Team of professionals'],
+ ['cl6','clean','Full home','Full home deep cleaning – 3 BHK',5499,'7 hrs','All rooms, kitchen & bathrooms|Floor scrubbing & dusting|Team of professionals'],
+ ['cl7','clean','Water tank','Water tank cleaning',799,'90 mins','Sludge removal & scrubbing|Disinfection|Up to 1000 litres'],
+ ['pc1','pest','General','Cockroach & ant control',999,'45 mins','Gel & spray treatment|Kitchen & bathrooms|Odourless chemicals'],
+ ['pc2','pest','Termite','Termite control',2499,'2 hrs','Drill-fill-seal treatment|Woodwork inspection|Per 1 BHK'],
+ ['pc3','pest','Bed bugs','Bed bug control',1499,'60 mins','Two-visit treatment|Beds, sofas & curtains|Per 1 BHK'],
+ ['pc4','pest','General','General pest control',899,'45 mins','Spray for crawling insects|All rooms|Per 1 BHK'],
+ ['sw1','salonw','Waxing','Full arms + full legs waxing',699,'60 mins','Rica / honey wax|Underarms included|Single-use spatulas'],
+ ['sw2','salonw','Facial & cleanup','Facial cleanup',799,'45 mins','Cleansing, scrub & massage|Mask & toning|Suitable for all skin types'],
+ ['sw3','salonw','Threading','Eyebrow & upper lip threading',99,'15 mins','Eyebrows & upper lip|Clean thread used|Quick add-on'],
+ ['sw4','salonw','Mani & pedi','Manicure',499,'40 mins','Nail shaping & cuticle care|Hand scrub & massage|Nail polish'],
+ ['sw5','salonw','Mani & pedi','Pedicure',599,'50 mins','Foot soak & scrub|Nail & cuticle care|Foot massage'],
+ ['sw6','salonw','Hair','Hair spa',899,'60 mins','Hair wash & spa cream|Head massage & steam|For all hair lengths'],
+ ['sw7','salonw','Spa','Swedish massage (60 mins)',1199,'60 mins','Full body relaxing massage|Professional oils|Women therapists'],
+ ['sw8','salonw','Spa','Deep tissue massage (60 mins)',1399,'60 mins','Firm pressure for muscle stiffness|Professional oils|Women therapists'],
+ ['sm1','salonm','Haircut','Haircut',249,'30 mins','Haircut by professional barber|Style of your choice|Hair wash on request'],
+ ['sm2','salonm','Haircut','Haircut + beard',349,'45 mins','Haircut & beard shaping|Trim or clean shave|Aftershave'],
+ ['sm3','salonm','Beard','Beard grooming',149,'20 mins','Beard trim & shaping|Clean shave option|Aftershave'],
+ ['sm4','salonm','Hair colour','Hair colour',399,'40 mins','Ammonia-free colour|Application & wash|Colour of your choice'],
+ ['sm5','salonm','Facial','Face cleanup',499,'40 mins','Cleansing, scrub & massage|Mask|Suitable for all skin types'],
+ ['sm6','salonm','Massage','Head & shoulder massage',299,'20 mins','Head, neck & shoulders|Oil of your choice|Stress relief'],
+ ['sm7','salonm','Massage','Full body massage (60 mins)',1199,'60 mins','Full body relaxing massage|Professional oils|Male therapists'],
+ ['pt1','paint','Painting','Painting consultation',0,'Visit','Site inspection & measurement|Colour & finish guidance|Written quote'],
+ ['pt2','paint','Painting','Room painting (1 room)',2999,'1 day','Wall putty touch-up|2 coats of paint|Furniture covering'],
+ ['pt3','paint','Waterproofing','Waterproofing inspection',0,'Visit','Terrace, wall & bathroom leaks|Moisture check|Written quote']
+].map(function(r){return {id:r[0],cat:r[1],sub:r[2],name:r[3],price:r[4],dur:r[5],pts:r[6].split('|')}});
+function catOf(id){for(var i=0;i<CATS.length;i++)if(CATS[i].id===id)return CATS[i];return CATS[0]}
+function svcOf(id){for(var i=0;i<SERVICES.length;i++)if(SERVICES[i].id===id)return SERVICES[i];return null}
+function applyCatalog(c){if(!c)return;var P=c.prices||{},O=c.off||{};SERVICES.forEach(function(s){if(P[s.id]!==undefined&&P[s.id]!=='')s.price=Number(P[s.id]);s.off=!!O[s.id]});if(c.wa)OYC.WA=String(c.wa).replace(/\D/g,'')}
+function rupee(n){n=Number(n)||0;return '₹'+n.toLocaleString('en-IN')}
+function priceLabel(s){return s.price>0?rupee(s.price):'Free visit'}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function store(k,v){try{if(v===undefined){var x=localStorage.getItem(k);return x?JSON.parse(x):null}localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function toast(t){var x=$('#toast');if(!x){x=document.createElement('div');x.id='toast';document.body.appendChild(x)}x.textContent=t;x.className='show';clearTimeout(toast._t);toast._t=setTimeout(function(){x.className=''},2800)}
+function fmtDate(d){if(!d)return 'Date to be confirmed';var x=new Date(d+'T00:00:00');if(isNaN(x))return d;return x.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}
+function fmtTime(iso){if(!iso)return '';var x=new Date(iso);return isNaN(x)?iso:x.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'})}
+function mapEmbed(b){var q=(b.lat&&b.lng)?(b.lat+','+b.lng):((b.address||'')+' Hyderabad');return 'https://maps.google.com/maps?q='+encodeURIComponent(q)+'&z=16&output=embed'}
+function mapLink(b){var q=(b.lat&&b.lng)?(b.lat+','+b.lng):((b.address||'')+(b.landmark?', '+b.landmark:'')+', Hyderabad');return 'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(q)}
+function waLink(num,text){return 'https://wa.me/'+String(num).replace(/\D/g,'').replace(/^(\d{10})$/,'91$1')+'?text='+encodeURIComponent(text)}
+function itemsText(b){return (b.items||[]).map(function(i){return '• '+i.name+' x'+i.qty+(i.price?' – '+rupee(i.price*i.qty):'')}).join('\n')}
+var STATUS_FLOW=['Pending','Assigned','Accepted','On the way','In progress','Completed'];
+var STATUS_LABEL={'Pending':'Finding a professional','Assigned':'Professional assigned','Accepted':'Professional confirmed','On the way':'Professional on the way','In progress':'Service in progress','Completed':'Completed','Cancelled':'Cancelled'};
+function stCls(s){return 'st-'+String(s).toLowerCase().replace(/\s+/g,'')}
+
+/* ---- data layer ---- */
+function oycLocalDb(){var db=store('oyc_demo_db');if(!db){db={bookings:[],partners:[{id:'P101',name:'Demo Partner',phone:'9999999999',pin:'1234',skills:'AC & Appliance Repair, Electrician, Plumber',zone:'Hyderabad',status:'Active',online:'yes',joined:oycNow(),notes:'Demo account'}],settings:{adminPin:'1234'}};store('oyc_demo_db',db)}return db}
+function api(action,payload){
+  var req=Object.assign({action:action},payload||{});
+  if(OYC.API){
+    return fetch(OYC.API,{method:'POST',body:JSON.stringify(req)}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error||'Something went wrong');return j.data})
+      .catch(function(e){if(e instanceof TypeError)throw new Error('No internet connection. Please try again.');throw e});
+  }
+  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
+}
+function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
+/* install prompt */
+var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});
+function installApp(){if(_inst){_inst.prompt();_inst=null}else alert('To install: open your browser menu (⋮ or Share) and tap "Add to Home screen".')}
+
+</script>
+<script>
+/* ================= CUSTOMER APP ================= */
+var user=store('oyc_user'),cart=store('oyc_cart')||{},addrs=store('oyc_addrs')||[],selAddr=store('oyc_sel')||0,slot={},pay='Pay after service (Cash / UPI)';
+var stack=[],cur='',curCat='',curSub='',lastBooking=null,detail=null,myB=[],pollT=null;
+function fillIcons(r){$$('[data-ic]',r).forEach(function(e){if(!e.firstChild||e.tagName==='BUTTON'&&!e.innerHTML.trim())e.innerHTML=ic(e.dataset.ic,e.dataset.s||20)})}
+function show(s){$$('.scr').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s)});cur=s;
+  var nav=['home','bookings','account'].indexOf(s)>=0;$('#bnav').classList.toggle('hide',!nav);
+  $$('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===s)});updateCartBar();window.scrollTo(0,0);
+  if(s!=='booking'&&pollT){clearInterval(pollT);pollT=null}}
+function go(s,noPush){if(cur&&cur!==s&&!noPush){stack.push(cur);history.pushState({s:s},'')}render(s);show(s)}
+function back(){if(stack.length){history.back()}else go('home',true)}
+addEventListener('popstate',function(){var s=stack.pop()||'home';if($('.sheetbg.open')){closeSheet(true)}render(s);show(s)});
+function tab(s){stack=[];go(s,true)}
+function render(s){({home:renderHome,cart:renderCart,bookings:function(){loadBookings()},account:renderAccount,search:function(){$('#q').value='';doSearch();setTimeout(function(){$('#q').focus()},50)},cat:renderCat}[s]||function(){})()}
+
+/* login */
+function doLogin(){var p=oycDigits($('#lgPhone').value),n=$('#lgName').value.trim();
+  if(p.length!==10||!/^[6-9]/.test(p))return toast('Enter a valid 10-digit mobile number');if(n.length<2)return toast('Please enter your name');
+  user={phone:p,name:n};store('oyc_user',user);store('oyc_seen',1);
+  if(window._afterLogin){var f=window._afterLogin;window._afterLogin=null;tab('home');f()}else tab('home')}
+function skipLogin(){store('oyc_seen',1);tab('home')}
+function needLogin(then){if(user)return true;window._afterLogin=then;$('#lgPhone').value='';show('login');return false}
+
+/* home */
+function svcImg(s){return catOf(s.cat).img}
+function miniCard(s){return '<div class="mini" onclick="openCat(\''+s.cat+'\',\''+s.sub+'\')"><img src="'+svcImg(s)+'" alt="'+esc(s.name)+'" loading="lazy"><b>'+esc(s.name)+'</b><span>'+priceLabel(s)+'</span></div>'}
+function renderHome(){
+  $('#catGrid').innerHTML=CATS.map(function(c){return '<div class="cat" onclick="openCat(\''+c.id+'\')"><div class="ci">'+ic(c.id,30,1.7)+'</div>'+esc(c.short)+'</div>'}).join('');
+  var bn=[['ac','Summer ready','AC service starting at '+rupee(svcOf('ac1').price),IMG.ac],['clean','Deep clean','Bathroom cleaning from '+rupee(svcOf('cl1').price),IMG.clean],['salonw','Salon at home','Waxing, facials & spa at your doorstep',IMG.salonw],['salonm','Men’s grooming','Haircut at home from '+rupee(svcOf('sm1').price),IMG.salonm],['paint','Painting','Free inspection & written quote',IMG.paint]];
+  $('#banners').innerHTML=bn.map(function(b){return '<div class="banner" onclick="openCat(\''+b[0]+'\')"><img src="'+b[3]+'" alt="'+esc(b[2])+'"><div class="ov"><small>'+b[1]+'</small><b>'+b[2]+'</b><i>Book now</i></div></div>'}).join('');
+  var vis=SERVICES.filter(function(s){return !s.off});
+  $('#mostBooked').innerHTML=['ac1','cl1','sm1','sw1','el2','pl4','pc1','ac7'].map(svcOf).filter(function(s){return s&&!s.off}).map(miniCard).join('');
+  $('#rowSalon').innerHTML=vis.filter(function(s){return s.cat==='salonw'}).map(miniCard).join('');
+  $('#rowClean').innerHTML=vis.filter(function(s){return s.cat==='clean'||s.cat==='pest'}).map(miniCard).join('');
+  $('#rowRepair').innerHTML=vis.filter(function(s){return ['elec','plumb','carp'].indexOf(s.cat)>=0}).map(miniCard).join('');
+  var a=addrs[selAddr];$('#locLabel').textContent=a?a.tag:'Select location';$('#locText').textContent=a?a.address:'Tap to add your service address';
+  $('#helpWa').innerHTML=WA_SVG+'Chat';$('#helpWa').href=waLink(OYC.WA,'Hi OYC, I need help with a home service.');
+}
+/* category */
+function openCat(id,sub){curCat=id;curSub=sub||'';go('cat')}
+function renderCat(){var c=catOf(curCat);$('#cImg').src=c.img;$('#cImg').alt=c.name;$('#cTitle').textContent=c.name;
+  var list=SERVICES.filter(function(s){return s.cat===curCat&&!s.off}),subs=[];list.forEach(function(s){if(subs.indexOf(s.sub)<0)subs.push(s.sub)});
+  $('#cSubs').innerHTML=subs.map(function(x){return '<span class="chip'+(x===curSub?' on':'')+'" onclick="jumpSub(\''+esc(x)+'\')">'+esc(x)+'</span>'}).join('');
+  var h='';subs.forEach(function(x){h+='<div id="sub-'+x.replace(/\W/g,'')+'" style="scroll-margin-top:64px"><h3 style="padding:20px 16px 0;font-size:19px">'+esc(x)+'</h3>'+list.filter(function(s){return s.sub===x}).map(svcRow).join('')+'</div>'});
+  $('#cList').innerHTML=h||'<div class="empty">No services available right now.</div>';
+  if(curSub)setTimeout(function(){jumpSub(curSub)},60)}
+function jumpSub(x){curSub=x;$$('#cSubs .chip').forEach(function(c){c.classList.toggle('on',c.textContent===x)});var e=$('#sub-'+x.replace(/\W/g,''));if(e)e.scrollIntoView({behavior:'smooth'})}
+function stepper(id){var q=cart[id]||0;return q?'<div class="step"><button onclick="qty(\''+id+'\',-1,event)">−</button><b>'+q+'</b><button onclick="qty(\''+id+'\',1,event)">+</button></div>':'<button class="add" onclick="qty(\''+id+'\',1,event)">Add</button>'}
+function svcRow(s){return '<div class="svc" id="row-'+s.id+'"><div class="grow"><h4>'+esc(s.name)+'</h4><div class="pr">'+priceLabel(s)+' <span>· '+esc(s.dur)+'</span></div><ul>'+s.pts.map(function(p){return '<li>'+esc(p)+'</li>'}).join('')+'</ul><button class="vd" onclick="svcDetail(\''+s.id+'\')">View details</button></div><div class="ph"><img src="'+svcImg(s)+'" alt="'+esc(s.name)+'" loading="lazy"><span class="stp" id="stp-'+s.id+'">'+stepper(s.id)+'</span></div></div>'}
+function qty(id,d,ev){if(ev)ev.stopPropagation();cart[id]=Math.max(0,(cart[id]||0)+d);if(!cart[id])delete cart[id];store('oyc_cart',cart);
+  $$('#stp-'+id).forEach(function(e){e.innerHTML=stepper(id)});var sd=$('#sdStep');if(sd)sd.innerHTML=stepper(id);updateCartBar();if(cur==='cart')renderCart();if(d>0&&cart[id]===1)toast('Added to cart')}
+function svcDetail(id){var s=svcOf(id);$('#svcBody').innerHTML='<button class="x" onclick="closeSheet()">'+ic('x')+'</button><img src="'+svcImg(s)+'" alt="" style="width:100%;height:190px;object-fit:cover;border-radius:14px;margin:6px 0 14px"><h3 style="font-size:20px">'+esc(s.name)+'</h3><div class="pr" style="margin:6px 0">'+priceLabel(s)+' <span class="muted">· '+esc(s.dur)+'</span></div><div class="hr"></div><h4 style="margin-bottom:6px">What’s included</h4><ul style="padding-left:18px;color:var(--ink2)">'+s.pts.map(function(p){return '<li style="margin:5px 0">'+esc(p)+'</li>'}).join('')+'</ul><h4 style="margin:14px 0 6px">Good to know</h4><ul style="padding-left:18px;color:var(--ink2)"><li style="margin:5px 0">Price shown is the starting price. Any extra work or spare parts are quoted and agreed with you before they are done.</li><li style="margin:5px 0">Pay after the service by cash or UPI.</li><li style="margin:5px 0">Share your 4-digit start code with the professional only when they arrive.</li></ul><div class="row between" style="margin-top:18px"><b>'+priceLabel(s)+'</b><div style="position:relative;width:90px;height:36px" id="sdStep">'+stepper(id)+'</div></div>';openSheet('svc')}
+function cartItems(){return Object.keys(cart).map(function(id){var s=svcOf(id);return s?{id:id,name:s.name,qty:cart[id],price:s.price,cat:s.cat,dur:s.dur}:null}).filter(Boolean)}
+function cartTotal(){return cartItems().reduce(function(a,i){return a+i.price*i.qty},0)}
+function cartCount(){return cartItems().reduce(function(a,i){return a+i.qty},0)}
+function updateCartBar(){var n=cartCount();$('#cartCnt').textContent=n;$('#cartCnt').classList.toggle('hide',!n);$('#cbTotal').textContent=rupee(cartTotal())+' · '+n+' item'+(n>1?'s':'');$('#cartbar').classList.toggle('on',n>0&&(cur==='cat'||cur==='search'))}
+
+/* search */
+function doSearch(){var q=$('#q').value.trim().toLowerCase();var r=SERVICES.filter(function(s){return !s.off&&(!q||(s.name+' '+catOf(s.cat).name+' '+s.sub).toLowerCase().indexOf(q)>=0)});if(!q)r=['ac1','cl1','sm1','sw1','el2','pl4','pc1','cp2'].map(svcOf);
+  $('#sresults').innerHTML=(q?'':'<p class="muted" style="padding:14px 16px 4px;font-weight:600">Trending searches</p>')+(r.length?r.map(function(s){return '<div class="sres" onclick="openCat(\''+s.cat+'\',\''+s.sub+'\')"><img src="'+svcImg(s)+'" alt=""><div class="grow"><b style="font-weight:600">'+esc(s.name)+'</b><div class="muted">'+esc(catOf(s.cat).name)+' · '+priceLabel(s)+'</div></div>'+ic('right',18)+'</div>'}).join(''):'<div class="empty">No results. Try “AC”, “cleaning” or “haircut”.</div>')}
+
+/* cart & checkout */
+function renderCart(){var it=cartItems();if(!it.length){$('#cartBody').innerHTML='<div class="empty">'+ic('cart',56,1.4)+'<h3 style="color:var(--ink);margin-bottom:6px">Your cart is empty</h3><p>Add services to book a visit.</p><button class="btn" style="margin-top:16px" onclick="tab(\'home\')">Explore services</button></div>';return}
+  var a=addrs[selAddr],tot=cartTotal();
+  var h='<div style="padding:8px 0">'+it.map(function(i){return '<div class="ci-row"><div class="nm">'+esc(i.name)+'<div class="muted">'+esc(i.dur)+'</div></div><div style="position:relative;width:84px;height:34px"><div class="step inline">'+'<button onclick="qty(\''+i.id+'\',-1)">−</button><b>'+i.qty+'</b><button onclick="qty(\''+i.id+'\',1)">+</button></div></div><b style="width:64px;text-align:right">'+(i.price?rupee(i.price*i.qty):'Free')+'</b></div>'}).join('')+'</div>';
+  h+='<button class="btn ghost sm" onclick="openCat(\''+it[0].cat+'\')">'+ic('plus',16)+' Add more services</button><div class="sep" style="margin-top:16px"></div>';
+  h+='<div style="padding:16px 0"><h3 style="font-size:17px;margin-bottom:10px">Payment summary</h3><div class="sumrow"><span>Item total</span><span>'+rupee(tot)+'</span></div><div class="sumrow"><span>Visit / convenience fee</span><span style="color:var(--ok)">FREE</span></div><div class="sumrow t"><span>Amount to pay</span><span>'+rupee(tot)+'</span></div><p class="muted small" style="margin-top:6px">Starting prices. Any extra work or spare parts are quoted before they are done.</p></div><div class="sep"></div>';
+  h+='<div style="padding:8px 0"><div class="selrow" onclick="openAddr()"><div class="ic">'+ic('pin')+'</div><div class="grow"><b>'+(a?esc(a.tag):'Add service address')+'</b><div class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(a?esc(a.address):'Where should we come?')+'</div></div><span style="color:var(--gold2);font-weight:700;font-size:13px">'+(a?'Change':'Add')+'</span></div>';
+  h+='<div class="selrow" onclick="openSlot()"><div class="ic">'+ic('clock')+'</div><div class="grow"><b>'+(slot.time?esc(fmtDate(slot.date)+', '+slot.time):'Select date & time')+'</b><div class="muted">'+(slot.time?'Professional arrives at the selected time':'Choose a convenient slot')+'</div></div><span style="color:var(--gold2);font-weight:700;font-size:13px">'+(slot.time?'Change':'Select')+'</span></div></div><div class="sep"></div>';
+  h+='<div style="padding:16px 0"><h3 style="font-size:17px;margin-bottom:12px">Payment method</h3>'+['Pay after service (Cash / UPI)','UPI payment link on WhatsApp'].map(function(p){return '<div class="opt'+(p===pay?' on':'')+'" onclick="pay=\''+p+'\';renderCart()"><span class="rd"></span><div><b style="font-size:14.5px">'+p+'</b><div class="muted">'+(p.indexOf('after')>0?'Pay the professional when the job is done':'OYC sends a secure UPI link after confirming')+'</div></div></div>'}).join('')+'</div>';
+  h+='<label class="lbl" style="margin-top:0">Instructions for the professional (optional)</label><textarea class="inp" id="cNotes" placeholder="e.g. Split AC 1.5 ton, 2nd floor, parking available">'+esc(store('oyc_notes')||'')+'</textarea>';
+  h+='<div style="padding:16px 0 10px"><div class="card row" style="background:var(--goldbg);border-color:#efdfb8"><span style="color:var(--gold2)">'+ic('shield',22)+'</span><div class="small">Your booking is sent to OYC and confirmed on WhatsApp. Free cancellation until a professional is on the way.</div></div></div>';
+  h+='<div style="position:sticky;bottom:0;background:#fff;padding:10px 0 calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)"><button class="btn block" id="placeBtn" onclick="placeOrder()">'+(!a?'Add address to continue':!slot.time?'Select slot to continue':WA_SVG+' Book on WhatsApp · '+rupee(tot))+'</button></div>';
+  $('#cartBody').innerHTML=h;var n=$('#cNotes');if(n)n.oninput=function(){store('oyc_notes',n.value)}}
+function placeOrder(){
+  if(!addrs[selAddr])return openAddr();if(!slot.time)return openSlot();
+  if(!needLogin(function(){go('cart')}))return;
+  var it=cartItems(),a=addrs[selAddr],btn=$('#placeBtn');busy(btn,true,'Booking…');
+  var cats=[];it.forEach(function(i){var n=catOf(i.cat).name;if(cats.indexOf(n)<0)cats.push(n)});
+  api('createBooking',{booking:{name:user.name,phone:user.phone,address:a.address,landmark:a.landmark,lat:a.lat,lng:a.lng,category:cats.join(', '),items:it.map(function(i){return {id:i.id,name:i.name,qty:i.qty,price:i.price}}),total:cartTotal(),date:slot.date,slot:slot.time,notes:($('#cNotes')||{}).value||'',payMode:pay}})
+  .then(function(b){lastBooking=b;cart={};store('oyc_cart',cart);store('oyc_notes','');slot={};var ids=store('oyc_myids')||[];ids.push(b.id);store('oyc_myids',ids);stack=[];history.pushState({},'');renderDone(b);show('done');sendWa(b,true)})
+  .catch(function(e){busy(btn,false);toast(e.message)})}
+function waMsg(b){return 'Hi On Your Call, I have booked a service.\n\n*Booking ID:* '+b.id+'\n*Name:* '+b.name+'\n*Mobile:* '+b.phone+'\n\n*Services:*\n'+itemsText(b)+'\n*Total:* '+rupee(b.total)+'\n\n*Date & time:* '+fmtDate(b.date)+', '+b.slot+'\n*Address:* '+b.address+(b.landmark?' (Landmark: '+b.landmark+')':'')+(b.lat?'\n*Map:* https://maps.google.com/?q='+b.lat+','+b.lng:'')+'\n*Payment:* '+b.payMode+(b.notes?'\n*Notes:* '+b.notes:'')+'\n\nPlease confirm my booking.'}
+function sendWa(b,auto){var u=waLink(OYC.WA,waMsg(b));if(auto){var w=window.open(u,'_blank');return}location.href=u}
+function renderDone(b){var o=String(b.otp).split('');
+  $('#doneBody').innerHTML='<div class="okc">'+ic('check',44,3)+'</div><h1 style="text-align:center;font-size:24px">Booking placed!</h1><p class="muted" style="text-align:center;margin:6px 0 4px;font-size:14px">Booking ID <b style="color:var(--ink)">'+esc(b.id)+'</b></p><p style="text-align:center;font-size:14px;color:var(--ink2);margin:0 0 18px">Send it on WhatsApp so OYC can confirm your booking and assign a professional.</p>'+
+  '<a class="btn wa block" href="'+waLink(OYC.WA,waMsg(b))+'" target="_blank" rel="noopener">'+WA_SVG+' Send booking on WhatsApp</a>'+
+  '<div class="card" style="margin-top:18px"><div class="row between"><b>'+esc(fmtDate(b.date))+', '+esc(b.slot)+'</b><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status])+'</span></div><div class="hr"></div>'+(b.items||[]).map(function(i){return '<div class="sumrow"><span>'+esc(i.name)+' × '+i.qty+'</span><span>'+(i.price?rupee(i.price*i.qty):'Free')+'</span></div>'}).join('')+'<div class="sumrow t"><span>Total</span><span>'+rupee(b.total)+'</span></div><div class="muted small">'+esc(b.payMode)+'</div></div>'+
+  '<div class="card" style="margin-top:12px;text-align:center"><b>Start code</b><p class="muted" style="margin:4px 0 12px">Share this code with the professional only after they arrive.</p><div class="otp">'+o.map(function(d){return '<span>'+d+'</span>'}).join('')+'</div></div>'+
+  '<div class="card" style="margin-top:12px"><div class="row" style="margin-bottom:10px">'+ic('pin',18)+'<div class="grow small">'+esc(b.address)+(b.landmark?' · '+esc(b.landmark):'')+'</div></div><iframe class="map" src="'+mapEmbed(b)+'" loading="lazy" title="Service location"></iframe></div>'+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 30px"><button class="btn line" onclick="openBooking(\''+b.id+'\')">Track booking</button><button class="btn" onclick="tab(\'home\')">Back to home</button></div>'}
+
+/* address */
+function openAddr(){var a=addrs[selAddr]||{};$('#aText').value=a.address||'';$('#aLand').value=a.landmark||'';tmpLL={lat:a.lat||'',lng:a.lng||''};
+  $('#savedAddr').innerHTML=addrs.length?'<p class="muted" style="font-weight:600;margin:0 0 6px">Saved addresses</p>'+addrs.map(function(x,i){return '<div class="opt'+(i===selAddr?' on':'')+'" onclick="pickAddr('+i+')"><span class="rd"></span><div class="grow"><b>'+esc(x.tag)+'</b><div class="muted">'+esc(x.address)+'</div></div><button class="btn ghost sm" onclick="event.stopPropagation();delAddr('+i+')">Delete</button></div>'}).join('')+'<p class="muted" style="font-weight:600;margin:16px 0 8px">Add new address</p>':'';
+  $('#addrMap').src=mapEmbed({lat:tmpLL.lat,lng:tmpLL.lng,address:a.address||'Hyderabad'});setTag(a.tag||'Home');openSheet('addr')}
+var tmpLL={};
+function setTag(t){$$('#aTag .chip').forEach(function(c){c.classList.toggle('on',c.dataset.v===t);c.onclick=function(){setTag(c.dataset.v)}})}
+function pickAddr(i){selAddr=i;store('oyc_sel',i);closeSheet();renderHome();if(cur==='cart')renderCart()}
+function delAddr(i){addrs.splice(i,1);store('oyc_addrs',addrs);selAddr=0;store('oyc_sel',0);openAddr();renderHome()}
+function previewMap(){var t=$('#aText').value.trim();if(!t)return toast('Type your address first');tmpLL={};$('#addrMap').src=mapEmbed({address:t})}
+function useGPS(btn){if(!navigator.geolocation)return toast('Location is not available on this device');busy(btn,true,'Finding your location…');
+  navigator.geolocation.getCurrentPosition(function(p){var la=p.coords.latitude.toFixed(6),ln=p.coords.longitude.toFixed(6);tmpLL={lat:la,lng:ln};$('#addrMap').src=mapEmbed(tmpLL);
+    fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&lat='+la+'&lon='+ln).then(function(r){return r.json()}).then(function(j){if(j&&j.display_name&&!$('#aText').value.trim())$('#aText').value=j.display_name.split(', ').slice(0,5).join(', ')}).catch(function(){}).then(function(){busy(btn,false);toast('Location pinned. Add your flat / house number.')})},
+  function(){busy(btn,false);toast('Please allow location access, or type your address')},{enableHighAccuracy:true,timeout:15000})}
+function saveAddr(){var t=$('#aText').value.trim();if(t.length<8)return toast('Please enter your full address');
+  var tag=($('#aTag .chip.on')||{}).dataset.v||'Home';var a={tag:tag,address:t,landmark:$('#aLand').value.trim(),lat:tmpLL.lat||'',lng:tmpLL.lng||''};
+  var i=-1;addrs.forEach(function(x,j){if(x.tag===tag&&tag!=='Other')i=j});if(i>=0)addrs[i]=a;else{addrs.push(a);i=addrs.length-1}
+  selAddr=i;store('oyc_addrs',addrs);store('oyc_sel',i);closeSheet();renderHome();if(cur==='cart'){renderCart();if(!slot.time)setTimeout(openSlot,250)}}
+
+/* slots */
+var TIMES=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM'];
+function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function openSlot(){var it=cartItems();$('#slDur').textContent=it.length?it.map(function(i){return i.dur}).filter(function(d){return d!=='Visit'})[0]||'1 hr':'1 hr';
+  var d=new Date(),h='';if(!slot.date)slot.date=ymd(d);
+  for(var i=0;i<7;i++){var x=new Date(d.getTime()+i*864e5),k=ymd(x);h+='<div class="day'+(k===slot.date?' on':'')+'" onclick="slot.date=\''+k+'\';slot.time=\'\';openSlot()">'+(i===0?'Today':x.toLocaleDateString('en-IN',{weekday:'short'}))+'<b>'+x.getDate()+'</b>'+x.toLocaleDateString('en-IN',{month:'short'})+'</div>'}
+  $('#slDays').innerHTML=h;var today=slot.date===ymd(d),hr=d.getHours();
+  $('#slTimes').innerHTML=TIMES.map(function(t,i){var dis=today&&(8+i)<=hr+1;return '<button class="slot'+(t===slot.time?' on':'')+'" '+(dis?'disabled':'')+' onclick="slot.time=\''+t+'\';openSlot()">'+t+'</button>'}).join('');
+  if(!$('#sh-slot').classList.contains('open'))openSheet('slot')}
+function confirmSlot(){if(!slot.time)return toast('Please select a time slot');closeSheet();renderCart()}
+
+/* sheets */
+function openSheet(n){$$('.sheetbg').forEach(function(s){s.classList.remove('open')});$('#sh-'+n).classList.add('open');fillIcons($('#sh-'+n))}
+function closeSheet(){$$('.sheetbg').forEach(function(s){s.classList.remove('open')})}
+
+/* bookings */
+function loadBookings(force){if(!user){$('#bkList').innerHTML='<div class="empty">'+ic('cal',56,1.4)+'<h3 style="color:var(--ink)">Log in to see your bookings</h3><button class="btn" style="margin-top:14px" onclick="window._afterLogin=function(){tab(\'bookings\')};show(\'login\')">Login</button></div>';return}
+  if(!myB.length||force)$('#bkList').innerHTML='<div class="empty"><span class="spin"></span></div>';
+  api('myBookings',{phone:user.phone}).then(function(r){myB=r;drawBookings()}).catch(function(e){$('#bkList').innerHTML='<div class="empty">'+esc(e.message)+'</div>'})}
+function drawBookings(){if(!myB.length){$('#bkList').innerHTML='<div class="empty">'+ic('cal',56,1.4)+'<h3 style="color:var(--ink);margin-bottom:6px">No bookings yet</h3><p>Looks like you haven’t booked any service.</p><button class="btn" style="margin-top:14px" onclick="tab(\'home\')">Explore services</button></div>';return}
+  $('#bkList').innerHTML=myB.map(function(b){return '<div class="bk" onclick="openBooking(\''+b.id+'\')"><div class="row between"><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status]||b.status)+'</span><span class="muted small">'+esc(b.id)+'</span></div><h3 style="font-size:16px;margin:10px 0 4px;font-weight:600">'+esc((b.items||[]).map(function(i){return i.name}).join(', '))+'</h3><div class="muted">'+esc(fmtDate(b.date))+', '+esc(b.slot)+' · '+rupee(b.total)+'</div>'+(b.partnerName?'<div class="row" style="margin-top:8px;font-size:13px">'+ic('user',16)+' '+esc(b.partnerName)+'</div>':'')+'</div>'}).join('')}
+function openBooking(id){detail=(myB.filter(function(b){return b.id===id})[0])||(lastBooking&&lastBooking.id===id?lastBooking:null);detail=detail||{id:id};go('booking');drawDetail();refreshDetail();if(pollT)clearInterval(pollT);pollT=setInterval(refreshDetail,30000)}
+function refreshDetail(){if(!user||!detail)return;api('myBookings',{phone:user.phone}).then(function(r){myB=r;var b=r.filter(function(x){return x.id===detail.id})[0];if(b){detail=b;if(cur==='booking')drawDetail()}}).catch(function(){})}
+function drawDetail(){var b=detail;if(!b||!b.items){$('#bdBody').innerHTML='<div class="empty"><span class="spin"></span></div>';return}
+  $('#bdTitle').textContent=b.id;var idx=STATUS_FLOW.indexOf(b.status),canc=b.status==='Cancelled';
+  var h='<div style="padding:16px 0"><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status]||b.status)+'</span><h2 style="font-size:20px;margin:10px 0 4px">'+esc((b.items||[]).map(function(i){return i.name}).join(', '))+'</h2><div class="muted">'+esc(fmtDate(b.date))+', '+esc(b.slot)+'</div></div>';
+  if(b.partnerName&&!canc)h+='<div class="card row" style="margin-bottom:12px"><div style="width:46px;height:46px;border-radius:50%;background:var(--goldbg);display:grid;place-items:center;font-weight:800;color:var(--gold2)">'+esc(b.partnerName.charAt(0))+'</div><div class="grow"><b>'+esc(b.partnerName)+'</b><div class="muted">Your OYC professional</div></div><a class="btn line sm" href="tel:'+esc(b.partnerPhone)+'">'+ic('phone',16)+'Call</a></div>';
+  if(!canc&&b.status!=='Completed')h+='<div class="card" style="text-align:center;margin-bottom:12px"><b>Start code</b><p class="muted" style="margin:4px 0 12px">Share with the professional when they arrive</p><div class="otp">'+String(b.otp).split('').map(function(d){return '<span>'+d+'</span>'}).join('')+'</div></div>';
+  if(!canc){h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:12px">Booking status</b><div class="tl">'+STATUS_FLOW.map(function(s,i){var hs=(b.history||[]).filter(function(x){return x.s===s}).pop();return '<div class="s '+(i<idx||b.status==='Completed'&&i===idx?'done':i===idx?'now':'')+'"><b>'+esc(STATUS_LABEL[s])+'</b><span class="muted small">'+(hs?fmtTime(hs.t):'')+'</span></div>'}).join('')+'</div></div>'}
+  h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:8px">Payment summary</b>'+(b.items||[]).map(function(i){return '<div class="sumrow"><span>'+esc(i.name)+' × '+i.qty+'</span><span>'+(i.price?rupee(i.price*i.qty):'Free')+'</span></div>'}).join('')+'<div class="sumrow t"><span>'+(b.status==='Completed'?'Amount paid':'Total')+'</span><span>'+rupee(b.amountPaid||b.total)+'</span></div><div class="muted small">'+esc(b.payMode)+'</div></div>';
+  h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:8px">Service address</b><div class="small" style="margin-bottom:10px">'+esc(b.address)+(b.landmark?' · '+esc(b.landmark):'')+'</div><iframe class="map" src="'+mapEmbed(b)+'" loading="lazy" title="Map"></iframe></div>';
+  if(b.status==='Completed'){h+='<div class="card" style="margin-bottom:12px"><b>'+(b.rating?'Your rating':'Rate your experience')+'</b><div class="stars" id="rStars" style="margin:10px 0">'+[1,2,3,4,5].map(function(n){return '<button class="'+(n<=(b.rating||0)?'on':'')+'" onclick="setStars('+n+')">'+ic('star',30,1.5)+'</button>'}).join('')+'</div>'+(b.rating?'<p class="small">'+esc(b.review||'')+'</p>':'<textarea class="inp" id="rText" placeholder="Tell us about the service (optional)"></textarea><button class="btn block" style="margin-top:10px" onclick="sendRating(this)">Submit rating</button>')+'</div>'}
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 30px"><a class="btn wa" href="'+waLink(OYC.WA,'Hi OYC, I need help with booking '+b.id+'.')+'" target="_blank" rel="noopener">'+WA_SVG+'Help</a>'+(['Pending','Assigned','Accepted'].indexOf(b.status)>=0?'<button class="btn line" style="color:var(--bad)" onclick="cancelB(this)">Cancel booking</button>':'<a class="btn line" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+'Call OYC</a>')+'</div>';
+  $('#bdBody').innerHTML=h}
+var stars=0;function setStars(n){if(detail.rating)return;stars=n;$$('#rStars button').forEach(function(b,i){b.classList.toggle('on',i<n)})}
+function sendRating(btn){if(!stars)return toast('Tap the stars to rate');busy(btn,true);api('rateBooking',{id:detail.id,phone:user.phone,rating:stars,review:$('#rText').value}).then(function(b){detail=b;drawDetail();toast('Thanks for your feedback!')}).catch(function(e){busy(btn,false);toast(e.message)})}
+function cancelB(btn){if(!confirm('Cancel this booking?'))return;busy(btn,true);api('cancelBooking',{id:detail.id,phone:user.phone}).then(function(b){detail=b;drawDetail();toast('Booking cancelled')}).catch(function(e){busy(btn,false);toast(e.message)})}
+
+/* account */
+function renderAccount(){var h='';
+  if(user)h+='<div style="padding:20px 16px" class="row"><div style="width:58px;height:58px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800">'+esc(user.name.charAt(0).toUpperCase())+'</div><div class="grow"><h3 style="font-size:19px">'+esc(user.name)+'</h3><div class="muted">+91 '+esc(user.phone)+'</div></div></div><div class="sep" style="margin:0"></div>';
+  else h+='<div style="padding:20px 16px"><h3>Welcome to On Your Call</h3><p class="muted">Log in to book and track services.</p><button class="btn" style="margin-top:8px" onclick="window._afterLogin=function(){tab(\'account\')};show(\'login\')">Login / Sign up</button></div><div class="sep" style="margin:0"></div>';
+  var rows=[['cal','My bookings',"tab('bookings')"],['pin','Manage addresses','openAddr()'],['help','Help & support','openHelp()'],['phone','Call OYC',"location.href='tel:"+OYC.PHONE+"'"],['shield','Join as a service partner',"location.href='"+OYC.PARTNER+"'"]];
+  if(_inst)rows.push(['down','Install the OYC app','installApp()']);
+  h+=rows.map(function(r){return '<div class="acc-row" onclick="'+r[2]+'">'+ic(r[0])+'<span class="grow">'+r[1]+'</span>'+ic('right',18)+'</div>'}).join('');
+  h+='<div class="acc-row" onclick="installApp()">'+ic('down')+'<span class="grow">Add OYC to home screen</span>'+ic('right',18)+'</div>';
+  if(user)h+='<div class="acc-row" onclick="logout()" style="color:var(--bad)">'+ic('logout')+'<span class="grow">Logout</span></div>';
+  h+='<div style="text-align:center;padding:26px 16px"><img class="logo" src="'+OYC.LOGO+'" alt="On Your Call" style="width:64px;height:64px;margin:0 auto 8px"><div class="muted small">On Your Call · One call. Every solution.<br>Hyderabad</div></div>';
+  $('#accBody').innerHTML=h}
+function logout(){if(!confirm('Log out of OYC?'))return;user=null;localStorage.removeItem('oyc_user');myB=[];renderAccount();toast('Logged out')}
+function openHelp(){location.href=waLink(OYC.WA,'Hi OYC, I need help.')}
+
+/* boot */
+(function(){fillIcons(document);$('#pinIc').innerHTML=ic('pin',22);$('#dnIc').innerHTML=ic('down',16);$('#cartIc').innerHTML=ic('cart',22);$('#srIc').innerHTML=ic('search',18);
+  $$('.pi').forEach(function(e){e.innerHTML=ic(e.dataset.i,22)});$('#demoBar').classList.toggle('hide',!!OYC.API);
+  api('catalog').then(function(c){applyCatalog(c);if(cur==='home')renderHome()}).catch(function(){});
+  history.replaceState({s:'home'},'');
+  if(!user&&!store('oyc_seen')){show('login')}else{render('home');show('home')}
+  cur=cur||'home';
+})();
+</script>
+</body></html>

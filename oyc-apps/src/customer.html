@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>On Your Call – Home services in Hyderabad</title>
+<meta name="description" content="Book AC repair, cleaning, salon, electrician, plumber, carpenter, pest control and painting at home in Hyderabad. One call. Every solution.">
+<meta property="og:title" content="On Your Call – Home services at your doorstep">
+<meta property="og:description" content="Book trusted home services in Hyderabad in a few taps. Confirmed on WhatsApp.">
+<meta property="og:image" content="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link rel="icon" href="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link rel="apple-touch-icon" href="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/*BASE_CSS*/
+body{background:#f2f2f2}
+.app{max-width:520px;margin:0 auto;min-height:100vh;background:#fff;position:relative;box-shadow:0 0 40px rgba(0,0,0,.06)}
+.scr{display:none;padding-bottom:84px;min-height:100vh}.scr.on{display:block}
+.top{position:sticky;top:0;z-index:20;background:#fff;padding:12px 16px 10px;display:flex;align-items:center;gap:12px}
+.top.bd{border-bottom:1px solid var(--line)}
+.top h2{font-size:18px}
+.ib{width:38px;height:38px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;flex:none;position:relative}
+.ib.bgw{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.cnt{position:absolute;top:1px;right:0;background:var(--gold);color:#fff;font-size:10px;font-weight:800;min-width:17px;height:17px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.loc{display:flex;align-items:center;gap:8px;cursor:pointer;min-width:0;flex:1}
+.loc b{display:flex;align-items:center;gap:2px;font-size:16px}
+.loc span{display:block;font-size:12.5px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search{margin:0 16px 6px;display:flex;align-items:center;gap:10px;border:1px solid #dedede;border-radius:10px;padding:12px 14px;color:var(--mute);cursor:text;background:#fff}
+.pad{padding:0 16px}
+.sec{padding:22px 16px 6px}
+.sec h3{font-size:20px;margin-bottom:14px;font-weight:700}
+.catgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 10px;border:1px solid var(--line);border-radius:16px;padding:16px 10px;margin:8px 16px 0}
+.cat{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;font-size:12px;line-height:1.25;cursor:pointer;font-weight:500}
+.cat .ci{width:64px;height:64px;border-radius:14px;background:var(--goldbg);display:grid;place-items:center;color:var(--ink)}
+.cat .ci svg{color:var(--gold2)}
+.hs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 4px;scrollbar-width:none}
+.hs::-webkit-scrollbar{display:none}
+.banner{flex:0 0 86%;scroll-snap-align:start;border-radius:16px;overflow:hidden;position:relative;height:170px;cursor:pointer;background:#222}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.55) 55%,rgba(0,0,0,0) 100%);color:#fff;padding:18px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.banner .ov b{font-size:20px;line-height:1.15;max-width:62%}
+.banner .ov small{color:#f0d79f;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.banner .ov i{font-style:normal;background:#fff;color:#111;border-radius:8px;padding:7px 12px;font-weight:700;font-size:13px;align-self:flex-start;margin-top:4px}
+.mini{flex:0 0 150px;scroll-snap-align:start;cursor:pointer}
+.mini img{width:150px;height:150px;object-fit:cover;border-radius:12px;background:var(--soft)}
+.mini b{display:block;font-size:13.5px;font-weight:600;margin-top:8px;line-height:1.3;min-height:35px}
+.mini span{font-size:13px;color:var(--ink2)}
+.promise{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+.promise div{background:var(--soft);border-radius:12px;padding:14px;font-size:13px}
+.promise svg{color:var(--gold2);margin-bottom:6px}
+.promise b{display:block;font-size:14px;margin-bottom:2px}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+.bnav button{border:0;background:none;padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mute);cursor:pointer;font-weight:500}
+.bnav button.on{color:var(--ink);font-weight:700}
+.bnav .logo-tab img{width:24px;height:24px;border-radius:6px}
+/* category */
+.chero{position:relative;height:200px;background:#222}
+.chero img{width:100%;height:100%;object-fit:cover;opacity:.9}
+.chero .ov{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75),rgba(0,0,0,0) 60%);display:flex;align-items:flex-end;padding:16px;color:#fff}
+.chero h1{font-size:24px;line-height:1.15}
+.chero .bk{position:absolute;top:12px;left:12px}
+.chero .ct{position:absolute;top:12px;right:12px}
+.subs{display:flex;gap:8px;overflow-x:auto;padding:14px 16px;position:sticky;top:0;background:#fff;z-index:15;border-bottom:1px solid var(--line);scrollbar-width:none}
+.subs::-webkit-scrollbar{display:none}
+.svc{display:flex;gap:14px;padding:18px 16px;border-bottom:1px solid var(--line)}
+.svc h4{font-size:16px;font-weight:600;margin-bottom:4px}
+.svc .pr{font-size:14px;font-weight:600;margin:4px 0}
+.svc .pr span{color:var(--mute);font-weight:400}
+.svc ul{margin:8px 0 6px;padding-left:16px;color:var(--ink2);font-size:13px}
+.svc ul li{margin:2px 0}
+.svc .vd{color:var(--gold2);font-weight:600;font-size:13px;cursor:pointer;background:none;border:0;padding:0}
+.svc .ph{flex:none;width:112px;position:relative;padding-bottom:16px}
+.svc .ph img{width:112px;height:112px;border-radius:12px;object-fit:cover;background:var(--soft)}
+.add{position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:#fff;color:var(--gold2);border:1px solid #e3d3ad;border-radius:8px;padding:7px 0;width:84px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.step{position:absolute;left:50%;bottom:0;transform:translateX(-50%);background:var(--goldbg);border:1px solid #e3d3ad;border-radius:8px;width:84px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.step button{border:0;background:none;width:28px;height:32px;font-size:18px;font-weight:700;color:var(--gold2);cursor:pointer}
+.step b{font-size:14px;color:var(--gold2)}
+.step.inline{position:static;transform:none}
+.cartbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);z-index:45;display:none}
+.cartbar.on{display:block}
+.cartbar .btn{width:100%;justify-content:space-between}
+/* cart */
+.ci-row{display:flex;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.ci-row:last-child{border:0}
+.ci-row .nm{flex:1;min-width:0;font-size:14.5px;font-weight:500}
+.sumrow{display:flex;justify-content:space-between;padding:5px 0;font-size:14px}
+.sumrow.t{font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:8px;padding-top:12px}
+.opt{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;margin-bottom:10px}
+.opt.on{border-color:var(--ink);background:#fafafa}
+.opt .rd{width:20px;height:20px;border-radius:50%;border:2px solid #bbb;flex:none}
+.opt.on .rd{border:6px solid var(--ink)}
+.selrow{display:flex;align-items:center;gap:12px;padding:14px 0;cursor:pointer}
+.selrow .ic{width:40px;height:40px;border-radius:10px;background:var(--soft);display:grid;place-items:center;flex:none}
+.days{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.day{flex:none;width:64px;border:1px solid var(--line);border-radius:12px;padding:10px 0;text-align:center;cursor:pointer;font-size:12px;color:var(--ink2)}
+.day b{display:block;font-size:18px;color:var(--ink)}
+.day.on{border-color:var(--ink);background:var(--ink);color:#fff}.day.on b{color:#fff}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.slot{border:1px solid var(--line);border-radius:10px;padding:12px 4px;text-align:center;font-size:13.5px;font-weight:600;cursor:pointer;background:#fff}
+.slot.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.slot:disabled{color:#c4c4c4;background:#fafafa;cursor:not-allowed;text-decoration:line-through}
+/* thank you */
+.okc{width:84px;height:84px;border-radius:50%;background:var(--ok);display:grid;place-items:center;color:#fff;margin:30px auto 16px;animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.3);opacity:0}}
+.otp{display:flex;gap:8px;justify-content:center}
+.otp span{width:44px;height:52px;border-radius:10px;background:var(--goldbg);border:1px solid #ecd9ae;display:grid;place-items:center;font-size:24px;font-weight:800;color:var(--ink)}
+.bk{padding:16px;border-bottom:8px solid var(--soft);cursor:pointer}
+.login{min-height:100vh;display:flex;flex-direction:column;padding:28px 22px}
+.login .lg{width:96px;height:96px;margin:24px auto 14px;border-radius:22px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.phone{display:flex;border:1px solid #dcdcdc;border-radius:10px;overflow:hidden}
+.phone span{padding:13px 12px;background:var(--soft);font-weight:600;border-right:1px solid #dcdcdc}
+.phone input{border:0;flex:1;padding:13px;outline:none;font-size:16px;min-width:0}
+.stars{display:flex;gap:6px}.stars button{border:0;background:none;cursor:pointer;color:#d0d0d0;padding:2px}.stars button.on{color:var(--gold)}
+.stars button.on svg{fill:var(--gold)}
+.acc-row{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line);cursor:pointer}
+.sres{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;cursor:pointer}
+.sres img{width:52px;height:52px;border-radius:10px;object-fit:cover}
+.demo{background:var(--warnbg);color:var(--warn);font-size:12px;padding:8px 16px;text-align:center}
+@media(min-width:700px){.banner{flex-basis:70%}}
+</style></head>
+<body>
+<div class="app">
+<div id="demoBar" class="demo hide">Demo mode – bookings are saved on this device only until the Google Sheet is connected.</div>
+
+<!-- LOGIN -->
+<section class="scr" id="s-login"><div class="login">
+  <img class="lg logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="On Your Call logo" width="96" height="96">
+  <h1 style="text-align:center;font-size:24px">On Your Call</h1>
+  <p class="muted" style="text-align:center;margin:4px 0 26px;font-size:14px">One call. Every solution.<br>Home services at your doorstep in Hyderabad.</p>
+  <label class="lbl">Enter your mobile number</label>
+  <div class="phone"><span>+91</span><input id="lgPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Mobile number" autocomplete="tel-national"></div>
+  <label class="lbl">Your name</label>
+  <input class="inp" id="lgName" placeholder="Full name" autocomplete="name">
+  <button class="btn block" style="margin-top:22px" onclick="doLogin()">Continue</button>
+  <button class="btn line block" style="margin-top:10px" onclick="skipLogin()">Skip for now</button>
+  <p class="muted small" style="text-align:center;margin-top:auto;padding-top:24px">By continuing, you agree that On Your Call may contact you on call or WhatsApp about your bookings.</p>
+</div></section>
+
+<!-- HOME -->
+<section class="scr" id="s-home">
+  <div class="top">
+    <div class="loc" onclick="openAddr()"><span style="color:var(--gold2)" id="pinIc"></span><div class="grow"><b><span id="locLabel">Select location</span><span id="dnIc"></span></b><span id="locText">Tap to add your address</span></div></div>
+    <button class="ib" onclick="go('cart')" aria-label="Cart"><span id="cartIc"></span><i class="cnt hide" id="cartCnt">0</i></button>
+  </div>
+  <div class="search" onclick="go('search')"><span id="srIc"></span><span>Search for ‘AC service’</span></div>
+  <div class="sec" style="padding-bottom:0"><h3 style="margin:0">What are you looking for?</h3></div>
+  <div class="catgrid" id="catGrid"></div>
+  <div class="sec"></div>
+  <div class="hs" id="banners"></div>
+  <div class="sec"><h3>Most booked services</h3></div>
+  <div class="hs" id="mostBooked"></div>
+  <div class="sec"><h3>Salon for Women</h3></div>
+  <div class="hs" id="rowSalon"></div>
+  <div class="sec"><h3>Cleaning & pest control</h3></div>
+  <div class="hs" id="rowClean"></div>
+  <div class="sec"><h3>Home repairs</h3></div>
+  <div class="hs" id="rowRepair"></div>
+  <div class="sec"><h3>Why book with OYC</h3></div>
+  <div class="promise">
+    <div><span class="pi" data-i="tag"></span><b>Prices upfront</b>See the price before you book.</div>
+    <div><span class="pi" data-i="wallet"></span><b>Pay after service</b>Cash or UPI when the job is done.</div>
+    <div><span class="pi" data-i="shield"></span><b>Start-code safety</b>Work starts only after you share your 4-digit code.</div>
+    <div><span class="pi" data-i="clock"></span><b>Pick your slot</b>Choose a date and time that suits you.</div>
+  </div>
+  <div class="sec" style="padding-bottom:24px">
+    <div class="card row" style="background:var(--ink);color:#fff;border:0">
+      <div class="grow"><b style="font-size:16px">Need help choosing?</b><div style="color:#cfcfcf;font-size:13px;margin-top:2px">Chat with OYC on WhatsApp</div></div>
+      <a class="btn wa sm" id="helpWa" target="_blank" rel="noopener"></a>
+    </div>
+    <p class="muted small" style="text-align:center;margin-top:18px">© On Your Call · Hyderabad · <a href="tel:9866689196">9866689196</a><br><a href="https://theadweb.flexifunnels.com/oyc-partner" style="text-decoration:underline">Join OYC as a service partner</a></p>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="scr" id="s-search">
+  <div class="top bd"><button class="ib" onclick="back()" data-ic="back"></button><input class="inp" id="q" placeholder="Search for a service" oninput="doSearch()" style="padding:10px 12px"></div>
+  <div id="sresults"></div>
+</section>
+
+<!-- CATEGORY -->
+<section class="scr" id="s-cat">
+  <div class="chero"><img id="cImg" alt=""><div class="ov"><div><h1 id="cTitle"></h1><div style="font-size:13px;color:#e6e6e6;margin-top:4px">Hyderabad · Pay after service</div></div></div>
+    <button class="ib bgw bk" onclick="back()" data-ic="back"></button><button class="ib bgw ct" onclick="go('search')" data-ic="search"></button></div>
+  <div class="subs" id="cSubs"></div>
+  <div id="cList"></div>
+</section>
+
+<!-- CART / CHECKOUT -->
+<section class="scr" id="s-cart">
+  <div class="top bd"><button class="ib" onclick="back()" data-ic="back"></button><h2>Summary</h2></div>
+  <div id="cartBody" class="pad"></div>
+</section>
+
+<!-- THANK YOU -->
+<section class="scr" id="s-done"><div id="doneBody" class="pad"></div></section>
+
+<!-- BOOKINGS -->
+<section class="scr" id="s-bookings">
+  <div class="top bd"><h2 class="grow">My bookings</h2><button class="ib" onclick="loadBookings(true)" data-ic="refresh"></button></div>
+  <div id="bkList"></div>
+</section>
+
+<!-- BOOKING DETAIL -->
+<section class="scr" id="s-booking">
+  <div class="top bd"><button class="ib" onclick="back()" data-ic="back"></button><h2 class="grow" id="bdTitle">Booking</h2><button class="ib" onclick="refreshDetail()" data-ic="refresh"></button></div>
+  <div id="bdBody" class="pad"></div>
+</section>
+
+<!-- ACCOUNT -->
+<section class="scr" id="s-account">
+  <div class="top bd"><h2>Account</h2></div>
+  <div id="accBody"></div>
+</section>
+
+<nav class="bnav" id="bnav">
+  <button data-t="home" onclick="tab('home')" class="logo-tab"><img class="logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="">OYC</button>
+  <button data-t="bookings" onclick="tab('bookings')"><span data-ic="cal"></span>Bookings</button>
+  <button data-t="help" onclick="openHelp()"><span data-ic="help"></span>Help</button>
+  <button data-t="account" onclick="tab('account')"><span data-ic="user"></span>Account</button>
+</nav>
+<div class="cartbar" id="cartbar"><button class="btn" onclick="go('cart')"><span id="cbTotal">₹0</span><span>View cart</span></button></div>
+</div>
+
+<!-- SHEETS -->
+<div class="sheetbg" id="sh-addr" onclick="if(event.target===this)closeSheet()"><div class="sheet">
+  <button class="x" onclick="closeSheet()" data-ic="x"></button>
+  <h3 style="font-size:19px;margin-bottom:14px">Service address</h3>
+  <div id="savedAddr"></div>
+  <button class="btn line block" onclick="useGPS(this)" style="justify-content:flex-start;color:var(--gold2)"><span data-ic="nav"></span>Use my current location</button>
+  <iframe class="map" id="addrMap" style="margin-top:12px" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+  <label class="lbl">House / flat no., building, street, area</label>
+  <textarea class="inp" id="aText" placeholder="e.g. Flat 204, Sai Residency, Road no. 36, Jubilee Hills" style="min-height:70px"></textarea>
+  <button class="btn ghost sm" style="margin-top:8px" onclick="previewMap()"><span data-ic="pin"></span>Show on map</button>
+  <label class="lbl">Landmark (optional)</label>
+  <input class="inp" id="aLand" placeholder="Near…">
+  <label class="lbl">Save as</label>
+  <div class="row" id="aTag"><span class="chip on" data-v="Home">Home</span><span class="chip" data-v="Work">Work</span><span class="chip" data-v="Other">Other</span></div>
+  <button class="btn block" style="margin-top:18px" onclick="saveAddr()">Save and proceed</button>
+</div></div>
+
+<div class="sheetbg" id="sh-slot" onclick="if(event.target===this)closeSheet()"><div class="sheet">
+  <button class="x" onclick="closeSheet()" data-ic="x"></button>
+  <h3 style="font-size:19px">When should the professional arrive?</h3>
+  <p class="muted" style="margin:4px 0 14px">Service will take approx. <span id="slDur">1 hr</span></p>
+  <div class="days" id="slDays"></div>
+  <h4 style="margin:18px 0 10px">Select start time of service</h4>
+  <div class="slots" id="slTimes"></div>
+  <button class="btn block" style="margin-top:20px" onclick="confirmSlot()">Proceed to checkout</button>
+</div></div>
+
+<div class="sheetbg" id="sh-svc" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="svcBody"></div></div>
+
+<script>
+/*HANDLER_JS*/
+/*CORE_JS*/
+</script>
+<script>
+/* ================= CUSTOMER APP ================= */
+var user=store('oyc_user'),cart=store('oyc_cart')||{},addrs=store('oyc_addrs')||[],selAddr=store('oyc_sel')||0,slot={},pay='Pay after service (Cash / UPI)';
+var stack=[],cur='',curCat='',curSub='',lastBooking=null,detail=null,myB=[],pollT=null;
+function fillIcons(r){$$('[data-ic]',r).forEach(function(e){if(!e.firstChild||e.tagName==='BUTTON'&&!e.innerHTML.trim())e.innerHTML=ic(e.dataset.ic,e.dataset.s||20)})}
+function show(s){$$('.scr').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s)});cur=s;
+  var nav=['home','bookings','account'].indexOf(s)>=0;$('#bnav').classList.toggle('hide',!nav);
+  $$('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===s)});updateCartBar();window.scrollTo(0,0);
+  if(s!=='booking'&&pollT){clearInterval(pollT);pollT=null}}
+function go(s,noPush){if(cur&&cur!==s&&!noPush){stack.push(cur);history.pushState({s:s},'')}render(s);show(s)}
+function back(){if(stack.length){history.back()}else go('home',true)}
+addEventListener('popstate',function(){var s=stack.pop()||'home';if($('.sheetbg.open')){closeSheet(true)}render(s);show(s)});
+function tab(s){stack=[];go(s,true)}
+function render(s){({home:renderHome,cart:renderCart,bookings:function(){loadBookings()},account:renderAccount,search:function(){$('#q').value='';doSearch();setTimeout(function(){$('#q').focus()},50)},cat:renderCat}[s]||function(){})()}
+
+/* login */
+function doLogin(){var p=oycDigits($('#lgPhone').value),n=$('#lgName').value.trim();
+  if(p.length!==10||!/^[6-9]/.test(p))return toast('Enter a valid 10-digit mobile number');if(n.length<2)return toast('Please enter your name');
+  user={phone:p,name:n};store('oyc_user',user);store('oyc_seen',1);
+  if(window._afterLogin){var f=window._afterLogin;window._afterLogin=null;tab('home');f()}else tab('home')}
+function skipLogin(){store('oyc_seen',1);tab('home')}
+function needLogin(then){if(user)return true;window._afterLogin=then;$('#lgPhone').value='';show('login');return false}
+
+/* home */
+function svcImg(s){return catOf(s.cat).img}
+function miniCard(s){return '<div class="mini" onclick="openCat(\''+s.cat+'\',\''+s.sub+'\')"><img src="'+svcImg(s)+'" alt="'+esc(s.name)+'" loading="lazy"><b>'+esc(s.name)+'</b><span>'+priceLabel(s)+'</span></div>'}
+function renderHome(){
+  $('#catGrid').innerHTML=CATS.map(function(c){return '<div class="cat" onclick="openCat(\''+c.id+'\')"><div class="ci">'+ic(c.id,30,1.7)+'</div>'+esc(c.short)+'</div>'}).join('');
+  var bn=[['ac','Summer ready','AC service starting at '+rupee(svcOf('ac1').price),IMG.ac],['clean','Deep clean','Bathroom cleaning from '+rupee(svcOf('cl1').price),IMG.clean],['salonw','Salon at home','Waxing, facials & spa at your doorstep',IMG.salonw],['salonm','Men’s grooming','Haircut at home from '+rupee(svcOf('sm1').price),IMG.salonm],['paint','Painting','Free inspection & written quote',IMG.paint]];
+  $('#banners').innerHTML=bn.map(function(b){return '<div class="banner" onclick="openCat(\''+b[0]+'\')"><img src="'+b[3]+'" alt="'+esc(b[2])+'"><div class="ov"><small>'+b[1]+'</small><b>'+b[2]+'</b><i>Book now</i></div></div>'}).join('');
+  var vis=SERVICES.filter(function(s){return !s.off});
+  $('#mostBooked').innerHTML=['ac1','cl1','sm1','sw1','el2','pl4','pc1','ac7'].map(svcOf).filter(function(s){return s&&!s.off}).map(miniCard).join('');
+  $('#rowSalon').innerHTML=vis.filter(function(s){return s.cat==='salonw'}).map(miniCard).join('');
+  $('#rowClean').innerHTML=vis.filter(function(s){return s.cat==='clean'||s.cat==='pest'}).map(miniCard).join('');
+  $('#rowRepair').innerHTML=vis.filter(function(s){return ['elec','plumb','carp'].indexOf(s.cat)>=0}).map(miniCard).join('');
+  var a=addrs[selAddr];$('#locLabel').textContent=a?a.tag:'Select location';$('#locText').textContent=a?a.address:'Tap to add your service address';
+  $('#helpWa').innerHTML=WA_SVG+'Chat';$('#helpWa').href=waLink(OYC.WA,'Hi OYC, I need help with a home service.');
+}
+/* category */
+function openCat(id,sub){curCat=id;curSub=sub||'';go('cat')}
+function renderCat(){var c=catOf(curCat);$('#cImg').src=c.img;$('#cImg').alt=c.name;$('#cTitle').textContent=c.name;
+  var list=SERVICES.filter(function(s){return s.cat===curCat&&!s.off}),subs=[];list.forEach(function(s){if(subs.indexOf(s.sub)<0)subs.push(s.sub)});
+  $('#cSubs').innerHTML=subs.map(function(x){return '<span class="chip'+(x===curSub?' on':'')+'" onclick="jumpSub(\''+esc(x)+'\')">'+esc(x)+'</span>'}).join('');
+  var h='';subs.forEach(function(x){h+='<div id="sub-'+x.replace(/\W/g,'')+'" style="scroll-margin-top:64px"><h3 style="padding:20px 16px 0;font-size:19px">'+esc(x)+'</h3>'+list.filter(function(s){return s.sub===x}).map(svcRow).join('')+'</div>'});
+  $('#cList').innerHTML=h||'<div class="empty">No services available right now.</div>';
+  if(curSub)setTimeout(function(){jumpSub(curSub)},60)}
+function jumpSub(x){curSub=x;$$('#cSubs .chip').forEach(function(c){c.classList.toggle('on',c.textContent===x)});var e=$('#sub-'+x.replace(/\W/g,''));if(e)e.scrollIntoView({behavior:'smooth'})}
+function stepper(id){var q=cart[id]||0;return q?'<div class="step"><button onclick="qty(\''+id+'\',-1,event)">−</button><b>'+q+'</b><button onclick="qty(\''+id+'\',1,event)">+</button></div>':'<button class="add" onclick="qty(\''+id+'\',1,event)">Add</button>'}
+function svcRow(s){return '<div class="svc" id="row-'+s.id+'"><div class="grow"><h4>'+esc(s.name)+'</h4><div class="pr">'+priceLabel(s)+' <span>· '+esc(s.dur)+'</span></div><ul>'+s.pts.map(function(p){return '<li>'+esc(p)+'</li>'}).join('')+'</ul><button class="vd" onclick="svcDetail(\''+s.id+'\')">View details</button></div><div class="ph"><img src="'+svcImg(s)+'" alt="'+esc(s.name)+'" loading="lazy"><span class="stp" id="stp-'+s.id+'">'+stepper(s.id)+'</span></div></div>'}
+function qty(id,d,ev){if(ev)ev.stopPropagation();cart[id]=Math.max(0,(cart[id]||0)+d);if(!cart[id])delete cart[id];store('oyc_cart',cart);
+  $$('#stp-'+id).forEach(function(e){e.innerHTML=stepper(id)});var sd=$('#sdStep');if(sd)sd.innerHTML=stepper(id);updateCartBar();if(cur==='cart')renderCart();if(d>0&&cart[id]===1)toast('Added to cart')}
+function svcDetail(id){var s=svcOf(id);$('#svcBody').innerHTML='<button class="x" onclick="closeSheet()">'+ic('x')+'</button><img src="'+svcImg(s)+'" alt="" style="width:100%;height:190px;object-fit:cover;border-radius:14px;margin:6px 0 14px"><h3 style="font-size:20px">'+esc(s.name)+'</h3><div class="pr" style="margin:6px 0">'+priceLabel(s)+' <span class="muted">· '+esc(s.dur)+'</span></div><div class="hr"></div><h4 style="margin-bottom:6px">What’s included</h4><ul style="padding-left:18px;color:var(--ink2)">'+s.pts.map(function(p){return '<li style="margin:5px 0">'+esc(p)+'</li>'}).join('')+'</ul><h4 style="margin:14px 0 6px">Good to know</h4><ul style="padding-left:18px;color:var(--ink2)"><li style="margin:5px 0">Price shown is the starting price. Any extra work or spare parts are quoted and agreed with you before they are done.</li><li style="margin:5px 0">Pay after the service by cash or UPI.</li><li style="margin:5px 0">Share your 4-digit start code with the professional only when they arrive.</li></ul><div class="row between" style="margin-top:18px"><b>'+priceLabel(s)+'</b><div style="position:relative;width:90px;height:36px" id="sdStep">'+stepper(id)+'</div></div>';openSheet('svc')}
+function cartItems(){return Object.keys(cart).map(function(id){var s=svcOf(id);return s?{id:id,name:s.name,qty:cart[id],price:s.price,cat:s.cat,dur:s.dur}:null}).filter(Boolean)}
+function cartTotal(){return cartItems().reduce(function(a,i){return a+i.price*i.qty},0)}
+function cartCount(){return cartItems().reduce(function(a,i){return a+i.qty},0)}
+function updateCartBar(){var n=cartCount();$('#cartCnt').textContent=n;$('#cartCnt').classList.toggle('hide',!n);$('#cbTotal').textContent=rupee(cartTotal())+' · '+n+' item'+(n>1?'s':'');$('#cartbar').classList.toggle('on',n>0&&(cur==='cat'||cur==='search'))}
+
+/* search */
+function doSearch(){var q=$('#q').value.trim().toLowerCase();var r=SERVICES.filter(function(s){return !s.off&&(!q||(s.name+' '+catOf(s.cat).name+' '+s.sub).toLowerCase().indexOf(q)>=0)});if(!q)r=['ac1','cl1','sm1','sw1','el2','pl4','pc1','cp2'].map(svcOf);
+  $('#sresults').innerHTML=(q?'':'<p class="muted" style="padding:14px 16px 4px;font-weight:600">Trending searches</p>')+(r.length?r.map(function(s){return '<div class="sres" onclick="openCat(\''+s.cat+'\',\''+s.sub+'\')"><img src="'+svcImg(s)+'" alt=""><div class="grow"><b style="font-weight:600">'+esc(s.name)+'</b><div class="muted">'+esc(catOf(s.cat).name)+' · '+priceLabel(s)+'</div></div>'+ic('right',18)+'</div>'}).join(''):'<div class="empty">No results. Try “AC”, “cleaning” or “haircut”.</div>')}
+
+/* cart & checkout */
+function renderCart(){var it=cartItems();if(!it.length){$('#cartBody').innerHTML='<div class="empty">'+ic('cart',56,1.4)+'<h3 style="color:var(--ink);margin-bottom:6px">Your cart is empty</h3><p>Add services to book a visit.</p><button class="btn" style="margin-top:16px" onclick="tab(\'home\')">Explore services</button></div>';return}
+  var a=addrs[selAddr],tot=cartTotal();
+  var h='<div style="padding:8px 0">'+it.map(function(i){return '<div class="ci-row"><div class="nm">'+esc(i.name)+'<div class="muted">'+esc(i.dur)+'</div></div><div style="position:relative;width:84px;height:34px"><div class="step inline">'+'<button onclick="qty(\''+i.id+'\',-1)">−</button><b>'+i.qty+'</b><button onclick="qty(\''+i.id+'\',1)">+</button></div></div><b style="width:64px;text-align:right">'+(i.price?rupee(i.price*i.qty):'Free')+'</b></div>'}).join('')+'</div>';
+  h+='<button class="btn ghost sm" onclick="openCat(\''+it[0].cat+'\')">'+ic('plus',16)+' Add more services</button><div class="sep" style="margin-top:16px"></div>';
+  h+='<div style="padding:16px 0"><h3 style="font-size:17px;margin-bottom:10px">Payment summary</h3><div class="sumrow"><span>Item total</span><span>'+rupee(tot)+'</span></div><div class="sumrow"><span>Visit / convenience fee</span><span style="color:var(--ok)">FREE</span></div><div class="sumrow t"><span>Amount to pay</span><span>'+rupee(tot)+'</span></div><p class="muted small" style="margin-top:6px">Starting prices. Any extra work or spare parts are quoted before they are done.</p></div><div class="sep"></div>';
+  h+='<div style="padding:8px 0"><div class="selrow" onclick="openAddr()"><div class="ic">'+ic('pin')+'</div><div class="grow"><b>'+(a?esc(a.tag):'Add service address')+'</b><div class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(a?esc(a.address):'Where should we come?')+'</div></div><span style="color:var(--gold2);font-weight:700;font-size:13px">'+(a?'Change':'Add')+'</span></div>';
+  h+='<div class="selrow" onclick="openSlot()"><div class="ic">'+ic('clock')+'</div><div class="grow"><b>'+(slot.time?esc(fmtDate(slot.date)+', '+slot.time):'Select date & time')+'</b><div class="muted">'+(slot.time?'Professional arrives at the selected time':'Choose a convenient slot')+'</div></div><span style="color:var(--gold2);font-weight:700;font-size:13px">'+(slot.time?'Change':'Select')+'</span></div></div><div class="sep"></div>';
+  h+='<div style="padding:16px 0"><h3 style="font-size:17px;margin-bottom:12px">Payment method</h3>'+['Pay after service (Cash / UPI)','UPI payment link on WhatsApp'].map(function(p){return '<div class="opt'+(p===pay?' on':'')+'" onclick="pay=\''+p+'\';renderCart()"><span class="rd"></span><div><b style="font-size:14.5px">'+p+'</b><div class="muted">'+(p.indexOf('after')>0?'Pay the professional when the job is done':'OYC sends a secure UPI link after confirming')+'</div></div></div>'}).join('')+'</div>';
+  h+='<label class="lbl" style="margin-top:0">Instructions for the professional (optional)</label><textarea class="inp" id="cNotes" placeholder="e.g. Split AC 1.5 ton, 2nd floor, parking available">'+esc(store('oyc_notes')||'')+'</textarea>';
+  h+='<div style="padding:16px 0 10px"><div class="card row" style="background:var(--goldbg);border-color:#efdfb8"><span style="color:var(--gold2)">'+ic('shield',22)+'</span><div class="small">Your booking is sent to OYC and confirmed on WhatsApp. Free cancellation until a professional is on the way.</div></div></div>';
+  h+='<div style="position:sticky;bottom:0;background:#fff;padding:10px 0 calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)"><button class="btn block" id="placeBtn" onclick="placeOrder()">'+(!a?'Add address to continue':!slot.time?'Select slot to continue':WA_SVG+' Book on WhatsApp · '+rupee(tot))+'</button></div>';
+  $('#cartBody').innerHTML=h;var n=$('#cNotes');if(n)n.oninput=function(){store('oyc_notes',n.value)}}
+function placeOrder(){
+  if(!addrs[selAddr])return openAddr();if(!slot.time)return openSlot();
+  if(!needLogin(function(){go('cart')}))return;
+  var it=cartItems(),a=addrs[selAddr],btn=$('#placeBtn');busy(btn,true,'Booking…');
+  var cats=[];it.forEach(function(i){var n=catOf(i.cat).name;if(cats.indexOf(n)<0)cats.push(n)});
+  api('createBooking',{booking:{name:user.name,phone:user.phone,address:a.address,landmark:a.landmark,lat:a.lat,lng:a.lng,category:cats.join(', '),items:it.map(function(i){return {id:i.id,name:i.name,qty:i.qty,price:i.price}}),total:cartTotal(),date:slot.date,slot:slot.time,notes:($('#cNotes')||{}).value||'',payMode:pay}})
+  .then(function(b){lastBooking=b;cart={};store('oyc_cart',cart);store('oyc_notes','');slot={};var ids=store('oyc_myids')||[];ids.push(b.id);store('oyc_myids',ids);stack=[];history.pushState({},'');renderDone(b);show('done');sendWa(b,true)})
+  .catch(function(e){busy(btn,false);toast(e.message)})}
+function waMsg(b){return 'Hi On Your Call, I have booked a service.\n\n*Booking ID:* '+b.id+'\n*Name:* '+b.name+'\n*Mobile:* '+b.phone+'\n\n*Services:*\n'+itemsText(b)+'\n*Total:* '+rupee(b.total)+'\n\n*Date & time:* '+fmtDate(b.date)+', '+b.slot+'\n*Address:* '+b.address+(b.landmark?' (Landmark: '+b.landmark+')':'')+(b.lat?'\n*Map:* https://maps.google.com/?q='+b.lat+','+b.lng:'')+'\n*Payment:* '+b.payMode+(b.notes?'\n*Notes:* '+b.notes:'')+'\n\nPlease confirm my booking.'}
+function sendWa(b,auto){var u=waLink(OYC.WA,waMsg(b));if(auto){var w=window.open(u,'_blank');return}location.href=u}
+function renderDone(b){var o=String(b.otp).split('');
+  $('#doneBody').innerHTML='<div class="okc">'+ic('check',44,3)+'</div><h1 style="text-align:center;font-size:24px">Booking placed!</h1><p class="muted" style="text-align:center;margin:6px 0 4px;font-size:14px">Booking ID <b style="color:var(--ink)">'+esc(b.id)+'</b></p><p style="text-align:center;font-size:14px;color:var(--ink2);margin:0 0 18px">Send it on WhatsApp so OYC can confirm your booking and assign a professional.</p>'+
+  '<a class="btn wa block" href="'+waLink(OYC.WA,waMsg(b))+'" target="_blank" rel="noopener">'+WA_SVG+' Send booking on WhatsApp</a>'+
+  '<div class="card" style="margin-top:18px"><div class="row between"><b>'+esc(fmtDate(b.date))+', '+esc(b.slot)+'</b><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status])+'</span></div><div class="hr"></div>'+(b.items||[]).map(function(i){return '<div class="sumrow"><span>'+esc(i.name)+' × '+i.qty+'</span><span>'+(i.price?rupee(i.price*i.qty):'Free')+'</span></div>'}).join('')+'<div class="sumrow t"><span>Total</span><span>'+rupee(b.total)+'</span></div><div class="muted small">'+esc(b.payMode)+'</div></div>'+
+  '<div class="card" style="margin-top:12px;text-align:center"><b>Start code</b><p class="muted" style="margin:4px 0 12px">Share this code with the professional only after they arrive.</p><div class="otp">'+o.map(function(d){return '<span>'+d+'</span>'}).join('')+'</div></div>'+
+  '<div class="card" style="margin-top:12px"><div class="row" style="margin-bottom:10px">'+ic('pin',18)+'<div class="grow small">'+esc(b.address)+(b.landmark?' · '+esc(b.landmark):'')+'</div></div><iframe class="map" src="'+mapEmbed(b)+'" loading="lazy" title="Service location"></iframe></div>'+
+  '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 30px"><button class="btn line" onclick="openBooking(\''+b.id+'\')">Track booking</button><button class="btn" onclick="tab(\'home\')">Back to home</button></div>'}
+
+/* address */
+function openAddr(){var a=addrs[selAddr]||{};$('#aText').value=a.address||'';$('#aLand').value=a.landmark||'';tmpLL={lat:a.lat||'',lng:a.lng||''};
+  $('#savedAddr').innerHTML=addrs.length?'<p class="muted" style="font-weight:600;margin:0 0 6px">Saved addresses</p>'+addrs.map(function(x,i){return '<div class="opt'+(i===selAddr?' on':'')+'" onclick="pickAddr('+i+')"><span class="rd"></span><div class="grow"><b>'+esc(x.tag)+'</b><div class="muted">'+esc(x.address)+'</div></div><button class="btn ghost sm" onclick="event.stopPropagation();delAddr('+i+')">Delete</button></div>'}).join('')+'<p class="muted" style="font-weight:600;margin:16px 0 8px">Add new address</p>':'';
+  $('#addrMap').src=mapEmbed({lat:tmpLL.lat,lng:tmpLL.lng,address:a.address||'Hyderabad'});setTag(a.tag||'Home');openSheet('addr')}
+var tmpLL={};
+function setTag(t){$$('#aTag .chip').forEach(function(c){c.classList.toggle('on',c.dataset.v===t);c.onclick=function(){setTag(c.dataset.v)}})}
+function pickAddr(i){selAddr=i;store('oyc_sel',i);closeSheet();renderHome();if(cur==='cart')renderCart()}
+function delAddr(i){addrs.splice(i,1);store('oyc_addrs',addrs);selAddr=0;store('oyc_sel',0);openAddr();renderHome()}
+function previewMap(){var t=$('#aText').value.trim();if(!t)return toast('Type your address first');tmpLL={};$('#addrMap').src=mapEmbed({address:t})}
+function useGPS(btn){if(!navigator.geolocation)return toast('Location is not available on this device');busy(btn,true,'Finding your location…');
+  navigator.geolocation.getCurrentPosition(function(p){var la=p.coords.latitude.toFixed(6),ln=p.coords.longitude.toFixed(6);tmpLL={lat:la,lng:ln};$('#addrMap').src=mapEmbed(tmpLL);
+    fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&lat='+la+'&lon='+ln).then(function(r){return r.json()}).then(function(j){if(j&&j.display_name&&!$('#aText').value.trim())$('#aText').value=j.display_name.split(', ').slice(0,5).join(', ')}).catch(function(){}).then(function(){busy(btn,false);toast('Location pinned. Add your flat / house number.')})},
+  function(){busy(btn,false);toast('Please allow location access, or type your address')},{enableHighAccuracy:true,timeout:15000})}
+function saveAddr(){var t=$('#aText').value.trim();if(t.length<8)return toast('Please enter your full address');
+  var tag=($('#aTag .chip.on')||{}).dataset.v||'Home';var a={tag:tag,address:t,landmark:$('#aLand').value.trim(),lat:tmpLL.lat||'',lng:tmpLL.lng||''};
+  var i=-1;addrs.forEach(function(x,j){if(x.tag===tag&&tag!=='Other')i=j});if(i>=0)addrs[i]=a;else{addrs.push(a);i=addrs.length-1}
+  selAddr=i;store('oyc_addrs',addrs);store('oyc_sel',i);closeSheet();renderHome();if(cur==='cart'){renderCart();if(!slot.time)setTimeout(openSlot,250)}}
+
+/* slots */
+var TIMES=['08:00 AM','09:00 AM','10:00 AM','11:00 AM','12:00 PM','01:00 PM','02:00 PM','03:00 PM','04:00 PM','05:00 PM','06:00 PM','07:00 PM'];
+function ymd(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function openSlot(){var it=cartItems();$('#slDur').textContent=it.length?it.map(function(i){return i.dur}).filter(function(d){return d!=='Visit'})[0]||'1 hr':'1 hr';
+  var d=new Date(),h='';if(!slot.date)slot.date=ymd(d);
+  for(var i=0;i<7;i++){var x=new Date(d.getTime()+i*864e5),k=ymd(x);h+='<div class="day'+(k===slot.date?' on':'')+'" onclick="slot.date=\''+k+'\';slot.time=\'\';openSlot()">'+(i===0?'Today':x.toLocaleDateString('en-IN',{weekday:'short'}))+'<b>'+x.getDate()+'</b>'+x.toLocaleDateString('en-IN',{month:'short'})+'</div>'}
+  $('#slDays').innerHTML=h;var today=slot.date===ymd(d),hr=d.getHours();
+  $('#slTimes').innerHTML=TIMES.map(function(t,i){var dis=today&&(8+i)<=hr+1;return '<button class="slot'+(t===slot.time?' on':'')+'" '+(dis?'disabled':'')+' onclick="slot.time=\''+t+'\';openSlot()">'+t+'</button>'}).join('');
+  if(!$('#sh-slot').classList.contains('open'))openSheet('slot')}
+function confirmSlot(){if(!slot.time)return toast('Please select a time slot');closeSheet();renderCart()}
+
+/* sheets */
+function openSheet(n){$$('.sheetbg').forEach(function(s){s.classList.remove('open')});$('#sh-'+n).classList.add('open');fillIcons($('#sh-'+n))}
+function closeSheet(){$$('.sheetbg').forEach(function(s){s.classList.remove('open')})}
+
+/* bookings */
+function loadBookings(force){if(!user){$('#bkList').innerHTML='<div class="empty">'+ic('cal',56,1.4)+'<h3 style="color:var(--ink)">Log in to see your bookings</h3><button class="btn" style="margin-top:14px" onclick="window._afterLogin=function(){tab(\'bookings\')};show(\'login\')">Login</button></div>';return}
+  if(!myB.length||force)$('#bkList').innerHTML='<div class="empty"><span class="spin"></span></div>';
+  api('myBookings',{phone:user.phone}).then(function(r){myB=r;drawBookings()}).catch(function(e){$('#bkList').innerHTML='<div class="empty">'+esc(e.message)+'</div>'})}
+function drawBookings(){if(!myB.length){$('#bkList').innerHTML='<div class="empty">'+ic('cal',56,1.4)+'<h3 style="color:var(--ink);margin-bottom:6px">No bookings yet</h3><p>Looks like you haven’t booked any service.</p><button class="btn" style="margin-top:14px" onclick="tab(\'home\')">Explore services</button></div>';return}
+  $('#bkList').innerHTML=myB.map(function(b){return '<div class="bk" onclick="openBooking(\''+b.id+'\')"><div class="row between"><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status]||b.status)+'</span><span class="muted small">'+esc(b.id)+'</span></div><h3 style="font-size:16px;margin:10px 0 4px;font-weight:600">'+esc((b.items||[]).map(function(i){return i.name}).join(', '))+'</h3><div class="muted">'+esc(fmtDate(b.date))+', '+esc(b.slot)+' · '+rupee(b.total)+'</div>'+(b.partnerName?'<div class="row" style="margin-top:8px;font-size:13px">'+ic('user',16)+' '+esc(b.partnerName)+'</div>':'')+'</div>'}).join('')}
+function openBooking(id){detail=(myB.filter(function(b){return b.id===id})[0])||(lastBooking&&lastBooking.id===id?lastBooking:null);detail=detail||{id:id};go('booking');drawDetail();refreshDetail();if(pollT)clearInterval(pollT);pollT=setInterval(refreshDetail,30000)}
+function refreshDetail(){if(!user||!detail)return;api('myBookings',{phone:user.phone}).then(function(r){myB=r;var b=r.filter(function(x){return x.id===detail.id})[0];if(b){detail=b;if(cur==='booking')drawDetail()}}).catch(function(){})}
+function drawDetail(){var b=detail;if(!b||!b.items){$('#bdBody').innerHTML='<div class="empty"><span class="spin"></span></div>';return}
+  $('#bdTitle').textContent=b.id;var idx=STATUS_FLOW.indexOf(b.status),canc=b.status==='Cancelled';
+  var h='<div style="padding:16px 0"><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status]||b.status)+'</span><h2 style="font-size:20px;margin:10px 0 4px">'+esc((b.items||[]).map(function(i){return i.name}).join(', '))+'</h2><div class="muted">'+esc(fmtDate(b.date))+', '+esc(b.slot)+'</div></div>';
+  if(b.partnerName&&!canc)h+='<div class="card row" style="margin-bottom:12px"><div style="width:46px;height:46px;border-radius:50%;background:var(--goldbg);display:grid;place-items:center;font-weight:800;color:var(--gold2)">'+esc(b.partnerName.charAt(0))+'</div><div class="grow"><b>'+esc(b.partnerName)+'</b><div class="muted">Your OYC professional</div></div><a class="btn line sm" href="tel:'+esc(b.partnerPhone)+'">'+ic('phone',16)+'Call</a></div>';
+  if(!canc&&b.status!=='Completed')h+='<div class="card" style="text-align:center;margin-bottom:12px"><b>Start code</b><p class="muted" style="margin:4px 0 12px">Share with the professional when they arrive</p><div class="otp">'+String(b.otp).split('').map(function(d){return '<span>'+d+'</span>'}).join('')+'</div></div>';
+  if(!canc){h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:12px">Booking status</b><div class="tl">'+STATUS_FLOW.map(function(s,i){var hs=(b.history||[]).filter(function(x){return x.s===s}).pop();return '<div class="s '+(i<idx||b.status==='Completed'&&i===idx?'done':i===idx?'now':'')+'"><b>'+esc(STATUS_LABEL[s])+'</b><span class="muted small">'+(hs?fmtTime(hs.t):'')+'</span></div>'}).join('')+'</div></div>'}
+  h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:8px">Payment summary</b>'+(b.items||[]).map(function(i){return '<div class="sumrow"><span>'+esc(i.name)+' × '+i.qty+'</span><span>'+(i.price?rupee(i.price*i.qty):'Free')+'</span></div>'}).join('')+'<div class="sumrow t"><span>'+(b.status==='Completed'?'Amount paid':'Total')+'</span><span>'+rupee(b.amountPaid||b.total)+'</span></div><div class="muted small">'+esc(b.payMode)+'</div></div>';
+  h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:8px">Service address</b><div class="small" style="margin-bottom:10px">'+esc(b.address)+(b.landmark?' · '+esc(b.landmark):'')+'</div><iframe class="map" src="'+mapEmbed(b)+'" loading="lazy" title="Map"></iframe></div>';
+  if(b.status==='Completed'){h+='<div class="card" style="margin-bottom:12px"><b>'+(b.rating?'Your rating':'Rate your experience')+'</b><div class="stars" id="rStars" style="margin:10px 0">'+[1,2,3,4,5].map(function(n){return '<button class="'+(n<=(b.rating||0)?'on':'')+'" onclick="setStars('+n+')">'+ic('star',30,1.5)+'</button>'}).join('')+'</div>'+(b.rating?'<p class="small">'+esc(b.review||'')+'</p>':'<textarea class="inp" id="rText" placeholder="Tell us about the service (optional)"></textarea><button class="btn block" style="margin-top:10px" onclick="sendRating(this)">Submit rating</button>')+'</div>'}
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 30px"><a class="btn wa" href="'+waLink(OYC.WA,'Hi OYC, I need help with booking '+b.id+'.')+'" target="_blank" rel="noopener">'+WA_SVG+'Help</a>'+(['Pending','Assigned','Accepted'].indexOf(b.status)>=0?'<button class="btn line" style="color:var(--bad)" onclick="cancelB(this)">Cancel booking</button>':'<a class="btn line" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+'Call OYC</a>')+'</div>';
+  $('#bdBody').innerHTML=h}
+var stars=0;function setStars(n){if(detail.rating)return;stars=n;$$('#rStars button').forEach(function(b,i){b.classList.toggle('on',i<n)})}
+function sendRating(btn){if(!stars)return toast('Tap the stars to rate');busy(btn,true);api('rateBooking',{id:detail.id,phone:user.phone,rating:stars,review:$('#rText').value}).then(function(b){detail=b;drawDetail();toast('Thanks for your feedback!')}).catch(function(e){busy(btn,false);toast(e.message)})}
+function cancelB(btn){if(!confirm('Cancel this booking?'))return;busy(btn,true);api('cancelBooking',{id:detail.id,phone:user.phone}).then(function(b){detail=b;drawDetail();toast('Booking cancelled')}).catch(function(e){busy(btn,false);toast(e.message)})}
+
+/* account */
+function renderAccount(){var h='';
+  if(user)h+='<div style="padding:20px 16px" class="row"><div style="width:58px;height:58px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800">'+esc(user.name.charAt(0).toUpperCase())+'</div><div class="grow"><h3 style="font-size:19px">'+esc(user.name)+'</h3><div class="muted">+91 '+esc(user.phone)+'</div></div></div><div class="sep" style="margin:0"></div>';
+  else h+='<div style="padding:20px 16px"><h3>Welcome to On Your Call</h3><p class="muted">Log in to book and track services.</p><button class="btn" style="margin-top:8px" onclick="window._afterLogin=function(){tab(\'account\')};show(\'login\')">Login / Sign up</button></div><div class="sep" style="margin:0"></div>';
+  var rows=[['cal','My bookings',"tab('bookings')"],['pin','Manage addresses','openAddr()'],['help','Help & support','openHelp()'],['phone','Call OYC',"location.href='tel:"+OYC.PHONE+"'"],['shield','Join as a service partner',"location.href='"+OYC.PARTNER+"'"]];
+  if(_inst)rows.push(['down','Install the OYC app','installApp()']);
+  h+=rows.map(function(r){return '<div class="acc-row" onclick="'+r[2]+'">'+ic(r[0])+'<span class="grow">'+r[1]+'</span>'+ic('right',18)+'</div>'}).join('');
+  h+='<div class="acc-row" onclick="installApp()">'+ic('down')+'<span class="grow">Add OYC to home screen</span>'+ic('right',18)+'</div>';
+  if(user)h+='<div class="acc-row" onclick="logout()" style="color:var(--bad)">'+ic('logout')+'<span class="grow">Logout</span></div>';
+  h+='<div style="text-align:center;padding:26px 16px"><img class="logo" src="'+OYC.LOGO+'" alt="On Your Call" style="width:64px;height:64px;margin:0 auto 8px"><div class="muted small">On Your Call · One call. Every solution.<br>Hyderabad</div></div>';
+  $('#accBody').innerHTML=h}
+function logout(){if(!confirm('Log out of OYC?'))return;user=null;localStorage.removeItem('oyc_user');myB=[];renderAccount();toast('Logged out')}
+function openHelp(){location.href=waLink(OYC.WA,'Hi OYC, I need help.')}
+
+/* boot */
+(function(){fillIcons(document);$('#pinIc').innerHTML=ic('pin',22);$('#dnIc').innerHTML=ic('down',16);$('#cartIc').innerHTML=ic('cart',22);$('#srIc').innerHTML=ic('search',18);
+  $$('.pi').forEach(function(e){e.innerHTML=ic(e.dataset.i,22)});$('#demoBar').classList.toggle('hide',!!OYC.API);
+  api('catalog').then(function(c){applyCatalog(c);if(cur==='home')renderHome()}).catch(function(){});
+  history.replaceState({s:'home'},'');
+  if(!user&&!store('oyc_seen')){show('login')}else{render('home');show('home')}
+  cur=cur||'home';
+})();
+</script>
+</body></html>

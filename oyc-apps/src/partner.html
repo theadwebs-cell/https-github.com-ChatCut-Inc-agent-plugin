@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex">
+<title>OYC Partner – On Your Call</title>
+<link rel="icon" href="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link rel="apple-touch-icon" href="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/*BASE_CSS*/
+body{background:#f2f2f2}
+.app{max-width:520px;margin:0 auto;min-height:100vh;background:#f6f6f6;position:relative}
+.scr{display:none;padding-bottom:86px;min-height:100vh}.scr.on{display:block}
+.hdr{background:#111;color:#fff;padding:16px 16px 18px;position:sticky;top:0;z-index:20}
+.hdr .logo{width:40px;height:40px}
+.tog{display:flex;align-items:center;gap:8px;background:#2a2a2a;border-radius:999px;padding:5px 6px 5px 12px;font-size:13px;font-weight:700;cursor:pointer;border:0;color:#fff}
+.tog i{width:40px;height:22px;border-radius:11px;background:#555;position:relative;transition:.2s}
+.tog i:after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.tog.on i{background:var(--ok)}.tog.on i:after{left:21px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stats div{background:#1d1d1d;border-radius:12px;padding:10px}
+.stats b{display:block;font-size:19px;color:#f0d79f}
+.stats span{font-size:11.5px;color:#bdbdbd}
+.tabs{display:flex;gap:8px;padding:14px 16px 4px;overflow-x:auto;position:sticky;top:0}
+.job{background:#fff;margin:10px 16px;border-radius:14px;padding:14px;border:1px solid var(--line);cursor:pointer}
+.job.new{border:2px solid var(--gold);box-shadow:0 4px 18px rgba(200,155,60,.18)}
+.job h3{font-size:16px;font-weight:600;margin:8px 0 4px}
+.jmeta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:6px}
+.jmeta span{display:flex;align-items:center;gap:5px}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.top{position:sticky;top:0;z-index:20;background:#fff;padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.top h2{font-size:18px}
+.ib{width:38px;height:38px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;flex:none}
+.blk{background:#fff;padding:16px;margin-bottom:8px}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+.bnav button{border:0;background:none;padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--mute);cursor:pointer;font-weight:500}
+.bnav button.on{color:var(--ink);font-weight:700}
+.dot{position:absolute;margin-left:14px;margin-top:-4px;width:9px;height:9px;border-radius:50%;background:var(--bad)}
+.login{min-height:100vh;display:flex;flex-direction:column;padding:28px 22px;background:#fff}
+.login .lg{width:92px;height:92px;margin:24px auto 12px;border-radius:22px;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.phone{display:flex;border:1px solid #dcdcdc;border-radius:10px;overflow:hidden;background:#fff}
+.phone span{padding:13px 12px;background:var(--soft);font-weight:600;border-right:1px solid #dcdcdc}
+.phone input{border:0;flex:1;padding:13px;outline:none;font-size:16px;min-width:0}
+.pin{letter-spacing:.5em;font-size:20px;text-align:center}
+.skills{display:flex;flex-wrap:wrap;gap:8px}
+.bigact{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));z-index:45}
+.otpin{display:flex;gap:10px;justify-content:center;margin:16px 0}
+.otpin input{width:54px;height:60px;text-align:center;font-size:26px;font-weight:800;border:1px solid #d5d5d5;border-radius:12px;outline:none}
+.otpin input:focus{border-color:var(--ink)}
+.sumrow{display:flex;justify-content:space-between;padding:5px 0;font-size:14px}
+.sumrow.t{font-weight:700;font-size:16px;border-top:1px solid var(--line);margin-top:8px;padding-top:12px}
+.erow{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.demo{background:var(--warnbg);color:var(--warn);font-size:12px;padding:8px 16px;text-align:center}
+</style></head>
+<body><div class="app">
+<div id="demoBar" class="demo hide">Demo mode – try mobile 9999999999, PIN 1234. Data stays on this device until the Google Sheet is connected.</div>
+
+<section class="scr" id="s-login"><div class="login">
+  <img class="lg logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="On Your Call logo" width="92" height="92">
+  <h1 style="text-align:center;font-size:23px">OYC Partner</h1>
+  <p class="muted" style="text-align:center;margin:4px 0 24px;font-size:14px">Get jobs near you. Grow your earnings with On Your Call.</p>
+  <label class="lbl">Registered mobile number</label>
+  <div class="phone"><span>+91</span><input id="lPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Mobile number"></div>
+  <label class="lbl">4-digit PIN</label>
+  <input class="inp pin" id="lPin" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+  <button class="btn block" style="margin-top:22px" onclick="login(this)">Login</button>
+  <div class="hr"></div>
+  <button class="btn line block" onclick="show('reg')">New partner? Register with OYC</button>
+  <p class="muted small" style="text-align:center;margin-top:auto;padding-top:24px">Forgot PIN? <a href="tel:9866689196" style="text-decoration:underline">Call OYC 9866689196</a></p>
+</div></section>
+
+<section class="scr" id="s-reg">
+  <div class="top"><button class="ib" onclick="show('login')" data-ic="back"></button><h2>Become an OYC partner</h2></div>
+  <div class="blk">
+    <label class="lbl" style="margin-top:0">Full name</label><input class="inp" id="rName" placeholder="As on your ID">
+    <label class="lbl">Mobile number</label><div class="phone"><span>+91</span><input id="rPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Mobile number"></div>
+    <label class="lbl">Services you offer</label><div class="skills" id="rSkills"></div>
+    <label class="lbl">Area you work in</label><input class="inp" id="rZone" placeholder="e.g. Kukatpally, Madhapur, Gachibowli">
+    <label class="lbl">Experience / notes</label><textarea class="inp" id="rNotes" placeholder="Years of experience, tools you have…"></textarea>
+    <label class="lbl">Create a 4-digit PIN</label><input class="inp pin" id="rPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <button class="btn block" style="margin-top:20px" onclick="register(this)">Submit registration</button>
+    <p class="muted small" style="margin-top:10px">OYC will call you to verify your documents before you start receiving jobs.</p>
+  </div>
+</section>
+
+<section class="scr" id="s-jobs">
+  <div class="hdr">
+    <div class="row"><img class="logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="OYC"><div class="grow"><div style="font-size:12px;color:#bdbdbd">OYC Partner</div><b id="pName" style="font-size:17px"></b></div><button class="tog" id="onTog" onclick="toggleOnline()">Offline<i></i></button></div>
+    <div class="stats"><div><b id="stNew">0</b><span>New requests</span></div><div><b id="stToday">0</b><span>Today’s jobs</span></div><div><b id="stEarn">₹0</b><span>Collected this week</span></div></div>
+  </div>
+  <div class="tabs" id="jTabs"></div>
+  <div id="jList"></div>
+</section>
+
+<section class="scr" id="s-job">
+  <div class="top"><button class="ib" onclick="show('jobs')" data-ic="back"></button><h2 class="grow" id="jdTitle">Job</h2><button class="ib" onclick="refresh(true)" data-ic="refresh"></button></div>
+  <div id="jdBody"></div>
+</section>
+
+<section class="scr" id="s-earn">
+  <div class="top"><h2>Earnings</h2></div>
+  <div id="eBody"></div>
+</section>
+
+<section class="scr" id="s-profile">
+  <div class="top"><h2>Profile</h2></div>
+  <div id="prBody"></div>
+</section>
+
+<nav class="bnav hide" id="bnav">
+  <button data-t="jobs" onclick="show('jobs')"><span data-ic="list"></span><i class="dot hide" id="newDot"></i>Jobs</button>
+  <button data-t="earn" onclick="show('earn')"><span data-ic="wallet"></span>Earnings</button>
+  <button data-t="profile" onclick="show('profile')"><span data-ic="user"></span>Profile</button>
+</nav>
+</div>
+
+<div class="sheetbg" id="sh-otp" onclick="if(event.target===this)closeSheet()"><div class="sheet" style="text-align:center">
+  <h3 style="font-size:19px">Enter start code</h3><p class="muted">Ask the customer for the 4-digit code shown in their OYC app.</p>
+  <div class="otpin" id="otpIn"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1"></div>
+  <button class="btn block" onclick="startJob(this)">Start job</button>
+</div></div>
+<div class="sheetbg" id="sh-done" onclick="if(event.target===this)closeSheet()"><div class="sheet">
+  <h3 style="font-size:19px">Complete job</h3><p class="muted">Confirm the amount collected from the customer.</p>
+  <label class="lbl">Amount collected (₹)</label><input class="inp" id="dAmt" type="number" inputmode="numeric">
+  <label class="lbl">Payment mode</label><select class="inp" id="dMode"><option>Cash</option><option>UPI</option><option>Paid online to OYC</option></select>
+  <button class="btn block" style="margin-top:18px;background:var(--ok)" onclick="completeJob(this)">Mark as completed</button>
+</div></div>
+
+<script>
+/*HANDLER_JS*/
+/*CORE_JS*/
+</script>
+<script>
+/* ================= PARTNER APP ================= */
+var sess=store('oyc_partner'),me=null,jobs=[],cur='',jTab='new',openId='',pollT=null,seenNew=store('oyc_seen_jobs')||[];
+function fillIcons(r){$$('[data-ic]',r).forEach(function(e){if(!e.innerHTML.trim())e.innerHTML=ic(e.dataset.ic)})}
+function show(s){$$('.scr').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s)});cur=s;var nav=['jobs','earn','profile'].indexOf(s)>=0;$('#bnav').classList.toggle('hide',!nav);
+  $$('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===s)});window.scrollTo(0,0);
+  if(s==='jobs')drawJobs();if(s==='earn')drawEarn();if(s==='profile')drawProfile();if(s==='reg')drawReg()}
+function login(btn){var p=oycDigits($('#lPhone').value),pin=$('#lPin').value.trim();if(p.length!==10)return toast('Enter your 10-digit mobile number');if(!pin)return toast('Enter your PIN');
+  busy(btn,true,'Logging in…');api('partnerLogin',{phone:p,pin:pin}).then(function(r){sess={phone:p,pin:pin};store('oyc_partner',sess);me=r;busy(btn,false);boot()}).catch(function(e){busy(btn,false);toast(e.message)})}
+function drawReg(){$('#rSkills').innerHTML=CATS.map(function(c){return '<span class="chip" onclick="this.classList.toggle(\'on\')">'+esc(c.name)+'</span>'}).join('')}
+function register(btn){var sk=$$('#rSkills .chip.on').map(function(c){return c.textContent});if(!sk.length)return toast('Select the services you offer');
+  busy(btn,true,'Submitting…');api('partnerApply',{partner:{name:$('#rName').value.trim(),phone:$('#rPhone').value,pin:$('#rPin').value.trim(),skills:sk.join(', '),zone:$('#rZone').value.trim(),notes:$('#rNotes').value.trim()}})
+  .then(function(){busy(btn,false);alert('Thank you! Your registration is submitted. OYC will call you to verify and activate your account.');location.href=waLink(OYC.WA,'Hi OYC, I have registered as a service partner. Name: '+$('#rName').value.trim()+', Mobile: '+oycDigits($('#rPhone').value)+', Services: '+sk.join(', '))})
+  .catch(function(e){busy(btn,false);toast(e.message)})}
+function refresh(manual){if(!sess)return;return api('partnerJobs',sess).then(function(r){me=r.partner;var before=jobs.map(function(j){return j.id+j.status}).join();jobs=r.jobs;
+  var fresh=jobs.filter(function(j){return j.status==='Assigned'&&seenNew.indexOf(j.id)<0});if(fresh.length){alertNew(fresh.length);fresh.forEach(function(j){seenNew.push(j.id)});store('oyc_seen_jobs',seenNew.slice(-200))}
+  if(manual)toast('Updated');if(cur==='jobs')drawJobs();if(cur==='job')drawJob();if(cur==='earn')drawEarn();head()})
+  .catch(function(e){if(/Session|PIN|log in/i.test(e.message)){logout(true);toast(e.message)}else if(manual)toast(e.message)})}
+function alertNew(n){toast(n+' new job request'+(n>1?'s':'')+'!');try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
+  try{var A=new (window.AudioContext||window.webkitAudioContext)(),o=A.createOscillator(),g=A.createGain();o.connect(g);g.connect(A.destination);o.frequency.value=880;g.gain.value=.15;o.start();setTimeout(function(){o.frequency.value=1175},180);setTimeout(function(){o.stop()},400)}catch(e){}}
+function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function weekStart(){var d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d}
+function compDate(j){var h=(j.history||[]).filter(function(x){return x.s==='Completed'}).pop();return h?new Date(h.t):null}
+function head(){if(!me)return;$('#pName').textContent=me.name;var on=me.online==='yes';$('#onTog').classList.toggle('on',on);$('#onTog').firstChild.textContent=on?'Online':'Offline';
+  var nw=jobs.filter(function(j){return j.status==='Assigned'}).length;$('#stNew').textContent=nw;$('#newDot').classList.toggle('hide',!nw);
+  $('#stToday').textContent=jobs.filter(function(j){return j.date===today()&&j.status!=='Cancelled'}).length;
+  var ws=weekStart();$('#stEarn').textContent=rupee(jobs.filter(function(j){var d=compDate(j);return j.status==='Completed'&&d&&d>=ws}).reduce(function(a,j){return a+(Number(j.amountPaid)||0)},0))}
+function toggleOnline(){var on=me.online!=='yes';api('partnerOnline',Object.assign({online:on},sess)).then(function(p){me=p;head();toast(on?'You are online':'You are offline')}).catch(function(e){toast(e.message)})}
+var TABS=[['new','New',function(j){return j.status==='Assigned'}],['up','Upcoming',function(j){return ['Accepted','On the way','In progress'].indexOf(j.status)>=0}],['done','Completed',function(j){return j.status==='Completed'}],['all','All',function(){return true}]];
+function drawJobs(){head();$('#jTabs').innerHTML=TABS.map(function(t){var n=jobs.filter(t[2]).length;return '<span class="chip'+(t[0]===jTab?' on':'')+'" onclick="jTab=\''+t[0]+'\';drawJobs()">'+t[1]+(n?' ('+n+')':'')+'</span>'}).join('');
+  var f=TABS.filter(function(t){return t[0]===jTab})[0][2],l=jobs.filter(f);
+  if(jTab==='up')l.sort(function(a,b){return (a.date+a.slot).localeCompare(b.date+b.slot)});
+  $('#jList').innerHTML=l.length?l.map(jobCard).join(''):'<div class="empty">'+ic('cal',52,1.4)+'<p>'+(jTab==='new'?(me&&me.online==='yes'?'No new requests right now. New jobs from OYC appear here automatically.':'You are offline. Go online to receive jobs.'):'No jobs here yet.')+'</p></div>'}
+function area(a){var p=String(a||'').split(',');return p.length>2?p.slice(-3,-1).join(',').trim()||p[p.length-1]:a}
+function jobCard(j){var nw=j.status==='Assigned';return '<div class="job'+(nw?' new':'')+'" onclick="openJob(\''+j.id+'\')"><div class="row between"><span class="badge '+stCls(j.status)+'">'+(nw?'New request':esc(j.status))+'</span><span class="muted small">'+esc(j.id)+'</span></div><h3>'+esc((j.items||[]).map(function(i){return i.name+(i.qty>1?' ×'+i.qty:'')}).join(', '))+'</h3><div class="jmeta"><span>'+ic('cal',15)+esc(fmtDate(j.date))+', '+esc(j.slot)+'</span><span>'+ic('pin',15)+esc(area(j.address))+'</span><span>'+ic('wallet',15)+rupee(j.total)+'</span></div>'+
+  (nw?'<div class="acts"><button class="btn line sm" onclick="event.stopPropagation();act(\''+j.id+'\',\'decline\',this)">Decline</button><button class="btn sm" style="background:var(--ok)" onclick="event.stopPropagation();act(\''+j.id+'\',\'accept\',this)">Accept</button></div>':'')+'</div>'}
+function jobOf(id){return jobs.filter(function(j){return j.id===id})[0]}
+function openJob(id){openId=id;show('job');drawJob()}
+function drawJob(){var j=jobOf(openId);if(!j){$('#jdBody').innerHTML='<div class="empty">This job is no longer assigned to you.</div>';return}
+  $('#jdTitle').textContent=j.id;var live=['Accepted','On the way','In progress'].indexOf(j.status)>=0;
+  var h='<div class="blk"><span class="badge '+stCls(j.status)+'">'+esc(j.status==='Assigned'?'New request':j.status)+'</span><h2 style="font-size:20px;margin:10px 0 6px">'+esc(fmtDate(j.date))+', '+esc(j.slot)+'</h2><div class="muted">'+esc(j.category)+'</div></div>';
+  h+='<div class="blk"><div class="row"><div style="width:46px;height:46px;border-radius:50%;background:var(--goldbg);display:grid;place-items:center;font-weight:800;color:var(--gold2)">'+esc(j.name.charAt(0))+'</div><div class="grow"><b>'+esc(j.name)+'</b><div class="muted">Customer</div></div>'+(j.status!=='Assigned'&&j.status!=='Completed'?'<a class="btn line sm" href="tel:'+esc(j.phone)+'">'+ic('phone',16)+'</a><a class="btn wa sm" href="'+waLink(j.phone,'Hi '+j.name+', this is '+me.name+' from On Your Call about your booking '+j.id+'.')+'" target="_blank" rel="noopener">'+WA_SVG+'</a>':'')+'</div>';
+  h+='<div class="hr"></div><div class="row" style="align-items:flex-start">'+ic('pin',18)+'<div class="grow small">'+esc(j.address)+(j.landmark?'<br><span class="muted">Landmark: '+esc(j.landmark)+'</span>':'')+'</div></div><iframe class="map" style="margin-top:12px" src="'+mapEmbed(j)+'" loading="lazy" title="Customer location"></iframe><a class="btn block" style="margin-top:10px" href="'+mapLink(j)+'" target="_blank" rel="noopener">'+ic('nav',18)+' Navigate</a></div>';
+  h+='<div class="blk"><b style="display:block;margin-bottom:8px">Services</b>'+(j.items||[]).map(function(i){return '<div class="sumrow"><span>'+esc(i.name)+' × '+i.qty+'</span><span>'+(i.price?rupee(i.price*i.qty):'Inspection')+'</span></div>'}).join('')+'<div class="sumrow t"><span>To collect</span><span>'+rupee(j.status==='Completed'?j.amountPaid:j.total)+'</span></div><div class="muted small">'+esc(j.payMode)+'</div>'+(j.notes?'<div class="card" style="margin-top:12px;background:var(--goldbg);border-color:#efdfb8"><b class="small">Customer note</b><div class="small">'+esc(j.notes)+'</div></div>':'')+'</div>';
+  h+='<div class="blk"><b style="display:block;margin-bottom:10px">Timeline</b><div class="tl">'+(j.history||[]).map(function(x){return '<div class="s done"><b>'+esc(x.s)+'</b><span class="muted small">'+fmtTime(x.t)+'</span></div>'}).join('')+'</div></div>';
+  h+='<div class="blk"><a class="btn line block" href="'+waLink(OYC.WA,'Hi OYC, I need help with job '+j.id+'.')+'" target="_blank" rel="noopener">'+WA_SVG+' Contact OYC support</a></div><div style="height:70px"></div>';
+  var a='';if(j.status==='Assigned')a='<div class="acts" style="margin:0"><button class="btn line" onclick="act(\''+j.id+'\',\'decline\',this)">Decline</button><button class="btn" style="background:var(--ok)" onclick="act(\''+j.id+'\',\'accept\',this)">Accept job</button></div>';
+  else if(j.status==='Accepted')a='<button class="btn block gold" onclick="act(\''+j.id+'\',\'onway\',this)">'+ic('nav',18)+' Start trip – I’m on the way</button>';
+  else if(j.status==='On the way')a='<button class="btn block" onclick="openOtp()">Reached – Start job</button>';
+  else if(j.status==='In progress')a='<button class="btn block" style="background:var(--ok)" onclick="openDone()">'+ic('check',18)+' Complete job</button>';
+  if(a)h+='<div class="bigact">'+a+'</div>';
+  if(j.status==='Accepted')h=h.replace('<div class="bigact">','<div class="bigact"><button class="btn ghost sm block" style="margin-bottom:8px" onclick="openOtp()">Already at the location? Start job</button>');
+  $('#jdBody').innerHTML=h}
+function act(id,a,btn,extra){if(a==='decline'&&!confirm('Decline this job? OYC will assign it to someone else.'))return;busy(btn,true);
+  return api('partnerAction',Object.assign({id:id,act:a},sess,extra||{})).then(function(){busy(btn,false);toast({accept:'Job accepted',decline:'Job declined',onway:'Customer can see you are on the way',start:'Job started',complete:'Job completed. Great work!'}[a]);closeSheet();return refresh()}).catch(function(e){busy(btn,false);toast(e.message)})}
+function openOtp(){var ins=$$('#otpIn input');ins.forEach(function(x,i){x.value='';x.oninput=function(){x.value=x.value.replace(/\D/g,'');if(x.value&&ins[i+1])ins[i+1].focus()};x.onkeydown=function(e){if(e.key==='Backspace'&&!x.value&&ins[i-1])ins[i-1].focus()}});openSheet('otp');setTimeout(function(){ins[0].focus()},100)}
+function startJob(btn){var c=$$('#otpIn input').map(function(x){return x.value}).join('');if(c.length!==4)return toast('Enter the 4-digit code');act(openId,'start',btn,{otp:c})}
+function openDone(){var j=jobOf(openId);$('#dAmt').value=j.total;openSheet('done')}
+function completeJob(btn){act(openId,'complete',btn,{amount:$('#dAmt').value,mode:$('#dMode').value})}
+function openSheet(n){$('#sh-'+n).classList.add('open')}
+function closeSheet(){$$('.sheetbg').forEach(function(s){s.classList.remove('open')})}
+function drawEarn(){var done=jobs.filter(function(j){return j.status==='Completed'}),ws=weekStart(),tot=0,wk=0,cash=0;
+  done.forEach(function(j){var a=Number(j.amountPaid)||0,d=compDate(j);tot+=a;if(d&&d>=ws)wk+=a;if(/cash/i.test(j.payMode))cash+=a});
+  var h='<div class="blk"><div class="muted">Collected this week</div><h1 style="font-size:32px;margin:4px 0">'+rupee(wk)+'</h1><div class="row" style="gap:18px;margin-top:10px"><div><b>'+done.length+'</b><div class="muted small">Jobs done</div></div><div><b>'+rupee(tot)+'</b><div class="muted small">Total collected</div></div><div><b>'+rupee(cash)+'</b><div class="muted small">Cash in hand</div></div></div><p class="muted small" style="margin-top:12px">Your payout share and settlements are handled by OYC operations.</p></div>';
+  h+='<div class="blk"><b>Completed jobs</b>'+(done.length?done.map(function(j){var d=compDate(j);return '<div class="erow"><div><b style="font-weight:600;font-size:14px">'+esc((j.items||[]).map(function(i){return i.name}).join(', '))+'</b><div class="muted small">'+esc(j.id)+' · '+(d?d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'')+' · '+esc(j.payMode)+'</div></div><b>'+rupee(j.amountPaid)+'</b></div>'}).join(''):'<p class="muted">Completed jobs will appear here.</p>')+'</div>';
+  $('#eBody').innerHTML=h}
+function drawProfile(){if(!me)return;var rated=jobs.filter(function(j){return j.rating}),avg=rated.length?(rated.reduce(function(a,j){return a+Number(j.rating)},0)/rated.length).toFixed(1):'–';
+  $('#prBody').innerHTML='<div class="blk row"><div style="width:60px;height:60px;border-radius:50%;background:#111;color:#f0d79f;display:grid;place-items:center;font-size:24px;font-weight:800">'+esc(me.name.charAt(0))+'</div><div class="grow"><h3 style="font-size:19px">'+esc(me.name)+'</h3><div class="muted">+91 '+esc(me.phone)+' · ID '+esc(me.id)+'</div></div></div>'+
+  '<div class="blk"><div class="row" style="gap:24px"><div><b style="font-size:20px">'+avg+'</b><div class="muted small">Customer rating</div></div><div><b style="font-size:20px">'+jobs.filter(function(j){return j.status==='Completed'}).length+'</b><div class="muted small">Jobs completed</div></div></div></div>'+
+  '<div class="blk"><div class="muted small">Services</div><div style="margin:4px 0 12px">'+esc(me.skills||'–')+'</div><div class="muted small">Work area</div><div>'+esc(me.zone||'–')+'</div></div>'+
+  '<div class="blk"><a class="btn line block" href="'+waLink(OYC.WA,'Hi OYC, this is partner '+me.name+' ('+me.id+'). I need help.')+'" target="_blank" rel="noopener">'+WA_SVG+' WhatsApp OYC support</a><a class="btn line block" style="margin-top:8px" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+' Call OYC operations</a><button class="btn line block" style="margin-top:8px" onclick="installApp()">'+ic('down',16)+' Add app to home screen</button><button class="btn line block" style="margin-top:8px;color:var(--bad)" onclick="logout()">'+ic('logout',16)+' Logout</button></div>'}
+function logout(silent){if(!silent&&!confirm('Logout?'))return;sess=null;me=null;jobs=[];localStorage.removeItem('oyc_partner');if(pollT)clearInterval(pollT);show('login')}
+function boot(){$('#demoBar').classList.toggle('hide',!!OYC.API);if(!sess){show('login');return}show('jobs');$('#jList').innerHTML='<div class="empty"><span class="spin"></span></div>';refresh();if(pollT)clearInterval(pollT);pollT=setInterval(refresh,20000)}
+fillIcons(document);boot();document.addEventListener('visibilitychange',function(){if(!document.hidden&&sess)refresh()});
+</script>
+</body></html>
