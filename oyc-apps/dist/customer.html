@@ -165,10 +165,72 @@ body{background:#f2f2f2}
 .sres{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;cursor:pointer}
 .sres img{width:52px;height:52px;border-radius:10px;object-fit:cover}
 .demo{background:var(--warnbg);color:var(--warn);font-size:12px;padding:8px 16px;text-align:center}
-@media(min-width:700px){.banner{flex-basis:70%}}
+
+.dhd{display:none}
+#cAside{display:none}
+/* ---------- TABLET ---------- */
+@media(min-width:768px){
+ body{background:#fff}
+ .app{max-width:none;box-shadow:none}
+ .bnav,.cartbar{max-width:none}
+ .catgrid{grid-template-columns:repeat(5,1fr);padding:20px}
+ .banner{flex-basis:48%;height:200px}
+ .mini{flex-basis:190px}.mini img{width:190px;height:190px}
+ .promise{grid-template-columns:repeat(4,1fr)}
+ .chero{height:260px}
+ #cartBody,#doneBody,#bdBody{max-width:720px;margin:0 auto}
+ #bkList{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;padding:0 16px}
+ .bk{border:1px solid var(--line);border-radius:14px;margin-top:14px}
+ .sheetbg{align-items:center}
+ .sheet{border-radius:20px;max-width:560px}
+ .login{max-width:460px;margin:0 auto}
+ #s-account #accBody{max-width:720px;margin:0 auto}
+}
+/* ---------- DESKTOP ---------- */
+@media(min-width:1024px){
+ .dhd{display:block;position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line)}
+ .dwrap{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:22px}
+ .dlogo{display:flex;align-items:center;gap:10px;cursor:pointer;flex:none}
+ .dlogo img{width:46px;height:46px}.dlogo b{font-size:19px;letter-spacing:-.02em}
+ .dloc{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;max-width:260px;font-size:14px}
+ .dloc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .dsearch{flex:1;display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--mute);cursor:text;font-size:14px}
+ .dhd nav{display:flex;align-items:center;gap:4px}
+ .dhd nav button{border:0;background:none;padding:10px 12px;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:6px;position:relative}
+ .dhd nav button:hover{background:var(--soft)}
+ .dhd nav .cnt{top:2px;right:2px}
+ .bnav{display:none!important}
+ .scr{max-width:1200px;margin:0 auto;padding-bottom:40px;min-height:auto}
+ #s-home>.top,#s-home>.search{display:none}
+ .sec{padding:34px 24px 8px}.sec h3{font-size:26px}
+ .catgrid{grid-template-columns:repeat(9,1fr);margin:12px 24px 0;gap:10px}
+ .cat .ci{width:84px;height:84px;border-radius:18px}
+ .hs{padding:0 24px 4px}
+ .banner{flex-basis:32%;height:210px}
+ .mini{flex-basis:210px}.mini img{width:210px;height:210px}
+ .promise{padding:0 24px}
+ .chero{height:300px;border-radius:0 0 20px 20px;overflow:hidden}
+ .chero h1{font-size:36px}
+ .cgrid{display:grid;grid-template-columns:1fr 360px;gap:28px;padding:0 24px;align-items:start}
+ #cAside{display:block;position:sticky;top:96px;margin-top:20px}
+ #cAside .step{position:static!important;left:auto!important;transform:none!important;margin:0 10px}
+ .subs{top:73px;padding:14px 24px}
+ .svc{padding:22px 0}.svc .ph{width:140px}.svc .ph img{width:140px;height:140px}
+ .cartbar{display:none!important}
+ .top{max-width:1200px;margin:0 auto;top:71px}
+ #s-search .top,#s-cart .top,#s-booking .top,#s-bookings .top,#s-account .top{top:71px}
+ #bkList{grid-template-columns:1fr 1fr 1fr}
+ #toast{bottom:30px}
+}
 </style></head>
 <body>
 <div class="app">
+<header class="dhd"><div class="dwrap">
+  <a class="dlogo" onclick="tab('home')"><img class="logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="On Your Call logo"><b>On Your Call</b></a>
+  <div class="dloc" onclick="openAddr()"><span data-ic="pin" style="color:var(--gold2);display:flex"></span><span id="dLoc">Select location</span><span data-ic="down" style="display:flex"></span></div>
+  <div class="dsearch" onclick="go('search')"><span data-ic="search" style="display:flex"></span>Search for ‘AC service’</div>
+  <nav><button onclick="tab('bookings')"><span data-ic="cal" style="display:flex"></span>Bookings</button><button onclick="openHelp()"><span data-ic="help" style="display:flex"></span>Help</button><button onclick="tab('account')"><span data-ic="user" style="display:flex"></span>Account</button><button onclick="go('cart')" aria-label="Cart"><span data-ic="cart" style="display:flex"></span>Cart<i class="cnt hide" id="dCnt">0</i></button></nav>
+</div></header>
 <div id="demoBar" class="demo hide">Demo mode – bookings are saved on this device only until the Google Sheet is connected.</div>
 
 <!-- LOGIN -->
@@ -231,7 +293,7 @@ body{background:#f2f2f2}
   <div class="chero"><img id="cImg" alt=""><div class="ov"><div><h1 id="cTitle"></h1><div style="font-size:13px;color:#e6e6e6;margin-top:4px">Hyderabad · Pay after service</div></div></div>
     <button class="ib bgw bk" onclick="back()" data-ic="back"></button><button class="ib bgw ct" onclick="go('search')" data-ic="search"></button></div>
   <div class="subs" id="cSubs"></div>
-  <div id="cList"></div>
+  <div class="cgrid"><div id="cList"></div><aside id="cAside"></aside></div>
 </section>
 
 <!-- CART / CHECKOUT -->
@@ -598,7 +660,7 @@ function renderHome(){
   $('#rowSalon').innerHTML=vis.filter(function(s){return s.cat==='salonw'}).map(miniCard).join('');
   $('#rowClean').innerHTML=vis.filter(function(s){return s.cat==='clean'||s.cat==='pest'}).map(miniCard).join('');
   $('#rowRepair').innerHTML=vis.filter(function(s){return ['elec','plumb','carp'].indexOf(s.cat)>=0}).map(miniCard).join('');
-  var a=addrs[selAddr];$('#locLabel').textContent=a?a.tag:'Select location';$('#locText').textContent=a?a.address:'Tap to add your service address';
+  var a=addrs[selAddr];$('#dLoc').textContent=a?a.tag+' – '+a.address:'Select location';$('#locLabel').textContent=a?a.tag:'Select location';$('#locText').textContent=a?a.address:'Tap to add your service address';
   $('#helpWa').innerHTML=WA_SVG+'Chat';$('#helpWa').href=waLink(OYC.WA,'Hi OYC, I need help with a home service.');
 }
 /* category */
@@ -615,10 +677,12 @@ function svcRow(s){return '<div class="svc" id="row-'+s.id+'"><div class="grow">
 function qty(id,d,ev){if(ev)ev.stopPropagation();cart[id]=Math.max(0,(cart[id]||0)+d);if(!cart[id])delete cart[id];store('oyc_cart',cart);
   $$('#stp-'+id).forEach(function(e){e.innerHTML=stepper(id)});var sd=$('#sdStep');if(sd)sd.innerHTML=stepper(id);updateCartBar();if(cur==='cart')renderCart();if(d>0&&cart[id]===1)toast('Added to cart')}
 function svcDetail(id){var s=svcOf(id);$('#svcBody').innerHTML='<button class="x" onclick="closeSheet()">'+ic('x')+'</button><img src="'+svcImg(s)+'" alt="" style="width:100%;height:190px;object-fit:cover;border-radius:14px;margin:6px 0 14px"><h3 style="font-size:20px">'+esc(s.name)+'</h3><div class="pr" style="margin:6px 0">'+priceLabel(s)+' <span class="muted">· '+esc(s.dur)+'</span></div><div class="hr"></div><h4 style="margin-bottom:6px">What’s included</h4><ul style="padding-left:18px;color:var(--ink2)">'+s.pts.map(function(p){return '<li style="margin:5px 0">'+esc(p)+'</li>'}).join('')+'</ul><h4 style="margin:14px 0 6px">Good to know</h4><ul style="padding-left:18px;color:var(--ink2)"><li style="margin:5px 0">Price shown is the starting price. Any extra work or spare parts are quoted and agreed with you before they are done.</li><li style="margin:5px 0">Pay after the service by cash or UPI.</li><li style="margin:5px 0">Share your 4-digit start code with the professional only when they arrive.</li></ul><div class="row between" style="margin-top:18px"><b>'+priceLabel(s)+'</b><div style="position:relative;width:90px;height:36px" id="sdStep">'+stepper(id)+'</div></div>';openSheet('svc')}
+function drawAside(){var el=$('#cAside');if(!el)return;var it=cartItems();
+  el.innerHTML='<div class="card"><h3 style="font-size:18px;margin-bottom:10px">Cart</h3>'+(it.length?it.map(function(i){return '<div class="row between" style="padding:8px 0;border-bottom:1px solid var(--line);font-size:14px"><span class="grow">'+esc(i.name)+'</span><div class="step inline" style="position:relative;width:84px"><button onclick="qty(\''+i.id+'\',-1)">−</button><b>'+i.qty+'</b><button onclick="qty(\''+i.id+'\',1)">+</button></div><b style="width:64px;text-align:right">'+(i.price?rupee(i.price*i.qty):'Free')+'</b></div>'}).join('')+'<button class="btn block" style="margin-top:14px;justify-content:space-between" onclick="go(\'cart\')"><span>'+rupee(cartTotal())+'</span><span>View cart</span></button>':'<div class="empty" style="padding:24px 0">'+ic('cart',40,1.4)+'<p>No items in your cart</p></div>')+'</div><div class="card" style="margin-top:12px"><div class="row"><span style="color:var(--gold2)">'+ic('shield',22)+'</span><div class="small"><b>OYC promise</b><br>Prices upfront · Pay after service · Start-code safety</div></div></div>'}
 function cartItems(){return Object.keys(cart).map(function(id){var s=svcOf(id);return s?{id:id,name:s.name,qty:cart[id],price:s.price,cat:s.cat,dur:s.dur}:null}).filter(Boolean)}
 function cartTotal(){return cartItems().reduce(function(a,i){return a+i.price*i.qty},0)}
 function cartCount(){return cartItems().reduce(function(a,i){return a+i.qty},0)}
-function updateCartBar(){var n=cartCount();$('#cartCnt').textContent=n;$('#cartCnt').classList.toggle('hide',!n);$('#cbTotal').textContent=rupee(cartTotal())+' · '+n+' item'+(n>1?'s':'');$('#cartbar').classList.toggle('on',n>0&&(cur==='cat'||cur==='search'))}
+function updateCartBar(){var n=cartCount();var dc=$('#dCnt');if(dc){dc.textContent=n;dc.classList.toggle('hide',!n)}drawAside();$('#cartCnt').textContent=n;$('#cartCnt').classList.toggle('hide',!n);$('#cbTotal').textContent=rupee(cartTotal())+' · '+n+' item'+(n>1?'s':'');$('#cartbar').classList.toggle('on',n>0&&(cur==='cat'||cur==='search'))}
 
 /* search */
 function doSearch(){var q=$('#q').value.trim().toLowerCase();var r=SERVICES.filter(function(s){return !s.off&&(!q||(s.name+' '+catOf(s.cat).name+' '+s.sub).toLowerCase().indexOf(q)>=0)});if(!q)r=['ac1','cl1','sm1','sw1','el2','pl4','pc1','cp2'].map(svcOf);
