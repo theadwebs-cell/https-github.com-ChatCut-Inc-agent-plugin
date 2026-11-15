@@ -59,7 +59,7 @@ body{background:#f5f5f4}
 .login{min-height:100vh;display:grid;place-items:center;background:#111;padding:20px}
 .login .box{background:#fff;border-radius:20px;padding:30px 26px;width:100%;max-width:380px;text-align:center}
 .login img{width:88px;height:88px;margin:0 auto 12px;border-radius:20px}
-.pin{letter-spacing:.5em;font-size:22px;text-align:center}
+.pin{font-size:18px;text-align:center}
 .online{display:inline-block;width:8px;height:8px;border-radius:50%;background:#bbb;margin-right:6px}.online.y{background:var(--ok)}
 .demo{background:var(--warnbg);color:var(--warn);font-size:12.5px;padding:9px 14px;border-radius:10px;margin-bottom:14px}
 @media(min-width:768px) and (max-width:1100px){.lay{grid-template-columns:200px 1fr}.side{padding:14px 10px}.nav{padding:10px;font-size:13.5px}.kpis{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.main{padding:18px}}
@@ -83,8 +83,8 @@ body{background:#f5f5f4}
 <body>
 <div id="vLogin" class="login hide"><div class="box">
   <img class="logo" src="https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png" alt="On Your Call logo" width="88" height="88">
-  <h1 style="font-size:22px">OYC Admin</h1><p class="muted" style="margin:4px 0 20px">Enter your admin PIN to continue</p>
-  <input class="inp pin" id="aPin" type="password" inputmode="numeric" maxlength="8" placeholder="••••" onkeydown="if(event.key==='Enter')login()">
+  <h1 style="font-size:22px">OYC Admin</h1><p class="muted" style="margin:4px 0 20px">Enter your admin PIN / password</p>
+  <input class="inp pin" id="aPin" type="password" maxlength="40" autocomplete="current-password" placeholder="Admin PIN / password" onkeydown="if(event.key==='Enter')login()">
   <button class="btn block" style="margin-top:16px" id="lBtn" onclick="login()">Login</button>
   <p class="muted small" id="lHint" style="margin-top:14px"></p>
 </div></div>
@@ -244,7 +244,7 @@ function vSettings(){var S=D.settings;
   var h='<div class="ph"><h1>Settings</h1></div><div class="grid2"><div>';
   h+='<div class="panel" style="margin-bottom:14px"><h3>Booking server</h3>'+(OYC.API?'<p><span class="badge st-completed">Connected</span> Bookings are stored in your Google Sheet and shared live by the customer, partner and admin apps.</p>':'<p><span class="badge st-pending">Demo mode</span> Data is saved only in this browser. Connect your Google Sheet so all three apps share bookings.</p>')+'<button class="btn ghost sm" onclick="load(true)">Refresh data now</button></div>';
   h+='<div class="panel" style="margin-bottom:14px"><h3>WhatsApp booking number</h3><p class="muted small">Customer bookings are sent to this WhatsApp number.</p><input class="inp" id="sWa" value="'+esc(S.wa||OYC.WA)+'"><button class="btn sm" style="margin-top:10px" onclick="saveSet({wa:$(\'#sWa\').value.replace(/\\D/g,\'\')},this)">Save number</button></div>';
-  h+='<div class="panel"><h3>Change admin PIN</h3><input class="inp pin" id="sPin" type="password" inputmode="numeric" maxlength="8" placeholder="New PIN"><button class="btn sm" style="margin-top:10px" onclick="var v=$(\'#sPin\').value;saveSet({newPin:v},this).then(function(){PIN=v;sessionStorage.setItem(\'oyc_admin_pin\',v)})">Update PIN</button><p class="muted small" style="margin-top:8px">Default PIN is 1234 – please change it.</p></div></div>';
+  h+='<div class="panel"><h3>Change admin PIN</h3><input class="inp" id="sPin" type="password" maxlength="40" placeholder="New PIN or password (min 4 characters)"><button class="btn sm" style="margin-top:10px" onclick="var v=$(\'#sPin\').value;saveSet({newPin:v},this).then(function(){PIN=v;sessionStorage.setItem(\'oyc_admin_pin\',v)})">Update PIN</button><p class="muted small" style="margin-top:8px">Use letters, numbers and symbols for a stronger password.</p></div></div>';
   h+='<div><div class="panel" style="margin-bottom:14px"><h3>Your apps</h3>'+[['Customer app',OYC.APP],['Partner app',OYC.PARTNER],['Admin panel',OYC.ADMIN]].map(function(a){return '<div class="row between" style="padding:9px 0;border-top:1px solid var(--line)"><div><b>'+a[0]+'</b><div class="muted small">'+a[1].replace('https://','')+'</div></div><div class="row"><button class="btn ghost sm" onclick="navigator.clipboard&&navigator.clipboard.writeText(\''+a[1]+'\');toast(\'Link copied\')">Copy</button><a class="btn line sm" href="'+a[1]+'" target="_blank">Open</a></div></div>'}).join('')+'</div>';
   h+='<div class="panel"><h3>Data</h3><button class="btn line sm block" onclick="exportCsv()">Export all bookings (CSV)</button><button class="btn line sm block" style="margin-top:8px" onclick="logout()">Logout</button></div></div></div>';return h}
 function saveSet(s,btn){busy(btn,true);return api('adminSaveSettings',{pin:PIN,settings:s}).then(function(){busy(btn,false);toast('Saved');return load()}).catch(function(e){busy(btn,false);toast(e.message);throw e})}

@@ -84,7 +84,7 @@ function oycHandle(db,req){
     return oycOk(JSON.parse(JSON.stringify(ex)),['partners'])}
   case 'adminSaveSettings': {if(!isAdmin())return oycErr('Wrong admin PIN');var ns=req.settings||{};
     ['prices','off','wa','fee','commission'].forEach(function(k){if(ns[k]!==undefined)S[k]=ns[k]});
-    if(ns.newPin){if(!/^\d{4,8}$/.test(ns.newPin))return oycErr('PIN must be 4–8 digits');S.adminPin=ns.newPin}
+    if(ns.newPin){if(String(ns.newPin).length<4||String(ns.newPin).length>40)return oycErr('Password must be 4–40 characters');S.adminPin=String(ns.newPin)}
     return oycOk({saved:1},['settings'])}
   }
   return oycErr('Unknown request')

@@ -340,7 +340,7 @@ function skipLogin(){store('oyc_seen',1);tab('home')}
 function needLogin(then){if(user)return true;window._afterLogin=then;$('#lgPhone').value='';show('login');return false}
 
 /* home */
-function svcImg(s){return catOf(s.cat).img}
+function svcImg(s){return svcPic(s)}
 function miniCard(s){return '<div class="mini" onclick="openCat(\''+s.cat+'\',\''+s.sub+'\')"><img src="'+svcImg(s)+'" alt="'+esc(s.name)+'" loading="lazy"><b>'+esc(s.name)+'</b><span>'+priceLabel(s)+'</span></div>'}
 function renderHome(){
   $('#catGrid').innerHTML=CATS.map(function(c){return '<div class="cat" onclick="openCat(\''+c.id+'\')"><div class="ci">'+ic(c.id,30,1.7)+'</div>'+esc(c.short)+'</div>'}).join('');
