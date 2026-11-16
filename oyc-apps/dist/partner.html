@@ -321,7 +321,7 @@ function oycHandle(db,req){
     for(var i=0;i<db.partners.length;i++)if(db.partners[i]!==ex&&oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('Another partner has this mobile number');
     if(!ex){ex={id:'P'+(101+db.partners.length),joined:oycNow(),online:'no'};while(findP(ex.id))ex.id='P'+(Number(ex.id.slice(1))+1);db.partners.push(ex)}
     ex.name=p.name;ex.phone=oycDigits(p.phone);if(p.aadhaar!==undefined)ex.aadhaar=String(p.aadhaar).replace(/\D/g,'');ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
-    if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';
+    if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';var dc=p.docs||{};['photo','aadhaarFront','aadhaarBack'].forEach(function(k){var v=p[k]||dc[k];if(v)ex[k]=v});
     return oycOk(JSON.parse(JSON.stringify(ex)),['partners'])}
   case 'adminSaveSettings': {if(!isAdmin())return oycErr('Wrong admin PIN');var ns=req.settings||{};
     var dirty=['settings'];
@@ -505,6 +505,7 @@ function api(action,payload){
   }
   return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
 }
+function oycShrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
 function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
 /* install prompt */
 var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});

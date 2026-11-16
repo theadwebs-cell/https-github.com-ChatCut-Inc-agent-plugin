@@ -170,6 +170,7 @@ function api(action,payload){
   }
   return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
 }
+function oycShrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
 function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
 /* install prompt */
 var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});

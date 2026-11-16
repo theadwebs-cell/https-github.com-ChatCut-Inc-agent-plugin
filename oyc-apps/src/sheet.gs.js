@@ -49,6 +49,7 @@ function doPost(e){
     if(OYC_ADMIN_PIN)db.settings.adminPin=OYC_ADMIN_PIN;
     if(!db.services.length){db.services=JSON.parse(JSON.stringify(OYC_SEED));oycSave(db,['services'])}
     if(req.action==='partnerApply'&&req.partner&&req.partner.docs)oycSaveDocs(req.partner);
+    if(req.action==='adminSavePartner'&&req.partner&&req.partner.docs&&String(req.pin||'')===String(db.settings.adminPin))oycSaveDocs(req.partner);
     var res=oycHandle(db,req);
     if(res.ok&&res.dirty&&res.dirty.length)oycSave(db,res.dirty);
     return oycOut({ok:res.ok,data:res.data,error:res.error});

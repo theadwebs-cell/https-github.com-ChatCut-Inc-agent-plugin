@@ -87,7 +87,7 @@ function oycHandle(db,req){
     for(var i=0;i<db.partners.length;i++)if(db.partners[i]!==ex&&oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('Another partner has this mobile number');
     if(!ex){ex={id:'P'+(101+db.partners.length),joined:oycNow(),online:'no'};while(findP(ex.id))ex.id='P'+(Number(ex.id.slice(1))+1);db.partners.push(ex)}
     ex.name=p.name;ex.phone=oycDigits(p.phone);if(p.aadhaar!==undefined)ex.aadhaar=String(p.aadhaar).replace(/\D/g,'');ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
-    if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';
+    if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';var dc=p.docs||{};['photo','aadhaarFront','aadhaarBack'].forEach(function(k){var v=p[k]||dc[k];if(v)ex[k]=v});
     return oycOk(JSON.parse(JSON.stringify(ex)),['partners'])}
   case 'adminSaveSettings': {if(!isAdmin())return oycErr('Wrong admin PIN');var ns=req.settings||{};
     var dirty=['settings'];
@@ -149,6 +149,7 @@ function doPost(e){
     if(OYC_ADMIN_PIN)db.settings.adminPin=OYC_ADMIN_PIN;
     if(!db.services.length){db.services=JSON.parse(JSON.stringify(OYC_SEED));oycSave(db,['services'])}
     if(req.action==='partnerApply'&&req.partner&&req.partner.docs)oycSaveDocs(req.partner);
+    if(req.action==='adminSavePartner'&&req.partner&&req.partner.docs&&String(req.pin||'')===String(db.settings.adminPin))oycSaveDocs(req.partner);
     var res=oycHandle(db,req);
     if(res.ok&&res.dirty&&res.dirty.length)oycSave(db,res.dirty);
     return oycOut({ok:res.ok,data:res.data,error:res.error});
