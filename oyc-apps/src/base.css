@@ -30,7 +30,7 @@ textarea.inp{min-height:80px;resize:vertical}
 @keyframes sp{to{transform:rotate(360deg)}}
 #toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#111;color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:999;max-width:90vw;text-align:center}
 #toast.show{opacity:1;transform:translateX(-50%)}
-.logo{object-fit:contain;background:#fff;border-radius:10px}
+.logo{object-fit:contain;background:#000;border-radius:10px;padding:3px;box-sizing:border-box}
 .sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80;display:none;align-items:flex-end;justify-content:center}
 .sheetbg.open{display:flex}
 .sheet{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));animation:up .22s ease}
