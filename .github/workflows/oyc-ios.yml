@@ -17,6 +17,7 @@ on:
     paths:
       - "oyc-mobile/**"
       - "!oyc-mobile/**/*.md"
+      - "!oyc-mobile/*/android/**"
       - ".github/workflows/oyc-ios.yml"
 
 jobs:

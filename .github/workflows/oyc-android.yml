@@ -15,6 +15,7 @@ on:
     paths:
       - "oyc-mobile/**"
       - "!oyc-mobile/**/*.md"
+      - "!oyc-mobile/*/ios/**"
       - ".github/workflows/oyc-android.yml"
 
 jobs:
@@ -35,6 +36,7 @@ jobs:
             exit 0
           fi
           PASS=$(openssl rand -hex 16)
+          echo "::add-mask::$PASS"
           keytool -genkeypair -keystore key/upload.jks -alias oyc-upload -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass "$PASS" -keypass "$PASS" -dname "CN=On Your Call, O=On Your Call, L=Hyderabad, ST=Telangana, C=IN"
           base64 -w0 key/upload.jks > key/ANDROID_KEYSTORE_BASE64.txt
@@ -44,7 +46,7 @@ jobs:
         if: steps.k.outputs.new == 'yes'
         uses: actions/upload-artifact@v4
         with:
-          name: SAVE-THIS-android-upload-key
+          name: SAVE-THIS-android-upload-key-run${{ github.run_number }}
           path: key
           retention-days: 7
 
@@ -106,7 +108,7 @@ jobs:
         if: steps.sel.outputs.run == 'yes' && needs.key.outputs.new == 'yes'
         uses: actions/download-artifact@v4
         with:
-          name: SAVE-THIS-android-upload-key
+          name: SAVE-THIS-android-upload-key-run${{ github.run_number }}
           path: ${{ runner.temp }}/key
 
       - name: Prepare signing
@@ -118,10 +120,12 @@ jobs:
           KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           if [ -n "$KS_B64" ]; then
+            echo "::add-mask::$KS_PASS"; echo "::add-mask::$KEY_PASS"
             echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/upload.jks"
             { echo "ANDROID_KEYSTORE_PASSWORD=$KS_PASS"; echo "ANDROID_KEY_ALIAS=$KEY_ALIAS"; echo "ANDROID_KEY_PASSWORD=$KEY_PASS"; } >> "$GITHUB_ENV"
           else
             cp "$RUNNER_TEMP/key/upload.jks" "$RUNNER_TEMP/upload.jks"
+            while IFS='=' read -r k v; do [ -n "$v" ] && echo "::add-mask::$v"; done < "$RUNNER_TEMP/key/passwords.txt"
             cat "$RUNNER_TEMP/key/passwords.txt" >> "$GITHUB_ENV"
           fi
           echo "ANDROID_KEYSTORE_FILE=$RUNNER_TEMP/upload.jks" >> "$GITHUB_ENV"
