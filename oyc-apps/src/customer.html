@@ -195,7 +195,7 @@ body{background:#f2f2f2}
   <input class="inp" id="lgName" placeholder="Full name" autocomplete="name">
   <button class="btn block" style="margin-top:22px" onclick="doLogin()">Continue</button>
   <button class="btn line block" style="margin-top:10px" onclick="skipLogin()">Skip for now</button>
-  <p class="muted small" style="text-align:center;margin-top:auto;padding-top:24px">By continuing, you agree that On Your Call may contact you on call or WhatsApp about your bookings.</p>
+  <p class="muted small" style="text-align:center;margin-top:auto;padding-top:24px">By continuing, you agree that On Your Call may contact you on call or WhatsApp about your bookings, and to our <a href="https://onyourcall.in/privacy" style="text-decoration:underline">Privacy Policy</a>.</p>
 </div></section>
 
 <!-- HOME -->
@@ -229,7 +229,7 @@ body{background:#f2f2f2}
       <div class="grow"><b style="font-size:16px">Need help choosing?</b><div style="color:#cfcfcf;font-size:13px;margin-top:2px">Chat with OYC on WhatsApp</div></div>
       <a class="btn wa sm" id="helpWa" target="_blank" rel="noopener"></a>
     </div>
-    <p class="muted small" style="text-align:center;margin-top:18px">© On Your Call · Hyderabad · <a href="tel:9866689196">9866689196</a><br><a href="https://theadweb.flexifunnels.com/oyc-partner" style="text-decoration:underline">Join OYC as a service partner</a></p>
+    <p class="muted small" style="text-align:center;margin-top:18px">© On Your Call · Hyderabad · <a href="tel:9866689196">9866689196</a><br><a href="https://onyourcall.in/oyc-partner" style="text-decoration:underline">Join OYC as a service partner</a></p>
   </div>
 </section>
 
@@ -470,7 +470,7 @@ function cancelB(btn){if(!confirm('Cancel this booking?'))return;busy(btn,true);
 function renderAccount(){var h='';
   if(user)h+='<div style="padding:20px 16px" class="row"><div style="width:58px;height:58px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800">'+esc(user.name.charAt(0).toUpperCase())+'</div><div class="grow"><h3 style="font-size:19px">'+esc(user.name)+'</h3><div class="muted">+91 '+esc(user.phone)+'</div></div></div><div class="sep" style="margin:0"></div>';
   else h+='<div style="padding:20px 16px"><h3>Welcome to On Your Call</h3><p class="muted">Log in to book and track services.</p><button class="btn" style="margin-top:8px" onclick="window._afterLogin=function(){tab(\'account\')};show(\'login\')">Login / Sign up</button></div><div class="sep" style="margin:0"></div>';
-  var rows=[['cal','My bookings',"tab('bookings')"],['pin','Manage addresses','openAddr()'],['help','Help & support','openHelp()'],['phone','Call OYC',"location.href='tel:"+OYC.PHONE+"'"],['shield','Join as a service partner',"location.href='"+OYC.PARTNER+"'"]];
+  var rows=[['cal','My bookings',"tab('bookings')"],['pin','Manage addresses','openAddr()'],['help','Help & support','openHelp()'],['phone','Call OYC',"location.href='tel:"+OYC.PHONE+"'"],['shield','Join as a service partner',"location.href='"+OYC.PARTNER+"'"],['help','Privacy policy',"location.href='"+OYC.PRIVACY+"'"],['x','Delete my account',"location.href='"+OYC.PRIVACY+"#delete'"]];
   if(_inst)rows.push(['down','Install the OYC app','installApp()']);
   h+=rows.map(function(r){return '<div class="acc-row" onclick="'+r[2]+'">'+ic(r[0])+'<span class="grow">'+r[1]+'</span>'+ic('right',18)+'</div>'}).join('');
   h+='<div class="acc-row" onclick="installApp()">'+ic('down')+'<span class="grow">Add OYC to home screen</span>'+ic('right',18)+'</div>';

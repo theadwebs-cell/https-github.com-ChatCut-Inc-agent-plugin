@@ -14,9 +14,9 @@ This connects the Customer app, Partner app and Admin panel so they share live b
 6. Send that URL to Claude. Claude will put it into all three apps and republish them.
 
 After that:
-- Admin panel: https://theadweb.flexifunnels.com/oyc-admin. The default PIN is **1234**; change it in Settings.
-- Add your partners in Admin → Partners (name, mobile, PIN). They log in at https://theadweb.flexifunnels.com/oyc-partner.
-- Customers book at https://theadweb.flexifunnels.com/oyc-app. Each booking appears instantly in the Admin panel, and opens WhatsApp with the booking details.
+- Admin panel: https://onyourcall.in/oyc-admin. The default PIN is **1234**; change it in Settings.
+- Add your partners in Admin → Partners (name, mobile, PIN). They log in at https://onyourcall.in/oyc-partner.
+- Customers book at https://onyourcall.in/oyc-app. Each booking appears instantly in the Admin panel, and opens WhatsApp with the booking details.
 - A booking you receive directly on WhatsApp can be entered with **Admin → + Add WhatsApp booking**.
 
 How a booking flows:

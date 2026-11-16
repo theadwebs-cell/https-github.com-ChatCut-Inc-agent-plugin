@@ -186,7 +186,7 @@ body{background:#f2f2f2}
     <label class="lbl">Experience / notes</label><textarea class="inp" id="rNotes" placeholder="Years of experience, tools you have…"></textarea>
     <label class="lbl">Create a 4-digit PIN</label><input class="inp pin" id="rPin" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
     <button class="btn block" style="margin-top:20px" onclick="register(this)">Submit registration</button>
-    <p class="muted small" style="margin-top:10px">OYC will call you to verify your documents before you start receiving jobs.</p>
+    <p class="muted small" style="margin-top:10px">OYC will call you to verify your documents before you start receiving jobs. By registering you agree to our <a href="https://onyourcall.in/privacy" style="text-decoration:underline">Privacy Policy</a>.</p>
   </div>
 </section>
 
@@ -339,9 +339,10 @@ var OYC={
   WA:'919866689196',            /* WhatsApp number bookings are sent to */
   PHONE:'9866689196',
   LOGO:'https://media.flexifunnels.io/33238/images/image_wlhdndac.jpg',
-  APP:'https://theadweb.flexifunnels.com/oyc-app',
-  PARTNER:'https://theadweb.flexifunnels.com/oyc-partner',
-  ADMIN:'https://theadweb.flexifunnels.com/oyc-admin'
+  APP:'https://onyourcall.in/oyc-app',
+  PARTNER:'https://onyourcall.in/oyc-partner',
+  ADMIN:'https://onyourcall.in/oyc-admin',
+  PRIVACY:'https://onyourcall.in/privacy'
 };
 if(OYC.API.indexOf('%%')===0)OYC.API='';
 var IMG={
@@ -588,7 +589,7 @@ function drawProfile(){if(!me)return;var rated=jobs.filter(function(j){return j.
   $('#prBody').innerHTML='<div class="blk row"><div style="width:60px;height:60px;border-radius:50%;background:#111;color:#f0d79f;display:grid;place-items:center;font-size:24px;font-weight:800">'+esc(me.name.charAt(0))+'</div><div class="grow"><h3 style="font-size:19px">'+esc(me.name)+'</h3><div class="muted">+91 '+esc(me.phone)+' · ID '+esc(me.id)+'</div></div></div>'+
   '<div class="blk"><div class="row" style="gap:24px"><div><b style="font-size:20px">'+avg+'</b><div class="muted small">Customer rating</div></div><div><b style="font-size:20px">'+jobs.filter(function(j){return j.status==='Completed'}).length+'</b><div class="muted small">Jobs completed</div></div></div></div>'+
   '<div class="blk"><div class="muted small">Services</div><div style="margin:4px 0 12px">'+esc(me.skills||'–')+'</div><div class="muted small">Work area</div><div>'+esc(me.zone||'–')+'</div></div>'+
-  '<div class="blk"><a class="btn line block" href="'+waLink(OYC.WA,'Hi OYC, this is partner '+me.name+' ('+me.id+'). I need help.')+'" target="_blank" rel="noopener">'+WA_SVG+' WhatsApp OYC support</a><a class="btn line block" style="margin-top:8px" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+' Call OYC operations</a><button class="btn line block" style="margin-top:8px" onclick="installApp()">'+ic('down',16)+' Add app to home screen</button><button class="btn line block" style="margin-top:8px;color:var(--bad)" onclick="logout()">'+ic('logout',16)+' Logout</button></div>'}
+  '<div class="blk"><a class="btn line block" href="'+waLink(OYC.WA,'Hi OYC, this is partner '+me.name+' ('+me.id+'). I need help.')+'" target="_blank" rel="noopener">'+WA_SVG+' WhatsApp OYC support</a><a class="btn line block" style="margin-top:8px" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+' Call OYC operations</a><button class="btn line block" style="margin-top:8px" onclick="installApp()">'+ic('down',16)+' Add app to home screen</button><button class="btn line block" style="margin-top:8px;color:var(--bad)" onclick="logout()">'+ic('logout',16)+' Logout</button><a class="btn ghost sm block" style="margin-top:8px" href="'+OYC.PRIVACY+'">Privacy policy · Delete account</a></div>'}
 function logout(silent){if(!silent&&!confirm('Logout?'))return;sess=null;me=null;jobs=[];localStorage.removeItem('oyc_partner');if(pollT)clearInterval(pollT);show('login')}
 function boot(){$('#demoBar').classList.toggle('hide',!!OYC.API);if(!sess){show('login');return}show('jobs');$('#jList').innerHTML='<div class="empty"><span class="spin"></span></div>';refresh();if(pollT)clearInterval(pollT);pollT=setInterval(refresh,20000)}
 fillIcons(document);boot();document.addEventListener('visibilitychange',function(){if(!document.hidden&&sess)refresh()});
