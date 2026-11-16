@@ -7,7 +7,10 @@ var OYC={
   APP:'https://onyourcall.in/oyc-app',
   PARTNER:'https://onyourcall.in/oyc-partner',
   ADMIN:'https://onyourcall.in/oyc-admin',
-  PRIVACY:'https://onyourcall.in/privacy'
+  PRIVACY:'https://onyourcall.in/privacy',
+  /* Store links – set the *_LIVE flags to true once each app is published */
+  PLAY_URL:'https://play.google.com/store/apps/details?id=in.onyourcall.app',PLAY_LIVE:false,
+  IOS_URL:'',IOS_LIVE:false
 };
 if(OYC.API.indexOf('%%')===0)OYC.API='';
 var IMG={
@@ -169,9 +172,23 @@ function api(action,payload){
     return fetch(OYC.API,{method:'POST',body:JSON.stringify(req)}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error||'Something went wrong');return j.data})
       .catch(function(e){if(e instanceof TypeError)throw new Error('No internet connection. Please try again.');throw e});
   }
-  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
+  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));delete db._notify;if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
 }
 function oycShrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
+/* ---- native app helpers (only active inside the Play Store / App Store apps) ---- */
+function oycNative(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())}catch(e){return false}}
+var _fm=null;
+function oycPushRegister(role,cred,onMsg){
+  if(!oycNative()||navigator.userAgent.indexOf('OYCPush')<0)return; /* the store build adds OYCPush only when Firebase is configured */
+  try{_fm=_fm||window.Capacitor.registerPlugin('FirebaseMessaging')}catch(e){return}
+  _fm.requestPermissions().then(function(p){if(!p||p.receive!=='granted')return null;return _fm.getToken()})
+   .then(function(r){if(!r||!r.token)return;var k='oyc_push_'+role,sig=r.token+'|'+JSON.stringify(cred);if(store(k)===sig)return;
+     return api('registerPush',Object.assign({role:role,token:r.token,platform:window.Capacitor.getPlatform()},cred)).then(function(){store(k,sig)})})
+   .catch(function(){});
+  if(!oycPushRegister._l){oycPushRegister._l=1;
+    _fm.addListener('notificationReceived',function(e){var n=(e&&e.notification)||{};toast((n.title||'OYC')+(n.body?': '+n.body:''));if(onMsg)onMsg(n)}).catch(function(){});
+    _fm.addListener('notificationActionPerformed',function(e){var u=e&&e.notification&&e.notification.data&&e.notification.data.url;if(onMsg)onMsg(e&&e.notification);if(u&&location.href.indexOf(u)!==0)location.href=u}).catch(function(){})}
+}
 function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
 /* install prompt */
 var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});

@@ -83,7 +83,49 @@ For each app in App Store Connect:
 - **App Review Information**: for the partner app give the test login (mobile and PIN). In the notes, explain: "OYC is a home-services booking app in Hyderabad. Customers book services; partners receive and complete jobs, verified with Aadhaar."
 - **Submit for Review**. Apple usually replies within 1–3 days.
 
-**About Apple review:** Apple sometimes rejects apps that mainly show a website (guideline 4.2). If that happens, the usual fix is to add push notifications (new job alerts for partners, booking updates for customers). Ask Claude to add them. It needs a free Firebase project and an Apple push key.
+**About Apple review:** Apple sometimes rejects apps that mainly show a website (guideline 4.2). The OYC apps include push notifications, camera and location features, which help. Set up Part 3 before you submit to Apple, and mention the notifications in the review notes.
+
+---
+
+## Part 3 – Push notifications (Firebase, free)
+
+Push notifications work in the **store apps** only, not in the browser. They are sent automatically by your Google Sheet script:
+
+- **Partner:** new job assigned, a customer cancelled, registration approved.
+- **Customer:** professional assigned, booking confirmed, professional on the way, service started, service completed (with a "rate us" prompt), booking cancelled.
+
+### 1. Create the Firebase project (10 minutes)
+1. Go to https://console.firebase.google.com → **Create a project** → name it `On Your Call`. Turn Google Analytics off (not needed).
+2. **Add the Android apps.** Click the Android icon:
+   - Package name `in.onyourcall.app`, nickname "OYC Customer" → **Register app** → download **google-services.json**. Rename it `google-services-customer.json`.
+   - Add another Android app: package `in.onyourcall.partner`, nickname "OYC Partner" → download its google-services.json and rename it `google-services-partner.json`.
+   - Skip the remaining "add SDK" steps; that part is already done.
+3. **Add the iOS apps** (once you have the Apple account). Click **Add app → iOS**:
+   - Bundle ID `in.onyourcall.app` → download **GoogleService-Info.plist** and rename it `GoogleService-Info-customer.plist`.
+   - Bundle ID `in.onyourcall.partner` → download and rename it `GoogleService-Info-partner.plist`.
+4. **Apple push key** (iOS only): at https://developer.apple.com/account/resources/authkeys/list, click **+**, tick **Apple Push Notifications service (APNs)**, then Continue and Register. Download the `.p8` file and note the **Key ID**.
+   Then in Firebase: **Project settings → Cloud Messaging → Apple app configuration → APNs Authentication Key → Upload**. Upload the .p8 file and enter the Key ID and your Team ID. Do this for both iOS apps.
+
+### 2. Put the Firebase files into GitHub (so the apps are built with push)
+GitHub → **Settings → Secrets and variables → Actions → New repository secret**. Open each file in Notepad, copy **everything**, and paste it as the secret value:
+
+| Secret name | File |
+|---|---|
+| `GOOGLE_SERVICES_JSON_CUSTOMER` | google-services-customer.json |
+| `GOOGLE_SERVICES_JSON_PARTNER` | google-services-partner.json |
+| `GOOGLE_SERVICE_INFO_PLIST_CUSTOMER` | GoogleService-Info-customer.plist |
+| `GOOGLE_SERVICE_INFO_PLIST_PARTNER` | GoogleService-Info-partner.plist |
+
+Then run the Android and iOS workflows again. The build log shows **"Push notifications: ON"**.
+
+### 3. Let your Google Sheet script send notifications
+1. Firebase → **Project settings (gear) → Service accounts → Generate new private key → Generate key**. A `.json` file downloads. Keep it private.
+2. Open your sheet → **Extensions → Apps Script** → **Project Settings** (gear on the left) → **Script Properties** → **Add script property**:
+   - Property: `FCM_SERVICE_ACCOUNT`
+   - Value: the entire contents of that .json file
+   - **Save script properties**.
+3. Paste the latest script (OYC-Google-Apps-Script.txt), keep your password on line 2, **Save**, run **setup** once (it asks for the new "connect to an external service" permission), then **Deploy → Manage deployments → ✏️ → New version → Deploy**.
+4. Test it: install the app on your phone, log in and allow notifications. Then in Apps Script select **testPush** and click **Run**, and every registered phone should get "OYC test".
 
 ---
 

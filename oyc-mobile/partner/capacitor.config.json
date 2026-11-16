@@ -35,6 +35,14 @@
       "style": "DARK",
       "backgroundColor": "#000000",
       "overlaysWebView": false
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
     }
-  }
+  },
+  "appendUserAgent": "OYCApp"
 }

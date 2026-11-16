@@ -167,6 +167,11 @@ body{background:#f2f2f2}
 .demo{background:var(--warnbg);color:var(--warn);font-size:12px;padding:8px 16px;text-align:center}
 
 .dhd{display:none}
+.getapp{display:inline-flex;align-items:center;gap:4px;border:1px solid #e6d3a6;background:var(--goldbg);color:var(--gold2);border-radius:999px;padding:6px 11px;font-size:12.5px;font-weight:700;cursor:pointer;flex:none}
+body.native .getapp,body.native .getapp-d,body.native .getapp-row{display:none!important}
+.store{display:flex;align-items:center;gap:12px;background:#000;color:#fff;border-radius:12px;padding:12px 16px;margin-top:10px;text-decoration:none}
+.store b{display:block;font-size:17px;line-height:1.1}.store small{font-size:11px;color:#ccc}.store.off{opacity:.55;pointer-events:none}
+.store .soon{margin-left:auto;font-size:11px;background:#333;border-radius:999px;padding:3px 8px;color:#f0d79f}
 #cAside{display:none}
 /* ---------- TABLET ---------- */
 @media(min-width:768px){
@@ -229,7 +234,7 @@ body{background:#f2f2f2}
   <a class="dlogo" onclick="tab('home')"><img class="logo" src="https://media.flexifunnels.io/33238/images/image_wlhdndac.jpg" alt="On Your Call logo"><b>On Your Call</b></a>
   <div class="dloc" onclick="openAddr()"><span data-ic="pin" style="color:var(--gold2);display:flex"></span><span id="dLoc">Select location</span><span data-ic="down" style="display:flex"></span></div>
   <div class="dsearch" onclick="go('search')"><span data-ic="search" style="display:flex"></span>Search for ‘AC service’</div>
-  <nav><button onclick="tab('bookings')"><span data-ic="cal" style="display:flex"></span>Bookings</button><button onclick="openHelp()"><span data-ic="help" style="display:flex"></span>Help</button><button onclick="tab('account')"><span data-ic="user" style="display:flex"></span>Account</button><button onclick="go('cart')" aria-label="Cart"><span data-ic="cart" style="display:flex"></span>Cart<i class="cnt hide" id="dCnt">0</i></button></nav>
+  <nav><button class="getapp-d" onclick="openGetApp()" style="background:var(--goldbg);color:var(--gold2)"><span data-ic="down" style="display:flex"></span>Get the app</button><button onclick="tab('bookings')"><span data-ic="cal" style="display:flex"></span>Bookings</button><button onclick="openHelp()"><span data-ic="help" style="display:flex"></span>Help</button><button onclick="tab('account')"><span data-ic="user" style="display:flex"></span>Account</button><button onclick="go('cart')" aria-label="Cart"><span data-ic="cart" style="display:flex"></span>Cart<i class="cnt hide" id="dCnt">0</i></button></nav>
 </div></header>
 <div id="demoBar" class="demo hide">Demo mode – bookings are saved on this device only until the Google Sheet is connected.</div>
 
@@ -251,6 +256,7 @@ body{background:#f2f2f2}
 <section class="scr" id="s-home">
   <div class="top">
     <div class="loc" onclick="openAddr()"><span style="color:var(--gold2)" id="pinIc"></span><div class="grow"><b><span id="locLabel">Select location</span><span id="dnIc"></span></b><span id="locText">Tap to add your address</span></div></div>
+    <button class="getapp" onclick="openGetApp()" aria-label="Get the app"><span data-ic="down" data-s="15"></span>App</button>
     <button class="ib" onclick="go('cart')" aria-label="Cart"><span id="cartIc"></span><i class="cnt hide" id="cartCnt">0</i></button>
   </div>
   <div class="search" onclick="go('search')"><span id="srIc"></span><span>Search for ‘AC service’</span></div>
@@ -360,6 +366,7 @@ body{background:#f2f2f2}
 </div></div>
 
 <div class="sheetbg" id="sh-svc" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="svcBody"></div></div>
+<div class="sheetbg" id="sh-app" onclick="if(event.target===this)closeSheet()"><div class="sheet" id="appBody"></div></div>
 
 <script>
 /* OYC shared booking logic. Runs in the browser (demo mode) AND in Google Apps Script. */
@@ -373,7 +380,12 @@ function oycPartnerSafe(p){var c=JSON.parse(JSON.stringify(p));delete c.pin;retu
 function oycHist(b,s,by){b.history=b.history||[];b.history.push({s:s,t:oycNow(),by:by||''});b.status=s;b.updated=oycNow()}
 
 function oycHandle(db,req){
-  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};
+  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};db.devices=db.devices||[];db._notify=[];
+  function note(role,key,title,body,url){if(key)db._notify.push({role:role,key:String(key),title:title,body:body,url:url||''})}
+  function svcs(b){return (b.items||[]).map(function(i){return i.name}).join(', ')}
+  function when(b){var p=String(b.date||'').split('-'),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return (p.length===3?(+p[2])+' '+M[+p[1]-1]:(b.date||''))+(b.slot?', '+b.slot:'')}
+  var CUST='https://onyourcall.in/oyc-app',PART='https://onyourcall.in/oyc-partner';
+  function custNote(b,s,by){var m={'Assigned':['Professional assigned',(b.partnerName||'A professional')+' will handle your booking '+b.id+'.'],'Accepted':['Booking confirmed',(b.partnerName||'Your professional')+' confirmed '+svcs(b)+' for '+when(b)+'.'],'On the way':['Professional on the way',(b.partnerName||'Your professional')+' is on the way. Keep your 4-digit start code ready.'],'In progress':['Service started','Your '+svcs(b)+' has started.'],'Completed':['Service completed','Thank you for choosing On Your Call! Tap to rate your experience.'],'Cancelled':['Booking cancelled','Booking '+b.id+' has been cancelled.']}[s];if(m)note('customer',oycDigits(b.phone),m[0],m[1],CUST)}
   var S=db.settings,a=req.action;
   if(!S.adminPin)S.adminPin='1234';
   function findB(id){for(var i=0;i<db.bookings.length;i++)if(db.bookings[i].id===id)return db.bookings[i];return null}
@@ -402,7 +414,7 @@ function oycHandle(db,req){
     return oycOk(db.bookings.filter(function(b){return oycDigits(b.phone)===ph}).map(oycPub).reverse())}
   case 'cancelBooking': {var b=findB(req.id);if(!b||oycDigits(b.phone)!==oycDigits(req.phone))return oycErr('Booking not found');
     if(['Pending','Assigned','Accepted'].indexOf(b.status)<0)return oycErr('This booking can no longer be cancelled in the app. Please call us.');
-    oycHist(b,'Cancelled','customer');return oycOk(oycPub(b),['bookings'])}
+    oycHist(b,'Cancelled','customer');if(b.partnerId)note('partner',b.partnerId,'Job cancelled','The customer cancelled job '+b.id+' ('+svcs(b)+').',PART);return oycOk(oycPub(b),['bookings'])}
   case 'rateBooking': {var b=findB(req.id);if(!b||oycDigits(b.phone)!==oycDigits(req.phone))return oycErr('Booking not found');
     if(b.status!=='Completed')return oycErr('You can rate after the service is completed');
     b.rating=Math.max(1,Math.min(5,Number(req.rating)||5));b.review=String(req.review||'').slice(0,500);b.updated=oycNow();return oycOk(oycPub(b),['bookings'])}
@@ -431,24 +443,30 @@ function oycHandle(db,req){
       if(String(req.otp)!==String(b.otp))return oycErr('Wrong start code. Ask the customer for the 4-digit code shown in their OYC app.');oycHist(b,'In progress',who)}
     else if(act==='complete'){if(b.status!=='In progress')return oycErr('Start the job first');b.amountPaid=Number(req.amount)||b.total;b.payMode=req.mode||b.payMode;oycHist(b,'Completed',who)}
     else return oycErr('Unknown action');
+    custNote(b,b.status);
     return oycOk(oycForPartner(b),['bookings'])}
+  case 'registerPush': {var tok=String(req.token||'');if(tok.length<20)return oycErr('Invalid device');var role=req.role==='partner'?'partner':'customer',key='';
+    if(role==='partner'){var p=authPartner();if(!p)return oycErr('Session expired');key=p.id}else{key=oycDigits(req.phone);if(key.length!==10)return oycErr('Login required')}
+    db.devices=db.devices.filter(function(d){return d.token!==tok});db.devices.push({token:tok,role:role,key:key,platform:String(req.platform||''),updated:oycNow()});
+    return oycOk({ok:1},['devices'])}
   /* ---------- admin ---------- */
   case 'adminLogin': return isAdmin()?oycOk({ok:1}):oycErr('Wrong admin PIN');
   case 'adminData': {if(!isAdmin())return oycErr('Wrong admin PIN');var st=JSON.parse(JSON.stringify(S));delete st.adminPin;
     return oycOk({bookings:db.bookings.map(oycPub).reverse(),partners:db.partners.map(function(p){return JSON.parse(JSON.stringify(p))}),settings:st,services:db.services||[]})}
   case 'adminCreateBooking': {if(!isAdmin())return oycErr('Wrong admin PIN');return makeBooking(req.booking&&req.booking.source||'WhatsApp','admin')}
   case 'adminUpdateBooking': {if(!isAdmin())return oycErr('Wrong admin PIN');var b=findB(req.id);if(!b)return oycErr('Booking not found');var f=req.fields||{};
-    if(f.partnerId!==undefined){if(f.partnerId){var pp=findP(f.partnerId);if(!pp)return oycErr('Partner not found');b.partnerId=pp.id;b.partnerName=pp.name;b.partnerPhone=pp.phone;oycHist(b,'Assigned','admin → '+pp.name)}
+    if(f.partnerId!==undefined){if(f.partnerId){var pp=findP(f.partnerId);if(!pp)return oycErr('Partner not found');b.partnerId=pp.id;b.partnerName=pp.name;b.partnerPhone=pp.phone;oycHist(b,'Assigned','admin → '+pp.name);note('partner',pp.id,'New job request',svcs(b)+' · '+when(b)+'. Open the app to accept.',PART);custNote(b,'Assigned')}
       else{b.partnerId='';b.partnerName='';b.partnerPhone='';oycHist(b,'Pending','admin unassigned')}}
     ['date','slot','address','landmark','notes','adminNotes','total','payMode','name'].forEach(function(k){if(f[k]!==undefined)b[k]=f[k]});
-    if(f.status&&f.status!==b.status)oycHist(b,f.status,'admin');b.updated=oycNow();return oycOk(oycPub(b),['bookings'])}
+    if(f.status&&f.status!==b.status){oycHist(b,f.status,'admin');custNote(b,f.status);if(f.status==='Cancelled'&&b.partnerId)note('partner',b.partnerId,'Job cancelled','Job '+b.id+' ('+svcs(b)+') was cancelled.',PART)}b.updated=oycNow();return oycOk(oycPub(b),['bookings'])}
   case 'adminSavePartner': {if(!isAdmin())return oycErr('Wrong admin PIN');var p=req.partner||{};
     if(!p.name||oycDigits(p.phone).length!==10)return oycErr('Partner needs a name and 10-digit mobile');
     var ex=p.id?findP(p.id):null;
     for(var i=0;i<db.partners.length;i++)if(db.partners[i]!==ex&&oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('Another partner has this mobile number');
     if(!ex){ex={id:'P'+(101+db.partners.length),joined:oycNow(),online:'no'};while(findP(ex.id))ex.id='P'+(Number(ex.id.slice(1))+1);db.partners.push(ex)}
-    ex.name=p.name;ex.phone=oycDigits(p.phone);if(p.aadhaar!==undefined)ex.aadhaar=String(p.aadhaar).replace(/\D/g,'');ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
+    var wasPending=ex.status==='Pending';ex.name=p.name;ex.phone=oycDigits(p.phone);if(p.aadhaar!==undefined)ex.aadhaar=String(p.aadhaar).replace(/\D/g,'');ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
     if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';var dc=p.docs||{};['photo','aadhaarFront','aadhaarBack'].forEach(function(k){var v=p[k]||dc[k];if(v)ex[k]=v});
+    if(wasPending&&ex.status==='Active')note('partner',ex.id,'Welcome to OYC!','Your partner account is approved. You will now receive job requests.',PART);
     return oycOk(JSON.parse(JSON.stringify(ex)),['partners'])}
   case 'adminSaveSettings': {if(!isAdmin())return oycErr('Wrong admin PIN');var ns=req.settings||{};
     var dirty=['settings'];
@@ -469,7 +487,10 @@ var OYC={
   APP:'https://onyourcall.in/oyc-app',
   PARTNER:'https://onyourcall.in/oyc-partner',
   ADMIN:'https://onyourcall.in/oyc-admin',
-  PRIVACY:'https://onyourcall.in/privacy'
+  PRIVACY:'https://onyourcall.in/privacy',
+  /* Store links – set the *_LIVE flags to true once each app is published */
+  PLAY_URL:'https://play.google.com/store/apps/details?id=in.onyourcall.app',PLAY_LIVE:false,
+  IOS_URL:'',IOS_LIVE:false
 };
 if(OYC.API.indexOf('%%')===0)OYC.API='';
 var IMG={
@@ -631,9 +652,23 @@ function api(action,payload){
     return fetch(OYC.API,{method:'POST',body:JSON.stringify(req)}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error||'Something went wrong');return j.data})
       .catch(function(e){if(e instanceof TypeError)throw new Error('No internet connection. Please try again.');throw e});
   }
-  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
+  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));delete db._notify;if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
 }
 function oycShrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
+/* ---- native app helpers (only active inside the Play Store / App Store apps) ---- */
+function oycNative(){try{return !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform())}catch(e){return false}}
+var _fm=null;
+function oycPushRegister(role,cred,onMsg){
+  if(!oycNative()||navigator.userAgent.indexOf('OYCPush')<0)return; /* the store build adds OYCPush only when Firebase is configured */
+  try{_fm=_fm||window.Capacitor.registerPlugin('FirebaseMessaging')}catch(e){return}
+  _fm.requestPermissions().then(function(p){if(!p||p.receive!=='granted')return null;return _fm.getToken()})
+   .then(function(r){if(!r||!r.token)return;var k='oyc_push_'+role,sig=r.token+'|'+JSON.stringify(cred);if(store(k)===sig)return;
+     return api('registerPush',Object.assign({role:role,token:r.token,platform:window.Capacitor.getPlatform()},cred)).then(function(){store(k,sig)})})
+   .catch(function(){});
+  if(!oycPushRegister._l){oycPushRegister._l=1;
+    _fm.addListener('notificationReceived',function(e){var n=(e&&e.notification)||{};toast((n.title||'OYC')+(n.body?': '+n.body:''));if(onMsg)onMsg(n)}).catch(function(){});
+    _fm.addListener('notificationActionPerformed',function(e){var u=e&&e.notification&&e.notification.data&&e.notification.data.url;if(onMsg)onMsg(e&&e.notification);if(u&&location.href.indexOf(u)!==0)location.href=u}).catch(function(){})}
+}
 function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
 /* install prompt */
 var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});
@@ -658,8 +693,17 @@ function render(s){({home:renderHome,cart:renderCart,bookings:function(){loadBoo
 /* login */
 function doLogin(){var p=oycDigits($('#lgPhone').value),n=$('#lgName').value.trim();
   if(p.length!==10||!/^[6-9]/.test(p))return toast('Enter a valid 10-digit mobile number');if(n.length<2)return toast('Please enter your name');
-  user={phone:p,name:n};store('oyc_user',user);store('oyc_seen',1);
+  user={phone:p,name:n};store('oyc_user',user);store('oyc_seen',1);custPush();
   if(window._afterLogin){var f=window._afterLogin;window._afterLogin=null;tab('home');f()}else tab('home')}
+var APPLE_SVG='<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.4-.9-2.4-3.9zM14 5.4c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.1-.6 2.8-1.4z"/></svg>';
+var PLAY_SVG='<svg viewBox="0 0 24 24" width="26" height="26"><path fill="#34A853" d="M3.6 2.2 13.4 12l-9.8 9.8c-.4-.2-.6-.6-.6-1.1V3.3c0-.5.2-.9.6-1.1z"/><path fill="#FBBC04" d="m16.7 15.3-3.3-3.3 3.3-3.3 3.8 2.2c1.1.6 1.1 1.6 0 2.2z"/><path fill="#4285F4" d="M16.7 8.7 13.4 12 3.6 2.2c.3-.2.8-.2 1.3.1z"/><path fill="#EA4335" d="m16.7 15.3-11.8 6.6c-.5.3-1 .3-1.3.1l9.8-9.8z"/></svg>';
+function openGetApp(){
+  $('#appBody').innerHTML='<button class="x" onclick="closeSheet()">'+ic('x')+'</button><div style="text-align:center;padding-top:8px"><img class="logo" src="'+OYC.LOGO+'" alt="On Your Call" style="width:84px;height:84px;margin:0 auto 10px;border-radius:18px"><h3 style="font-size:21px">Get the OYC app</h3><p class="muted" style="margin:4px 0 6px">Book faster and get a notification when your professional is assigned, on the way and done.</p></div>'+
+   '<a class="store'+(OYC.PLAY_LIVE?'':' off')+'" href="'+OYC.PLAY_URL+'" target="_blank" rel="noopener">'+PLAY_SVG+'<span><small>GET IT ON</small><b>Google Play</b></span>'+(OYC.PLAY_LIVE?'':'<span class="soon">Coming soon</span>')+'</a>'+
+   '<a class="store'+(OYC.IOS_LIVE?'':' off')+'" href="'+(OYC.IOS_URL||'#')+'" target="_blank" rel="noopener">'+APPLE_SVG+'<span><small>Download on the</small><b>App Store</b></span>'+(OYC.IOS_LIVE?'':'<span class="soon">Coming soon</span>')+'</a>'+
+   '<div class="hr"></div><button class="btn line block" onclick="installApp()">'+ic('down',18)+' Add OYC to your home screen now</button><p class="muted small" style="text-align:center;margin-top:8px">Works on any phone straight away, no download needed.</p>';
+  openSheet('app')}
+function custPush(){if(user)oycPushRegister('customer',{phone:user.phone},function(){if(cur==='bookings')loadBookings();if(cur==='booking')refreshDetail()})}
 function skipLogin(){store('oyc_seen',1);tab('home')}
 function needLogin(then){if(user)return true;window._afterLogin=then;$('#lgPhone').value='';show('login');return false}
 
@@ -794,7 +838,7 @@ function cancelB(btn){if(!confirm('Cancel this booking?'))return;busy(btn,true);
 function renderAccount(){var h='';
   if(user)h+='<div style="padding:20px 16px" class="row"><div style="width:58px;height:58px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800">'+esc(user.name.charAt(0).toUpperCase())+'</div><div class="grow"><h3 style="font-size:19px">'+esc(user.name)+'</h3><div class="muted">+91 '+esc(user.phone)+'</div></div></div><div class="sep" style="margin:0"></div>';
   else h+='<div style="padding:20px 16px"><h3>Welcome to On Your Call</h3><p class="muted">Log in to book and track services.</p><button class="btn" style="margin-top:8px" onclick="window._afterLogin=function(){tab(\'account\')};show(\'login\')">Login / Sign up</button></div><div class="sep" style="margin:0"></div>';
-  var rows=[['cal','My bookings',"tab('bookings')"],['pin','Manage addresses','openAddr()'],['help','Help & support','openHelp()'],['phone','Call OYC',"location.href='tel:"+OYC.PHONE+"'"],['shield','Join as a service partner',"location.href='"+OYC.PARTNER+"'"],['help','Privacy policy',"location.href='"+OYC.PRIVACY+"'"],['x','Delete my account',"location.href='"+OYC.PRIVACY+"#delete'"]];
+  var rows=[['cal','My bookings',"tab('bookings')"],['pin','Manage addresses','openAddr()'],['help','Help & support','openHelp()'],['phone','Call OYC',"location.href='tel:"+OYC.PHONE+"'"],['shield','Join as a service partner',"location.href='"+OYC.PARTNER+"'"],['help','Privacy policy',"location.href='"+OYC.PRIVACY+"'"],['x','Delete my account',"location.href='"+OYC.PRIVACY+"#delete'"]];if(!oycNative())rows.unshift(['down','Get the OYC app','openGetApp()']);
   if(_inst)rows.push(['down','Install the OYC app','installApp()']);
   h+=rows.map(function(r){return '<div class="acc-row" onclick="'+r[2]+'">'+ic(r[0])+'<span class="grow">'+r[1]+'</span>'+ic('right',18)+'</div>'}).join('');
   h+='<div class="acc-row" onclick="installApp()">'+ic('down')+'<span class="grow">Add OYC to home screen</span>'+ic('right',18)+'</div>';
@@ -805,7 +849,7 @@ function logout(){if(!confirm('Log out of OYC?'))return;user=null;localStorage.r
 function openHelp(){location.href=waLink(OYC.WA,'Hi OYC, I need help.')}
 
 /* boot */
-(function(){fillIcons(document);$('#pinIc').innerHTML=ic('pin',22);$('#dnIc').innerHTML=ic('down',16);$('#cartIc').innerHTML=ic('cart',22);$('#srIc').innerHTML=ic('search',18);
+(function(){if(oycNative())document.body.classList.add('native');custPush();fillIcons(document);$('#pinIc').innerHTML=ic('pin',22);$('#dnIc').innerHTML=ic('down',16);$('#cartIc').innerHTML=ic('cart',22);$('#srIc').innerHTML=ic('search',18);
   $$('.pi').forEach(function(e){e.innerHTML=ic(e.dataset.i,22)});$('#demoBar').classList.toggle('hide',!!OYC.API);
   api('catalog').then(function(c){applyCatalog(c);if(cur==='home')renderHome()}).catch(function(){});
   history.replaceState({s:'home'},'');

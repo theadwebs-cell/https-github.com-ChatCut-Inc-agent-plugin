@@ -72,5 +72,9 @@
 	<string>On Your Call uses the camera only if you choose to take a photo.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>On Your Call accesses photos only if you choose to upload one.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

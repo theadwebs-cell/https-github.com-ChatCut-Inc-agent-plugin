@@ -99,6 +99,22 @@ jobs:
           cp assets/splash.png assets/splash-dark.png
           npx --yes @capacitor/assets@3 generate --android
 
+      - name: Firebase config for push notifications
+        if: steps.sel.outputs.run == 'yes'
+        working-directory: oyc-mobile/${{ matrix.app }}
+        env:
+          GS_CUSTOMER: ${{ secrets.GOOGLE_SERVICES_JSON_CUSTOMER }}
+          GS_PARTNER: ${{ secrets.GOOGLE_SERVICES_JSON_PARTNER }}
+        run: |
+          if [ "${{ matrix.app }}" = "customer" ]; then GS="$GS_CUSTOMER"; else GS="$GS_PARTNER"; fi
+          if [ -n "$GS" ]; then
+            printf '%s' "$GS" > android/app/google-services.json
+            node -e "const f='capacitor.config.json',c=require('./'+f);c.appendUserAgent='OYCApp OYCPush';require('fs').writeFileSync(f,JSON.stringify(c,null,2))"
+            echo "Push notifications: ON"
+          else
+            echo "::warning::Push notifications OFF for ${{ matrix.app }} - add the GOOGLE_SERVICES_JSON_${{ matrix.app }} secret"
+          fi
+
       - name: Sync Capacitor
         if: steps.sel.outputs.run == 'yes'
         working-directory: oyc-mobile/${{ matrix.app }}
