@@ -3,7 +3,7 @@ var OYC={
   API:'%%API_URL%%',            /* Google Apps Script web-app URL. Empty = demo mode (data stays in this browser) */
   WA:'919866689196',            /* WhatsApp number bookings are sent to */
   PHONE:'9866689196',
-  LOGO:'https://media.flexifunnels.io/33238/images/oyc-logo_sgw4kngl.png',
+  LOGO:'https://media.flexifunnels.io/33238/images/image_wlhdndac.jpg',
   APP:'https://theadweb.flexifunnels.com/oyc-app',
   PARTNER:'https://theadweb.flexifunnels.com/oyc-partner',
   ADMIN:'https://theadweb.flexifunnels.com/oyc-admin'
