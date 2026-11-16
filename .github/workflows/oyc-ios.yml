@@ -25,6 +25,7 @@ jobs:
     runs-on: macos-15
     strategy:
       fail-fast: false
+      max-parallel: 1   # free accounts get one Mac at a time
       matrix:
         app: [customer, partner]
     env:
