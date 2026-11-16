@@ -12,12 +12,13 @@ function oycPartnerSafe(p){var c=JSON.parse(JSON.stringify(p));delete c.pin;retu
 function oycHist(b,s,by){b.history=b.history||[];b.history.push({s:s,t:oycNow(),by:by||''});b.status=s;b.updated=oycNow()}
 
 function oycHandle(db,req){
-  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};db.devices=db.devices||[];db._notify=[];
+  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};db.devices=db.devices||[];db._notify=[];db.tracking=db.tracking||{};
+  function trackOut(b){var t=db.tracking[b.id];return {id:b.id,status:b.status,partnerName:b.partnerName,partnerPhone:b.partnerPhone,lat:b.lat,lng:b.lng,address:b.address,loc:(b.status==='On the way'&&t)?t:null}}
   function note(role,key,title,body,url){if(key)db._notify.push({role:role,key:String(key),title:title,body:body,url:url||''})}
   function svcs(b){return (b.items||[]).map(function(i){return i.name}).join(', ')}
   function when(b){var p=String(b.date||'').split('-'),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return (p.length===3?(+p[2])+' '+M[+p[1]-1]:(b.date||''))+(b.slot?', '+b.slot:'')}
   var CUST='https://onyourcall.in/oyc-app',PART='https://onyourcall.in/oyc-partner';
-  function custNote(b,s,by){var m={'Assigned':['Professional assigned',(b.partnerName||'A professional')+' will handle your booking '+b.id+'.'],'Accepted':['Booking confirmed',(b.partnerName||'Your professional')+' confirmed '+svcs(b)+' for '+when(b)+'.'],'On the way':['Professional on the way',(b.partnerName||'Your professional')+' is on the way. Keep your 4-digit start code ready.'],'In progress':['Service started','Your '+svcs(b)+' has started.'],'Completed':['Service completed','Thank you for choosing On Your Call! Tap to rate your experience.'],'Cancelled':['Booking cancelled','Booking '+b.id+' has been cancelled.']}[s];if(m)note('customer',oycDigits(b.phone),m[0],m[1],CUST)}
+  function custNote(b,s,by){var m={'Assigned':['Professional assigned',(b.partnerName||'A professional')+' will handle your booking '+b.id+'.'],'Accepted':['Booking confirmed',(b.partnerName||'Your professional')+' confirmed '+svcs(b)+' for '+when(b)+'.'],'On the way':['Professional on the way',(b.partnerName||'Your professional')+' is on the way. Tap to track live.'],'In progress':['Service started','Your '+svcs(b)+' has started.'],'Completed':['Service completed','Thank you for choosing On Your Call! Tap to rate your experience.'],'Cancelled':['Booking cancelled','Booking '+b.id+' has been cancelled.']}[s];if(m)note('customer',oycDigits(b.phone),m[0],m[1],CUST+'#b='+b.id)}
   var S=db.settings,a=req.action;
   if(!S.adminPin)S.adminPin='1234';
   function findB(id){for(var i=0;i<db.bookings.length;i++)if(db.bookings[i].id===id)return db.bookings[i];return null}
@@ -81,7 +82,13 @@ function oycHandle(db,req){
     if(role==='partner'){var p=authPartner();if(!p)return oycErr('Session expired');key=p.id}else{key=oycDigits(req.phone);if(key.length!==10)return oycErr('Login required')}
     db.devices=db.devices.filter(function(d){return d.token!==tok});db.devices.push({token:tok,role:role,key:key,platform:String(req.platform||''),updated:oycNow()});
     return oycOk({ok:1},['devices'])}
+  case 'partnerLocation': {var p=authPartner();if(!p||p.status!=='Active')return oycErr('Session expired');var b=findB(req.id);if(!b||b.partnerId!==p.id)return oycErr('Job not found');
+    var la=Number(req.lat),ln=Number(req.lng);if(!isFinite(la)||!isFinite(ln)||Math.abs(la)>90||Math.abs(ln)>180)return oycErr('Bad location');
+    if(b.status==='On the way'){db.tracking[b.id]={lat:la.toFixed(6),lng:ln.toFixed(6),acc:Math.round(Number(req.acc)||0),at:oycNow()};db._track=b.id}
+    return oycOk({status:b.status})}
+  case 'trackBooking': {var b=findB(req.id);if(!b||oycDigits(b.phone)!==oycDigits(req.phone))return oycErr('Booking not found');return oycOk(trackOut(b))}
   /* ---------- admin ---------- */
+  case 'adminTrack': {if(!isAdmin())return oycErr('Wrong admin PIN');var b=findB(req.id);if(!b)return oycErr('Booking not found');return oycOk(trackOut(b))}
   case 'adminLogin': return isAdmin()?oycOk({ok:1}):oycErr('Wrong admin PIN');
   case 'adminData': {if(!isAdmin())return oycErr('Wrong admin PIN');var st=JSON.parse(JSON.stringify(S));delete st.adminPin;
     return oycOk({bookings:db.bookings.map(oycPub).reverse(),partners:db.partners.map(function(p){return JSON.parse(JSON.stringify(p))}),settings:st,services:db.services||[]})}
@@ -161,8 +168,10 @@ function doPost(e){
     if(OYC_ADMIN_PIN)db.settings.adminPin=OYC_ADMIN_PIN;
     if(!db.services.length){db.services=JSON.parse(JSON.stringify(OYC_SEED));oycSave(db,['services'])}
     if(req.action==='partnerApply'&&req.partner&&req.partner.docs)oycSaveDocs(req.partner);
+    if(req.action==='trackBooking'||req.action==='adminTrack'){var tc=CacheService.getScriptCache().get('oyc_loc_'+req.id);if(tc)db.tracking={};if(tc)db.tracking[req.id]=JSON.parse(tc)}
     if(req.action==='adminSavePartner'&&req.partner&&req.partner.docs&&String(req.pin||'')===String(db.settings.adminPin))oycSaveDocs(req.partner);
     var res=oycHandle(db,req);
+    if(res.ok&&db._track)CacheService.getScriptCache().put('oyc_loc_'+db._track,JSON.stringify(db.tracking[db._track]),21600);
     if(res.ok&&res.dirty&&res.dirty.length)oycSave(db,res.dirty);
     if(res.ok&&db._notify&&db._notify.length){try{if(oycPushSend(db))oycSave(db,['devices'])}catch(pe){console.log('push failed: '+pe)}}
     return oycOut({ok:res.ok,data:res.data,error:res.error});

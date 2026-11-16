@@ -87,6 +87,17 @@ For each app in App Store Connect:
 
 ---
 
+## Live GPS tracking – what to tell the stores (Partner app only)
+
+When a partner taps **"Start trip – I'm on the way"**, the Partner app shares their location every ~10 seconds, also in the background while Google Maps navigation is open. A notification ("OYC – On the way") shows while sharing. It stops automatically when the job starts. Customers see a live map with distance and arrival time; the admin panel shows it too.
+
+- **Google Play → App content → Foreground service permissions**: declare **Location** and explain: "Partners share their live location with the customer only while travelling to a booked job (after tapping 'On the way'). A visible notification is shown and sharing stops when the job starts." Google may ask for a short screen recording showing this, made from the test APK.
+- **Google Play → Data safety (partner app)**: add **Precise location** to the data collected, shared with customers, for app functionality.
+- **Apple → App Review notes (partner app)**: "Background location is used only while the partner is travelling to a job, after tapping 'On the way'. It lets the customer see the partner's arrival. It stops when the job starts."
+- **Apple → App Privacy (partner app)**: add **Precise Location**, linked to the user, used for app functionality.
+
+---
+
 ## Part 3 – Push notifications (Firebase, free)
 
 Push notifications work in the **store apps** only, not in the browser. They are sent automatically by your Google Sheet script:

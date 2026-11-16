@@ -172,7 +172,7 @@ function api(action,payload){
     return fetch(OYC.API,{method:'POST',body:JSON.stringify(req)}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error||'Something went wrong');return j.data})
       .catch(function(e){if(e instanceof TypeError)throw new Error('No internet connection. Please try again.');throw e});
   }
-  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));delete db._notify;if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
+  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));delete db._notify;delete db._track;if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
 }
 function oycShrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
 /* ---- native app helpers (only active inside the Play Store / App Store apps) ---- */
@@ -189,6 +189,27 @@ function oycPushRegister(role,cred,onMsg){
     _fm.addListener('notificationReceived',function(e){var n=(e&&e.notification)||{};toast((n.title||'OYC')+(n.body?': '+n.body:''));if(onMsg)onMsg(n)}).catch(function(){});
     _fm.addListener('notificationActionPerformed',function(e){var u=e&&e.notification&&e.notification.data&&e.notification.data.url;if(onMsg)onMsg(e&&e.notification);if(u&&location.href.indexOf(u)!==0)location.href=u}).catch(function(){})}
 }
+/* ---- live map (Leaflet + OpenStreetMap, no API key) ---- */
+var _leaf=null;
+function oycLeaflet(){if(window.L)return Promise.resolve(window.L);if(_leaf)return _leaf;_leaf=new Promise(function(res,rej){var c=document.createElement('link');c.rel='stylesheet';c.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';document.head.appendChild(c);var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';s.onload=function(){res(window.L)};s.onerror=function(){_leaf=null;rej(new Error('map'))};document.head.appendChild(s)});return _leaf}
+function oycDist(a,b){var R=6371,r=Math.PI/180,dLa=(b[0]-a[0])*r,dLn=(b[1]-a[1])*r,x=Math.pow(Math.sin(dLa/2),2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.pow(Math.sin(dLn/2),2);return 2*R*Math.asin(Math.sqrt(x))}
+function oycGeocode(addr){if(!addr)return Promise.resolve(null);var k='oyc_geo_'+addr,c=store(k);if(c)return Promise.resolve(c);
+  return fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=in&q='+encodeURIComponent(addr+', Hyderabad')).then(function(r){return r.json()}).then(function(j){if(j&&j[0]){var p=[+j[0].lat,+j[0].lon];store(k,p);return p}return null}).catch(function(){return null})}
+function LiveMap(el){this.el=el;this.m=null;this.p=null;this.h=null;this.fit=0}
+LiveMap.prototype.update=function(t){var self=this;
+  return oycLeaflet().then(function(L){var home=(t.lat&&t.lng)?Promise.resolve([+t.lat,+t.lng]):oycGeocode(t.address);
+    return home.then(function(hp){
+      if(!self.m){self.m=L.map(self.el,{attributionControl:true});L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(self.m);self.m.setView(hp||[17.385,78.4867],13)}
+      if(hp&&!self.h)self.h=L.marker(hp,{icon:L.divIcon({className:'',html:'<div class="lm-home">🏠</div>',iconSize:[34,34],iconAnchor:[17,17]})}).addTo(self.m);
+      var info={};
+      if(t.loc){var pp=[+t.loc.lat,+t.loc.lng];
+        if(!self.p)self.p=L.marker(pp,{icon:L.divIcon({className:'',html:'<div class="lm-pro">🛵</div>',iconSize:[38,38],iconAnchor:[19,19]})}).addTo(self.m);else self.p.setLatLng(pp);
+        if(hp){info.km=oycDist(pp,hp);if(!self.fit){self.m.fitBounds([pp,hp],{padding:[40,40],maxZoom:16});self.fit=1}}else self.m.setView(pp,15);
+        info.at=t.loc.at}
+      setTimeout(function(){self.m.invalidateSize()},50);return info})})};
+function liveText(info,name){if(!info||info.km==null)return (name||'Your professional')+' is on the way · waiting for live location…';
+  var km=info.km,eta=Math.max(1,Math.round(km*3.9)),ago=info.at?Math.max(0,Math.round((Date.now()-new Date(info.at))/1000)):0;
+  return '<b>'+(km<0.15?'Arriving now':(km<1?Math.round(km*1000)+' m':km.toFixed(1)+' km')+' away · about '+eta+' min')+'</b><div style="font-size:12px;color:#bbb">'+esc(name||'Professional')+' · updated '+(ago<60?ago+'s':Math.round(ago/60)+' min')+' ago</div>'}
 function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
 /* install prompt */
 var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});

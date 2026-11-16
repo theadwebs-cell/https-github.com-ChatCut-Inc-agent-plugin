@@ -209,7 +209,18 @@ function register(btn){var sk=$$('#rSkills .chip.on').map(function(c){return c.t
   busy(btn,true,'Uploading documents…');api('partnerApply',{partner:{name:$('#rName').value.trim(),phone:$('#rPhone').value,pin:$('#rPin').value.trim(),skills:sk.join(', '),zone:$('#rZone').value.trim(),notes:$('#rNotes').value.trim(),aadhaar:adh,docs:regDocs}})
   .then(function(){busy(btn,false);alert('Thank you! Your registration is submitted. OYC will call you to verify and activate your account.');location.href=waLink(OYC.WA,'Hi OYC, I have registered as a service partner. Name: '+$('#rName').value.trim()+', Mobile: '+oycDigits($('#rPhone').value)+', Services: '+sk.join(', '))})
   .catch(function(e){busy(btn,false);toast(e.message)})}
+var trk={id:null,w:null,last:0};
+function startTrack(id){if(trk.id===id)return;stopTrack();trk.id=id;
+  if(oycNative()){try{var BG=window._bg||(window._bg=window.Capacitor.registerPlugin('BackgroundGeolocation'));
+    BG.addWatcher({backgroundTitle:'OYC – On the way',backgroundMessage:'Sharing your live location with the customer',requestPermissions:true,stale:false,distanceFilter:15},
+      function(loc,err){if(err){if(err.code==='NOT_AUTHORIZED')toast('Please allow location so the customer can see you are on the way');return}if(loc)sendLoc(loc.latitude,loc.longitude,loc.accuracy)})
+      .then(function(wid){if(trk.id===id)trk.w={n:wid};else BG.removeWatcher({id:wid})});return}catch(e){}}
+  if(navigator.geolocation)trk.w={web:navigator.geolocation.watchPosition(function(p){sendLoc(p.coords.latitude,p.coords.longitude,p.coords.accuracy)},function(e){if(e&&e.code===1)toast('Please allow location so the customer can track you')},{enableHighAccuracy:true,maximumAge:5000,timeout:30000})}}
+function stopTrack(){if(trk.w){try{if(trk.w.n)window._bg.removeWatcher({id:trk.w.n});if(trk.w.web!=null)navigator.geolocation.clearWatch(trk.w.web)}catch(e){}}trk={id:null,w:null,last:0}}
+function sendLoc(la,ln,acc){var now=Date.now();if(!trk.id||now-trk.last<10000)return;trk.last=now;
+  api('partnerLocation',Object.assign({id:trk.id,lat:la,lng:ln,acc:acc},sess)).then(function(r){if(r&&r.status!=='On the way')stopTrack()}).catch(function(){})}
 function refresh(manual){if(!sess)return;return api('partnerJobs',sess).then(function(r){me=r.partner;var before=jobs.map(function(j){return j.id+j.status}).join();jobs=r.jobs;
+  var ow=jobs.filter(function(j){return j.status==='On the way'})[0];if(ow)startTrack(ow.id);else if(trk.id)stopTrack();
   var fresh=jobs.filter(function(j){return j.status==='Assigned'&&seenNew.indexOf(j.id)<0});if(fresh.length){alertNew(fresh.length);fresh.forEach(function(j){seenNew.push(j.id)});store('oyc_seen_jobs',seenNew.slice(-200))}
   if(manual)toast('Updated');if(cur==='jobs')drawJobs();if(cur==='job')drawJob();if(cur==='earn')drawEarn();head()})
   .catch(function(e){if(/Session|PIN|log in/i.test(e.message)){logout(true);toast(e.message)}else if(manual)toast(e.message)})}
@@ -245,6 +256,7 @@ function drawJob(){var j=jobOf(openId);if(!j){$('#jdBody').innerHTML='<div class
   else if(j.status==='Accepted')a='<button class="btn block gold" onclick="act(\''+j.id+'\',\'onway\',this)">'+ic('nav',18)+' Start trip – I’m on the way</button>';
   else if(j.status==='On the way')a='<button class="btn block" onclick="openOtp()">Reached – Start job</button>';
   else if(j.status==='In progress')a='<button class="btn block" style="background:var(--ok)" onclick="openDone()">'+ic('check',18)+' Complete job</button>';
+  if(j.status==='On the way')h=h.replace('<div class="blk">','<div class="blk" style="background:#111;color:#fff"><div class="row"><span class="livedot"></span><b style="color:#f0d79f">Live location ON</b></div><div class="small" style="color:#ccc;margin-top:4px">The customer can see you on a map until you start the job. Keep location turned on.</div></div><div class="blk">');
   if(a)h+='<div class="bigact">'+a+'</div>';
   if(j.status==='Accepted')h=h.replace('<div class="bigact">','<div class="bigact"><button class="btn ghost sm block" style="margin-bottom:8px" onclick="openOtp()">Already at the location? Start job</button>');
   $('#jdBody').innerHTML=h}
@@ -266,7 +278,7 @@ function drawProfile(){if(!me)return;var rated=jobs.filter(function(j){return j.
   '<div class="blk"><div class="row" style="gap:24px"><div><b style="font-size:20px">'+avg+'</b><div class="muted small">Customer rating</div></div><div><b style="font-size:20px">'+jobs.filter(function(j){return j.status==='Completed'}).length+'</b><div class="muted small">Jobs completed</div></div></div></div>'+
   '<div class="blk"><div class="muted small">Services</div><div style="margin:4px 0 12px">'+esc(me.skills||'–')+'</div><div class="muted small">Work area</div><div>'+esc(me.zone||'–')+'</div></div>'+
   '<div class="blk"><a class="btn line block" href="'+waLink(OYC.WA,'Hi OYC, this is partner '+me.name+' ('+me.id+'). I need help.')+'" target="_blank" rel="noopener">'+WA_SVG+' WhatsApp OYC support</a><a class="btn line block" style="margin-top:8px" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+' Call OYC operations</a><button class="btn line block" style="margin-top:8px" onclick="installApp()">'+ic('down',16)+' Add app to home screen</button><button class="btn line block" style="margin-top:8px;color:var(--bad)" onclick="logout()">'+ic('logout',16)+' Logout</button><a class="btn ghost sm block" style="margin-top:8px" href="'+OYC.PRIVACY+'">Privacy policy · Delete account</a></div>'}
-function logout(silent){if(!silent&&!confirm('Logout?'))return;sess=null;me=null;jobs=[];localStorage.removeItem('oyc_partner');if(pollT)clearInterval(pollT);show('login')}
+function logout(silent){stopTrack();if(!silent&&!confirm('Logout?'))return;sess=null;me=null;jobs=[];localStorage.removeItem('oyc_partner');if(pollT)clearInterval(pollT);show('login')}
 function boot(){$('#demoBar').classList.toggle('hide',!!OYC.API);if(!sess){show('login');return}oycPushRegister('partner',{phone:sess.phone,pin:sess.pin},function(){refresh()});show('jobs');$('#jList').innerHTML='<div class="empty"><span class="spin"></span></div>';refresh();if(pollT)clearInterval(pollT);pollT=setInterval(refresh,20000)}
 fillIcons(document);boot();document.addEventListener('visibilitychange',function(){if(!document.hidden&&sess)refresh()});
 </script>

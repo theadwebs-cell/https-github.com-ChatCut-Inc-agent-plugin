@@ -50,8 +50,10 @@ function doPost(e){
     if(OYC_ADMIN_PIN)db.settings.adminPin=OYC_ADMIN_PIN;
     if(!db.services.length){db.services=JSON.parse(JSON.stringify(OYC_SEED));oycSave(db,['services'])}
     if(req.action==='partnerApply'&&req.partner&&req.partner.docs)oycSaveDocs(req.partner);
+    if(req.action==='trackBooking'||req.action==='adminTrack'){var tc=CacheService.getScriptCache().get('oyc_loc_'+req.id);if(tc)db.tracking={};if(tc)db.tracking[req.id]=JSON.parse(tc)}
     if(req.action==='adminSavePartner'&&req.partner&&req.partner.docs&&String(req.pin||'')===String(db.settings.adminPin))oycSaveDocs(req.partner);
     var res=oycHandle(db,req);
+    if(res.ok&&db._track)CacheService.getScriptCache().put('oyc_loc_'+db._track,JSON.stringify(db.tracking[db._track]),21600);
     if(res.ok&&res.dirty&&res.dirty.length)oycSave(db,res.dirty);
     if(res.ok&&db._notify&&db._notify.length){try{if(oycPushSend(db))oycSave(db,['devices'])}catch(pe){console.log('push failed: '+pe)}}
     return oycOut({ok:res.ok,data:res.data,error:res.error});

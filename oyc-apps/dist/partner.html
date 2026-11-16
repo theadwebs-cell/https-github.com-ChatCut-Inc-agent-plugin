@@ -58,6 +58,10 @@ textarea.inp{min-height:80px;resize:vertical}
 .tl .s b{display:block;font-size:14px}
 .empty{text-align:center;padding:50px 20px;color:var(--mute)}
 .empty svg{color:#c9c9c9;margin:0 auto 10px}
+.lm-pro,.lm-home{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:20px;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+.lm-pro{background:#111;border:3px solid #c89b3c;animation:lmp 1.6s infinite}.lm-home{background:#fff;border:3px solid #111;width:34px;height:34px;font-size:17px}
+@keyframes lmp{0%{box-shadow:0 0 0 0 rgba(200,155,60,.6)}70%{box-shadow:0 0 0 14px rgba(200,155,60,0)}100%{box-shadow:0 0 0 0 rgba(200,155,60,0)}}
+.livemap{height:260px;width:100%;background:#eee}.livebar{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#111;color:#fff}.livebar b{color:#f0d79f}.livedot{width:9px;height:9px;border-radius:50%;background:#2ecc71;box-shadow:0 0 0 0 rgba(46,204,113,.7);animation:lmp 1.6s infinite;flex:none}
 
 body{background:#f2f2f2}
 .app{max-width:520px;margin:0 auto;min-height:100vh;background:#f6f6f6;position:relative}
@@ -246,12 +250,13 @@ function oycPartnerSafe(p){var c=JSON.parse(JSON.stringify(p));delete c.pin;retu
 function oycHist(b,s,by){b.history=b.history||[];b.history.push({s:s,t:oycNow(),by:by||''});b.status=s;b.updated=oycNow()}
 
 function oycHandle(db,req){
-  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};db.devices=db.devices||[];db._notify=[];
+  db.bookings=db.bookings||[];db.partners=db.partners||[];db.settings=db.settings||{};db.devices=db.devices||[];db._notify=[];db.tracking=db.tracking||{};
+  function trackOut(b){var t=db.tracking[b.id];return {id:b.id,status:b.status,partnerName:b.partnerName,partnerPhone:b.partnerPhone,lat:b.lat,lng:b.lng,address:b.address,loc:(b.status==='On the way'&&t)?t:null}}
   function note(role,key,title,body,url){if(key)db._notify.push({role:role,key:String(key),title:title,body:body,url:url||''})}
   function svcs(b){return (b.items||[]).map(function(i){return i.name}).join(', ')}
   function when(b){var p=String(b.date||'').split('-'),M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return (p.length===3?(+p[2])+' '+M[+p[1]-1]:(b.date||''))+(b.slot?', '+b.slot:'')}
   var CUST='https://onyourcall.in/oyc-app',PART='https://onyourcall.in/oyc-partner';
-  function custNote(b,s,by){var m={'Assigned':['Professional assigned',(b.partnerName||'A professional')+' will handle your booking '+b.id+'.'],'Accepted':['Booking confirmed',(b.partnerName||'Your professional')+' confirmed '+svcs(b)+' for '+when(b)+'.'],'On the way':['Professional on the way',(b.partnerName||'Your professional')+' is on the way. Keep your 4-digit start code ready.'],'In progress':['Service started','Your '+svcs(b)+' has started.'],'Completed':['Service completed','Thank you for choosing On Your Call! Tap to rate your experience.'],'Cancelled':['Booking cancelled','Booking '+b.id+' has been cancelled.']}[s];if(m)note('customer',oycDigits(b.phone),m[0],m[1],CUST)}
+  function custNote(b,s,by){var m={'Assigned':['Professional assigned',(b.partnerName||'A professional')+' will handle your booking '+b.id+'.'],'Accepted':['Booking confirmed',(b.partnerName||'Your professional')+' confirmed '+svcs(b)+' for '+when(b)+'.'],'On the way':['Professional on the way',(b.partnerName||'Your professional')+' is on the way. Tap to track live.'],'In progress':['Service started','Your '+svcs(b)+' has started.'],'Completed':['Service completed','Thank you for choosing On Your Call! Tap to rate your experience.'],'Cancelled':['Booking cancelled','Booking '+b.id+' has been cancelled.']}[s];if(m)note('customer',oycDigits(b.phone),m[0],m[1],CUST+'#b='+b.id)}
   var S=db.settings,a=req.action;
   if(!S.adminPin)S.adminPin='1234';
   function findB(id){for(var i=0;i<db.bookings.length;i++)if(db.bookings[i].id===id)return db.bookings[i];return null}
@@ -315,7 +320,13 @@ function oycHandle(db,req){
     if(role==='partner'){var p=authPartner();if(!p)return oycErr('Session expired');key=p.id}else{key=oycDigits(req.phone);if(key.length!==10)return oycErr('Login required')}
     db.devices=db.devices.filter(function(d){return d.token!==tok});db.devices.push({token:tok,role:role,key:key,platform:String(req.platform||''),updated:oycNow()});
     return oycOk({ok:1},['devices'])}
+  case 'partnerLocation': {var p=authPartner();if(!p||p.status!=='Active')return oycErr('Session expired');var b=findB(req.id);if(!b||b.partnerId!==p.id)return oycErr('Job not found');
+    var la=Number(req.lat),ln=Number(req.lng);if(!isFinite(la)||!isFinite(ln)||Math.abs(la)>90||Math.abs(ln)>180)return oycErr('Bad location');
+    if(b.status==='On the way'){db.tracking[b.id]={lat:la.toFixed(6),lng:ln.toFixed(6),acc:Math.round(Number(req.acc)||0),at:oycNow()};db._track=b.id}
+    return oycOk({status:b.status})}
+  case 'trackBooking': {var b=findB(req.id);if(!b||oycDigits(b.phone)!==oycDigits(req.phone))return oycErr('Booking not found');return oycOk(trackOut(b))}
   /* ---------- admin ---------- */
+  case 'adminTrack': {if(!isAdmin())return oycErr('Wrong admin PIN');var b=findB(req.id);if(!b)return oycErr('Booking not found');return oycOk(trackOut(b))}
   case 'adminLogin': return isAdmin()?oycOk({ok:1}):oycErr('Wrong admin PIN');
   case 'adminData': {if(!isAdmin())return oycErr('Wrong admin PIN');var st=JSON.parse(JSON.stringify(S));delete st.adminPin;
     return oycOk({bookings:db.bookings.map(oycPub).reverse(),partners:db.partners.map(function(p){return JSON.parse(JSON.stringify(p))}),settings:st,services:db.services||[]})}
@@ -518,7 +529,7 @@ function api(action,payload){
     return fetch(OYC.API,{method:'POST',body:JSON.stringify(req)}).then(function(r){return r.json()}).then(function(j){if(!j.ok)throw new Error(j.error||'Something went wrong');return j.data})
       .catch(function(e){if(e instanceof TypeError)throw new Error('No internet connection. Please try again.');throw e});
   }
-  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));delete db._notify;if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
+  return new Promise(function(res,rej){setTimeout(function(){var db=oycLocalDb();var r=oycHandle(db,JSON.parse(JSON.stringify(req)));delete db._notify;delete db._track;if(!r.ok)return rej(new Error(r.error));store('oyc_demo_db',db);res(JSON.parse(JSON.stringify(r.data)))},150)});
 }
 function oycShrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
 /* ---- native app helpers (only active inside the Play Store / App Store apps) ---- */
@@ -535,6 +546,27 @@ function oycPushRegister(role,cred,onMsg){
     _fm.addListener('notificationReceived',function(e){var n=(e&&e.notification)||{};toast((n.title||'OYC')+(n.body?': '+n.body:''));if(onMsg)onMsg(n)}).catch(function(){});
     _fm.addListener('notificationActionPerformed',function(e){var u=e&&e.notification&&e.notification.data&&e.notification.data.url;if(onMsg)onMsg(e&&e.notification);if(u&&location.href.indexOf(u)!==0)location.href=u}).catch(function(){})}
 }
+/* ---- live map (Leaflet + OpenStreetMap, no API key) ---- */
+var _leaf=null;
+function oycLeaflet(){if(window.L)return Promise.resolve(window.L);if(_leaf)return _leaf;_leaf=new Promise(function(res,rej){var c=document.createElement('link');c.rel='stylesheet';c.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';document.head.appendChild(c);var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';s.onload=function(){res(window.L)};s.onerror=function(){_leaf=null;rej(new Error('map'))};document.head.appendChild(s)});return _leaf}
+function oycDist(a,b){var R=6371,r=Math.PI/180,dLa=(b[0]-a[0])*r,dLn=(b[1]-a[1])*r,x=Math.pow(Math.sin(dLa/2),2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.pow(Math.sin(dLn/2),2);return 2*R*Math.asin(Math.sqrt(x))}
+function oycGeocode(addr){if(!addr)return Promise.resolve(null);var k='oyc_geo_'+addr,c=store(k);if(c)return Promise.resolve(c);
+  return fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=in&q='+encodeURIComponent(addr+', Hyderabad')).then(function(r){return r.json()}).then(function(j){if(j&&j[0]){var p=[+j[0].lat,+j[0].lon];store(k,p);return p}return null}).catch(function(){return null})}
+function LiveMap(el){this.el=el;this.m=null;this.p=null;this.h=null;this.fit=0}
+LiveMap.prototype.update=function(t){var self=this;
+  return oycLeaflet().then(function(L){var home=(t.lat&&t.lng)?Promise.resolve([+t.lat,+t.lng]):oycGeocode(t.address);
+    return home.then(function(hp){
+      if(!self.m){self.m=L.map(self.el,{attributionControl:true});L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(self.m);self.m.setView(hp||[17.385,78.4867],13)}
+      if(hp&&!self.h)self.h=L.marker(hp,{icon:L.divIcon({className:'',html:'<div class="lm-home">🏠</div>',iconSize:[34,34],iconAnchor:[17,17]})}).addTo(self.m);
+      var info={};
+      if(t.loc){var pp=[+t.loc.lat,+t.loc.lng];
+        if(!self.p)self.p=L.marker(pp,{icon:L.divIcon({className:'',html:'<div class="lm-pro">🛵</div>',iconSize:[38,38],iconAnchor:[19,19]})}).addTo(self.m);else self.p.setLatLng(pp);
+        if(hp){info.km=oycDist(pp,hp);if(!self.fit){self.m.fitBounds([pp,hp],{padding:[40,40],maxZoom:16});self.fit=1}}else self.m.setView(pp,15);
+        info.at=t.loc.at}
+      setTimeout(function(){self.m.invalidateSize()},50);return info})})};
+function liveText(info,name){if(!info||info.km==null)return (name||'Your professional')+' is on the way · waiting for live location…';
+  var km=info.km,eta=Math.max(1,Math.round(km*3.9)),ago=info.at?Math.max(0,Math.round((Date.now()-new Date(info.at))/1000)):0;
+  return '<b>'+(km<0.15?'Arriving now':(km<1?Math.round(km*1000)+' m':km.toFixed(1)+' km')+' away · about '+eta+' min')+'</b><div style="font-size:12px;color:#bbb">'+esc(name||'Professional')+' · updated '+(ago<60?ago+'s':Math.round(ago/60)+' min')+' ago</div>'}
 function busy(btn,on,label){if(!btn)return;if(on){btn._l=btn.innerHTML;btn.disabled=true;btn.innerHTML='<span class="spin"></span>'+(label||'Please wait…')}else{btn.disabled=false;if(btn._l)btn.innerHTML=btn._l}}
 /* install prompt */
 var _inst=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();_inst=e;$$('[data-install]').forEach(function(b){b.style.display=''})});
@@ -561,7 +593,18 @@ function register(btn){var sk=$$('#rSkills .chip.on').map(function(c){return c.t
   busy(btn,true,'Uploading documents…');api('partnerApply',{partner:{name:$('#rName').value.trim(),phone:$('#rPhone').value,pin:$('#rPin').value.trim(),skills:sk.join(', '),zone:$('#rZone').value.trim(),notes:$('#rNotes').value.trim(),aadhaar:adh,docs:regDocs}})
   .then(function(){busy(btn,false);alert('Thank you! Your registration is submitted. OYC will call you to verify and activate your account.');location.href=waLink(OYC.WA,'Hi OYC, I have registered as a service partner. Name: '+$('#rName').value.trim()+', Mobile: '+oycDigits($('#rPhone').value)+', Services: '+sk.join(', '))})
   .catch(function(e){busy(btn,false);toast(e.message)})}
+var trk={id:null,w:null,last:0};
+function startTrack(id){if(trk.id===id)return;stopTrack();trk.id=id;
+  if(oycNative()){try{var BG=window._bg||(window._bg=window.Capacitor.registerPlugin('BackgroundGeolocation'));
+    BG.addWatcher({backgroundTitle:'OYC – On the way',backgroundMessage:'Sharing your live location with the customer',requestPermissions:true,stale:false,distanceFilter:15},
+      function(loc,err){if(err){if(err.code==='NOT_AUTHORIZED')toast('Please allow location so the customer can see you are on the way');return}if(loc)sendLoc(loc.latitude,loc.longitude,loc.accuracy)})
+      .then(function(wid){if(trk.id===id)trk.w={n:wid};else BG.removeWatcher({id:wid})});return}catch(e){}}
+  if(navigator.geolocation)trk.w={web:navigator.geolocation.watchPosition(function(p){sendLoc(p.coords.latitude,p.coords.longitude,p.coords.accuracy)},function(e){if(e&&e.code===1)toast('Please allow location so the customer can track you')},{enableHighAccuracy:true,maximumAge:5000,timeout:30000})}}
+function stopTrack(){if(trk.w){try{if(trk.w.n)window._bg.removeWatcher({id:trk.w.n});if(trk.w.web!=null)navigator.geolocation.clearWatch(trk.w.web)}catch(e){}}trk={id:null,w:null,last:0}}
+function sendLoc(la,ln,acc){var now=Date.now();if(!trk.id||now-trk.last<10000)return;trk.last=now;
+  api('partnerLocation',Object.assign({id:trk.id,lat:la,lng:ln,acc:acc},sess)).then(function(r){if(r&&r.status!=='On the way')stopTrack()}).catch(function(){})}
 function refresh(manual){if(!sess)return;return api('partnerJobs',sess).then(function(r){me=r.partner;var before=jobs.map(function(j){return j.id+j.status}).join();jobs=r.jobs;
+  var ow=jobs.filter(function(j){return j.status==='On the way'})[0];if(ow)startTrack(ow.id);else if(trk.id)stopTrack();
   var fresh=jobs.filter(function(j){return j.status==='Assigned'&&seenNew.indexOf(j.id)<0});if(fresh.length){alertNew(fresh.length);fresh.forEach(function(j){seenNew.push(j.id)});store('oyc_seen_jobs',seenNew.slice(-200))}
   if(manual)toast('Updated');if(cur==='jobs')drawJobs();if(cur==='job')drawJob();if(cur==='earn')drawEarn();head()})
   .catch(function(e){if(/Session|PIN|log in/i.test(e.message)){logout(true);toast(e.message)}else if(manual)toast(e.message)})}
@@ -597,6 +640,7 @@ function drawJob(){var j=jobOf(openId);if(!j){$('#jdBody').innerHTML='<div class
   else if(j.status==='Accepted')a='<button class="btn block gold" onclick="act(\''+j.id+'\',\'onway\',this)">'+ic('nav',18)+' Start trip – I’m on the way</button>';
   else if(j.status==='On the way')a='<button class="btn block" onclick="openOtp()">Reached – Start job</button>';
   else if(j.status==='In progress')a='<button class="btn block" style="background:var(--ok)" onclick="openDone()">'+ic('check',18)+' Complete job</button>';
+  if(j.status==='On the way')h=h.replace('<div class="blk">','<div class="blk" style="background:#111;color:#fff"><div class="row"><span class="livedot"></span><b style="color:#f0d79f">Live location ON</b></div><div class="small" style="color:#ccc;margin-top:4px">The customer can see you on a map until you start the job. Keep location turned on.</div></div><div class="blk">');
   if(a)h+='<div class="bigact">'+a+'</div>';
   if(j.status==='Accepted')h=h.replace('<div class="bigact">','<div class="bigact"><button class="btn ghost sm block" style="margin-bottom:8px" onclick="openOtp()">Already at the location? Start job</button>');
   $('#jdBody').innerHTML=h}
@@ -618,7 +662,7 @@ function drawProfile(){if(!me)return;var rated=jobs.filter(function(j){return j.
   '<div class="blk"><div class="row" style="gap:24px"><div><b style="font-size:20px">'+avg+'</b><div class="muted small">Customer rating</div></div><div><b style="font-size:20px">'+jobs.filter(function(j){return j.status==='Completed'}).length+'</b><div class="muted small">Jobs completed</div></div></div></div>'+
   '<div class="blk"><div class="muted small">Services</div><div style="margin:4px 0 12px">'+esc(me.skills||'–')+'</div><div class="muted small">Work area</div><div>'+esc(me.zone||'–')+'</div></div>'+
   '<div class="blk"><a class="btn line block" href="'+waLink(OYC.WA,'Hi OYC, this is partner '+me.name+' ('+me.id+'). I need help.')+'" target="_blank" rel="noopener">'+WA_SVG+' WhatsApp OYC support</a><a class="btn line block" style="margin-top:8px" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+' Call OYC operations</a><button class="btn line block" style="margin-top:8px" onclick="installApp()">'+ic('down',16)+' Add app to home screen</button><button class="btn line block" style="margin-top:8px;color:var(--bad)" onclick="logout()">'+ic('logout',16)+' Logout</button><a class="btn ghost sm block" style="margin-top:8px" href="'+OYC.PRIVACY+'">Privacy policy · Delete account</a></div>'}
-function logout(silent){if(!silent&&!confirm('Logout?'))return;sess=null;me=null;jobs=[];localStorage.removeItem('oyc_partner');if(pollT)clearInterval(pollT);show('login')}
+function logout(silent){stopTrack();if(!silent&&!confirm('Logout?'))return;sess=null;me=null;jobs=[];localStorage.removeItem('oyc_partner');if(pollT)clearInterval(pollT);show('login')}
 function boot(){$('#demoBar').classList.toggle('hide',!!OYC.API);if(!sess){show('login');return}oycPushRegister('partner',{phone:sess.phone,pin:sess.pin},function(){refresh()});show('jobs');$('#jList').innerHTML='<div class="empty"><span class="spin"></span></div>';refresh();if(pollT)clearInterval(pollT);pollT=setInterval(refresh,20000)}
 fillIcons(document);boot();document.addEventListener('visibilitychange',function(){if(!document.hidden&&sess)refresh()});
 </script>

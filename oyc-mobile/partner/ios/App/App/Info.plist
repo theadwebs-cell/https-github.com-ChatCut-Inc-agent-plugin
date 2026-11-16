@@ -71,10 +71,13 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>OYC Partner lets you choose your photo and Aadhaar card images from your gallery for verification.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>OYC Partner uses your location to help you navigate to the customer.</string>
+	<string>OYC Partner shares your live location with the customer while you are on the way to a job, and stops when you start the job.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>location</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>OYC Partner keeps sharing your live location with the customer while you navigate to a job, even if the app is in the background. Sharing stops when you start the job.</string>
 </dict>
 </plist>

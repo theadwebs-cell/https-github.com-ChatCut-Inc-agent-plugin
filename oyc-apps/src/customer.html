@@ -331,7 +331,7 @@ function fillIcons(r){$$('[data-ic]',r).forEach(function(e){if(!e.firstChild||e.
 function show(s){$$('.scr').forEach(function(x){x.classList.toggle('on',x.id==='s-'+s)});cur=s;
   var nav=['home','bookings','account'].indexOf(s)>=0;$('#bnav').classList.toggle('hide',!nav);
   $$('.bnav button').forEach(function(b){b.classList.toggle('on',b.dataset.t===s)});updateCartBar();window.scrollTo(0,0);
-  if(s!=='booking'&&pollT){clearInterval(pollT);pollT=null}}
+  if(s!=='booking'&&pollT){clearInterval(pollT);pollT=null}if(s!=='booking')stopLive()}
 function go(s,noPush){if(cur&&cur!==s&&!noPush){stack.push(cur);history.pushState({s:s},'')}render(s);show(s)}
 function back(){if(stack.length){history.back()}else go('home',true)}
 addEventListener('popstate',function(){var s=stack.pop()||'home';if($('.sheetbg.open')){closeSheet(true)}render(s);show(s)});
@@ -470,6 +470,7 @@ function refreshDetail(){if(!user||!detail)return;api('myBookings',{phone:user.p
 function drawDetail(){var b=detail;if(!b||!b.items){$('#bdBody').innerHTML='<div class="empty"><span class="spin"></span></div>';return}
   $('#bdTitle').textContent=b.id;var idx=STATUS_FLOW.indexOf(b.status),canc=b.status==='Cancelled';
   var h='<div style="padding:16px 0"><span class="badge '+stCls(b.status)+'">'+esc(STATUS_LABEL[b.status]||b.status)+'</span><h2 style="font-size:20px;margin:10px 0 4px">'+esc((b.items||[]).map(function(i){return i.name}).join(', '))+'</h2><div class="muted">'+esc(fmtDate(b.date))+', '+esc(b.slot)+'</div></div>';
+  if(b.status==='On the way')h+='<div class="card" style="margin-bottom:12px;padding:0;overflow:hidden" id="liveHost"></div>';
   if(b.partnerName&&!canc)h+='<div class="card row" style="margin-bottom:12px"><div style="width:46px;height:46px;border-radius:50%;background:var(--goldbg);display:grid;place-items:center;font-weight:800;color:var(--gold2)">'+esc(b.partnerName.charAt(0))+'</div><div class="grow"><b>'+esc(b.partnerName)+'</b><div class="muted">Your OYC professional</div></div><a class="btn line sm" href="tel:'+esc(b.partnerPhone)+'">'+ic('phone',16)+'Call</a></div>';
   if(!canc&&b.status!=='Completed')h+='<div class="card" style="text-align:center;margin-bottom:12px"><b>Start code</b><p class="muted" style="margin:4px 0 12px">Share with the professional when they arrive</p><div class="otp">'+String(b.otp).split('').map(function(d){return '<span>'+d+'</span>'}).join('')+'</div></div>';
   if(!canc){h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:12px">Booking status</b><div class="tl">'+STATUS_FLOW.map(function(s,i){var hs=(b.history||[]).filter(function(x){return x.s===s}).pop();return '<div class="s '+(i<idx||b.status==='Completed'&&i===idx?'done':i===idx?'now':'')+'"><b>'+esc(STATUS_LABEL[s])+'</b><span class="muted small">'+(hs?fmtTime(hs.t):'')+'</span></div>'}).join('')+'</div></div>'}
@@ -477,7 +478,13 @@ function drawDetail(){var b=detail;if(!b||!b.items){$('#bdBody').innerHTML='<div
   h+='<div class="card" style="margin-bottom:12px"><b style="display:block;margin-bottom:8px">Service address</b><div class="small" style="margin-bottom:10px">'+esc(b.address)+(b.landmark?' · '+esc(b.landmark):'')+'</div><iframe class="map" src="'+mapEmbed(b)+'" loading="lazy" title="Map"></iframe></div>';
   if(b.status==='Completed'){h+='<div class="card" style="margin-bottom:12px"><b>'+(b.rating?'Your rating':'Rate your experience')+'</b><div class="stars" id="rStars" style="margin:10px 0">'+[1,2,3,4,5].map(function(n){return '<button class="'+(n<=(b.rating||0)?'on':'')+'" onclick="setStars('+n+')">'+ic('star',30,1.5)+'</button>'}).join('')+'</div>'+(b.rating?'<p class="small">'+esc(b.review||'')+'</p>':'<textarea class="inp" id="rText" placeholder="Tell us about the service (optional)"></textarea><button class="btn block" style="margin-top:10px" onclick="sendRating(this)">Submit rating</button>')+'</div>'}
   h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 30px"><a class="btn wa" href="'+waLink(OYC.WA,'Hi OYC, I need help with booking '+b.id+'.')+'" target="_blank" rel="noopener">'+WA_SVG+'Help</a>'+(['Pending','Assigned','Accepted'].indexOf(b.status)>=0?'<button class="btn line" style="color:var(--bad)" onclick="cancelB(this)">Cancel booking</button>':'<a class="btn line" href="tel:'+OYC.PHONE+'">'+ic('phone',16)+'Call OYC</a>')+'</div>';
-  $('#bdBody').innerHTML=h}
+  $('#bdBody').innerHTML=h;mountLive(b)}
+var liveCard=null,liveMap=null,liveT=null,liveId='';
+function mountLive(b){var host=$('#liveHost');if(!host||b.status!=='On the way'){stopLive();return}
+  if(!liveCard||liveId!==b.id){stopLive();liveId=b.id;liveCard=document.createElement('div');liveCard.innerHTML='<div class="livebar"><span class="livedot"></span><div id="liveTxt" style="flex:1;font-size:14px">Connecting to live location…</div></div><div class="livemap" id="liveMapEl"></div>';liveMap=null}
+  host.appendChild(liveCard);if(!liveMap)liveMap=new LiveMap(liveCard.querySelector('#liveMapEl'));pollLive();if(!liveT)liveT=setInterval(pollLive,8000)}
+function pollLive(){if(!user||!liveId)return;api('trackBooking',{id:liveId,phone:user.phone}).then(function(t){if(t.status!=='On the way'){refreshDetail();return}return liveMap.update(t).then(function(info){var x=liveCard&&liveCard.querySelector('#liveTxt');if(x)x.innerHTML=liveText(info,t.partnerName)})}).catch(function(){})}
+function stopLive(){if(liveT)clearInterval(liveT);liveT=null;liveId='';liveCard=null;liveMap=null}
 var stars=0;function setStars(n){if(detail.rating)return;stars=n;$$('#rStars button').forEach(function(b,i){b.classList.toggle('on',i<n)})}
 function sendRating(btn){if(!stars)return toast('Tap the stars to rate');busy(btn,true);api('rateBooking',{id:detail.id,phone:user.phone,rating:stars,review:$('#rText').value}).then(function(b){detail=b;drawDetail();toast('Thanks for your feedback!')}).catch(function(e){busy(btn,false);toast(e.message)})}
 function cancelB(btn){if(!confirm('Cancel this booking?'))return;busy(btn,true);api('cancelBooking',{id:detail.id,phone:user.phone}).then(function(b){detail=b;drawDetail();toast('Booking cancelled')}).catch(function(e){busy(btn,false);toast(e.message)})}
@@ -501,6 +508,8 @@ function openHelp(){location.href=waLink(OYC.WA,'Hi OYC, I need help.')}
   $$('.pi').forEach(function(e){e.innerHTML=ic(e.dataset.i,22)});$('#demoBar').classList.toggle('hide',!!OYC.API);
   api('catalog').then(function(c){applyCatalog(c);if(cur==='home')renderHome()}).catch(function(){});
   history.replaceState({s:'home'},'');
+  function deepLink(){var dl=(location.hash.match(/b=(OYC\d+)/)||[])[1];if(dl&&user)setTimeout(function(){openBooking(dl)},50)}
+  deepLink();addEventListener('hashchange',deepLink);
   if(!user&&!store('oyc_seen')){show('login')}else{render('home');show('home')}
   cur=cur||'home';
 })();
