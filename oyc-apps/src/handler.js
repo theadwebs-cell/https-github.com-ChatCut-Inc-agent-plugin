@@ -32,7 +32,7 @@ function oycHandle(db,req){
   }
   switch(a){
   /* ---------- customer ---------- */
-  case 'catalog': return oycOk({prices:S.prices||{},off:S.off||{},wa:S.wa||'',fee:S.fee||0});
+  case 'catalog': return oycOk({prices:S.prices||{},off:S.off||{},wa:S.wa||'',fee:S.fee||0,services:db.services||[]});
   case 'createBooking': return makeBooking('App','customer');
   case 'myBookings': {var ph=oycDigits(req.phone);if(ph.length!==10)return oycErr('Login required');
     return oycOk(db.bookings.filter(function(b){return oycDigits(b.phone)===ph}).map(oycPub).reverse())}
@@ -43,9 +43,13 @@ function oycHandle(db,req){
     if(b.status!=='Completed')return oycErr('You can rate after the service is completed');
     b.rating=Math.max(1,Math.min(5,Number(req.rating)||5));b.review=String(req.review||'').slice(0,500);b.updated=oycNow();return oycOk(oycPub(b),['bookings'])}
   /* ---------- partner ---------- */
-  case 'partnerApply': {var p=req.partner||{};if(!p.name||oycDigits(p.phone).length!==10||!/^\d{4}$/.test(String(p.pin||'')))return oycErr('Enter name, 10-digit mobile and a 4-digit PIN');
+  case 'partnerApply': {var p=req.partner||{},dc=p.docs||{};if(!p.name||oycDigits(p.phone).length!==10||!/^\d{4}$/.test(String(p.pin||'')))return oycErr('Enter name, 10-digit mobile and a 4-digit PIN');
+    var adh=String(p.aadhaar||'').replace(/\D/g,'');if(adh.length!==12)return oycErr('Enter your 12-digit Aadhaar number');
+    var ph=p.photo||dc.photo||'',af=p.aadhaarFront||dc.aadhaarFront||'',ab=p.aadhaarBack||dc.aadhaarBack||'';
+    if(!ph||!af||!ab)return oycErr('Please upload your passport-size photo and both sides of your Aadhaar card');
     for(var i=0;i<db.partners.length;i++)if(oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('This mobile number is already registered');
-    var np={id:'P'+(101+db.partners.length),name:String(p.name).slice(0,80),phone:oycDigits(p.phone),pin:String(p.pin),skills:String(p.skills||''),zone:String(p.zone||''),status:'Pending',online:'no',joined:oycNow(),notes:String(p.notes||'').slice(0,300)};
+    var np={id:'P'+(101+db.partners.length),name:String(p.name).slice(0,80),phone:oycDigits(p.phone),pin:String(p.pin),skills:String(p.skills||''),zone:String(p.zone||''),status:'Pending',online:'no',joined:oycNow(),notes:String(p.notes||'').slice(0,300),aadhaar:adh,photo:ph,aadhaarFront:af,aadhaarBack:ab};
+    while(findP(np.id))np.id='P'+(Number(np.id.slice(1))+1);
     db.partners.push(np);return oycOk(oycPartnerSafe(np),['partners'])}
   case 'partnerLogin': {var p=authPartner();if(!p)return oycErr('Wrong mobile number or PIN');
     if(p.status!=='Active')return oycErr(p.status==='Pending'?'Your registration is under review by OYC. We will call you.':'Your account is not active. Please contact OYC.');
@@ -67,7 +71,7 @@ function oycHandle(db,req){
   /* ---------- admin ---------- */
   case 'adminLogin': return isAdmin()?oycOk({ok:1}):oycErr('Wrong admin PIN');
   case 'adminData': {if(!isAdmin())return oycErr('Wrong admin PIN');var st=JSON.parse(JSON.stringify(S));delete st.adminPin;
-    return oycOk({bookings:db.bookings.map(oycPub).reverse(),partners:db.partners.map(function(p){return JSON.parse(JSON.stringify(p))}),settings:st})}
+    return oycOk({bookings:db.bookings.map(oycPub).reverse(),partners:db.partners.map(function(p){return JSON.parse(JSON.stringify(p))}),settings:st,services:db.services||[]})}
   case 'adminCreateBooking': {if(!isAdmin())return oycErr('Wrong admin PIN');return makeBooking(req.booking&&req.booking.source||'WhatsApp','admin')}
   case 'adminUpdateBooking': {if(!isAdmin())return oycErr('Wrong admin PIN');var b=findB(req.id);if(!b)return oycErr('Booking not found');var f=req.fields||{};
     if(f.partnerId!==undefined){if(f.partnerId){var pp=findP(f.partnerId);if(!pp)return oycErr('Partner not found');b.partnerId=pp.id;b.partnerName=pp.name;b.partnerPhone=pp.phone;oycHist(b,'Assigned','admin → '+pp.name)}
@@ -79,13 +83,15 @@ function oycHandle(db,req){
     var ex=p.id?findP(p.id):null;
     for(var i=0;i<db.partners.length;i++)if(db.partners[i]!==ex&&oycDigits(db.partners[i].phone)===oycDigits(p.phone))return oycErr('Another partner has this mobile number');
     if(!ex){ex={id:'P'+(101+db.partners.length),joined:oycNow(),online:'no'};while(findP(ex.id))ex.id='P'+(Number(ex.id.slice(1))+1);db.partners.push(ex)}
-    ex.name=p.name;ex.phone=oycDigits(p.phone);ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
+    ex.name=p.name;ex.phone=oycDigits(p.phone);if(p.aadhaar!==undefined)ex.aadhaar=String(p.aadhaar).replace(/\D/g,'');ex.skills=p.skills||'';ex.zone=p.zone||'';ex.status=p.status||'Active';ex.notes=p.notes||'';
     if(p.pin)ex.pin=String(p.pin);if(!ex.pin)ex.pin='1234';
     return oycOk(JSON.parse(JSON.stringify(ex)),['partners'])}
   case 'adminSaveSettings': {if(!isAdmin())return oycErr('Wrong admin PIN');var ns=req.settings||{};
+    var dirty=['settings'];
+    if(db.services&&db.services.length&&(ns.prices||ns.off)){db.services.forEach(function(r){if(ns.prices&&ns.prices[r.id]!==undefined)r.price=String(ns.prices[r.id]);if(ns.off)r.active=ns.off[r.id]?'NO':'YES'});dirty.push('services');delete ns.prices;delete ns.off}
     ['prices','off','wa','fee','commission'].forEach(function(k){if(ns[k]!==undefined)S[k]=ns[k]});
     if(ns.newPin){if(String(ns.newPin).length<4||String(ns.newPin).length>40)return oycErr('Password must be 4–40 characters');S.adminPin=String(ns.newPin)}
-    return oycOk({saved:1},['settings'])}
+    return oycOk({saved:1},dirty)}
   }
   return oycErr('Unknown request')
 }

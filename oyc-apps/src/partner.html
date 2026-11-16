@@ -54,6 +54,14 @@ body{background:#f2f2f2}
 .erow{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
 .demo{background:var(--warnbg);color:var(--warn);font-size:12px;padding:8px 16px;text-align:center}
 .side-brand{display:none}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.doc{position:relative;aspect-ratio:3/4;border:1.5px dashed #cfcfcf;border-radius:12px;background:#fafafa;display:grid;place-items:center;text-align:center;overflow:hidden;cursor:pointer;padding:8px}
+.doc input{display:none}.doc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.doc span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;color:var(--ink2)}.doc span b{color:var(--ink);font-size:12.5px;line-height:1.2}.doc span small{color:var(--mute);font-size:11px}
+.doc i{width:36px;height:36px;border-radius:50%;background:var(--goldbg);color:var(--gold2);display:grid;place-items:center}
+.doc em{display:none;position:absolute;left:6px;right:6px;bottom:6px;background:rgba(17,17,17,.75);color:#fff;font-style:normal;font-size:11px;font-weight:700;border-radius:8px;padding:4px}
+.doc.ok{border:2px solid var(--ok)}.doc.ok img,.doc.ok em{display:block}.doc.ok span{display:none}
+.doc.busy{opacity:.5}
 /* ---------- TABLET ---------- */
 @media(min-width:768px){
  body{background:#f6f6f6}
@@ -116,6 +124,14 @@ body{background:#f2f2f2}
   <div class="blk">
     <label class="lbl" style="margin-top:0">Full name</label><input class="inp" id="rName" placeholder="As on your ID">
     <label class="lbl">Mobile number</label><div class="phone"><span>+91</span><input id="rPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Mobile number"></div>
+    <label class="lbl">Aadhaar number</label><input class="inp" id="rAadhaar" inputmode="numeric" maxlength="14" placeholder="XXXX XXXX XXXX" oninput="fmtAadhaar(this)">
+    <label class="lbl">Upload documents</label>
+    <div class="docs">
+      <label class="doc" id="d-photo"><input type="file" accept="image/*" onchange="pickDoc('photo',this)"><img alt=""><span><i data-ic="user"></i><b>Passport size photo</b><small>Face clearly visible</small></span><em>Change</em></label>
+      <label class="doc" id="d-aadhaarFront"><input type="file" accept="image/*" onchange="pickDoc('aadhaarFront',this)"><img alt=""><span><i data-ic="shield"></i><b>Aadhaar front</b><small>Photo side</small></span><em>Change</em></label>
+      <label class="doc" id="d-aadhaarBack"><input type="file" accept="image/*" onchange="pickDoc('aadhaarBack',this)"><img alt=""><span><i data-ic="shield"></i><b>Aadhaar back</b><small>Address side</small></span><em>Change</em></label>
+    </div>
+    <p class="muted small" style="margin-top:8px">Take a photo or choose from your gallery. Documents are stored privately and used only by OYC for verification.</p>
     <label class="lbl">Services you offer</label><div class="skills" id="rSkills"></div>
     <label class="lbl">Area you work in</label><input class="inp" id="rZone" placeholder="e.g. Kukatpally, Madhapur, Gachibowli">
     <label class="lbl">Experience / notes</label><textarea class="inp" id="rNotes" placeholder="Years of experience, tools you have…"></textarea>
@@ -182,9 +198,15 @@ function show(s){$$('.scr').forEach(function(x){x.classList.toggle('on',x.id==='
   if(s==='jobs')drawJobs();if(s==='earn')drawEarn();if(s==='profile')drawProfile();if(s==='reg')drawReg()}
 function login(btn){var p=oycDigits($('#lPhone').value),pin=$('#lPin').value.trim();if(p.length!==10)return toast('Enter your 10-digit mobile number');if(!pin)return toast('Enter your PIN');
   busy(btn,true,'Logging in…');api('partnerLogin',{phone:p,pin:pin}).then(function(r){sess={phone:p,pin:pin};store('oyc_partner',sess);me=r;busy(btn,false);boot()}).catch(function(e){busy(btn,false);toast(e.message)})}
-function drawReg(){$('#rSkills').innerHTML=CATS.map(function(c){return '<span class="chip" onclick="this.classList.toggle(\'on\')">'+esc(c.name)+'</span>'}).join('')}
-function register(btn){var sk=$$('#rSkills .chip.on').map(function(c){return c.textContent});if(!sk.length)return toast('Select the services you offer');
-  busy(btn,true,'Submitting…');api('partnerApply',{partner:{name:$('#rName').value.trim(),phone:$('#rPhone').value,pin:$('#rPin').value.trim(),skills:sk.join(', '),zone:$('#rZone').value.trim(),notes:$('#rNotes').value.trim()}})
+var regDocs={};
+function fmtAadhaar(i){var d=i.value.replace(/\D/g,'').slice(0,12);i.value=d.replace(/(\d{4})(?=\d)/g,'$1 ')}
+function shrink(file,max){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){var im=new Image();im.onload=function(){var sc=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.onerror=rej;r.readAsDataURL(file)})}
+function pickDoc(k,inp){var f=inp.files&&inp.files[0];if(!f)return;if(!/^image\//.test(f.type))return toast('Please choose a photo (JPG or PNG)');var t=$('#d-'+k);t.classList.add('busy');
+  shrink(f,k==='photo'?700:1400).then(function(d){regDocs[k]=d;t.querySelector('img').src=d;t.classList.remove('busy');t.classList.add('ok')}).catch(function(){t.classList.remove('busy');toast('Could not read this photo. Please try another one.')})}
+function drawReg(){fillIcons($('#s-reg'));$('#rSkills').innerHTML=CATS.map(function(c){return '<span class="chip" onclick="this.classList.toggle(\'on\')">'+esc(c.name)+'</span>'}).join('')}
+function register(btn){var sk=$$('#rSkills .chip.on').map(function(c){return c.textContent});var adh=$('#rAadhaar').value.replace(/\D/g,'');
+  if(adh.length!==12)return toast('Enter your 12-digit Aadhaar number');if(!regDocs.photo)return toast('Upload your passport size photo');if(!regDocs.aadhaarFront||!regDocs.aadhaarBack)return toast('Upload both sides of your Aadhaar card');if(!sk.length)return toast('Select the services you offer');
+  busy(btn,true,'Uploading documents…');api('partnerApply',{partner:{name:$('#rName').value.trim(),phone:$('#rPhone').value,pin:$('#rPin').value.trim(),skills:sk.join(', '),zone:$('#rZone').value.trim(),notes:$('#rNotes').value.trim(),aadhaar:adh,docs:regDocs}})
   .then(function(){busy(btn,false);alert('Thank you! Your registration is submitted. OYC will call you to verify and activate your account.');location.href=waLink(OYC.WA,'Hi OYC, I have registered as a service partner. Name: '+$('#rName').value.trim()+', Mobile: '+oycDigits($('#rPhone').value)+', Services: '+sk.join(', '))})
   .catch(function(e){busy(btn,false);toast(e.message)})}
 function refresh(manual){if(!sess)return;return api('partnerJobs',sess).then(function(r){me=r.partner;var before=jobs.map(function(j){return j.id+j.status}).join();jobs=r.jobs;

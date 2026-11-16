@@ -2,9 +2,11 @@
 /* ================= Google Sheet storage ================= */
 var OYC_TABLES={
   bookings:['id','created','source','status','name','phone','address','landmark','lat','lng','category','items','total','date','slot','notes','payMode','partnerId','partnerName','partnerPhone','otp','amountPaid','rating','review','adminNotes','updated','history'],
-  partners:['id','name','phone','pin','skills','zone','status','online','joined','notes']
+  partners:['id','name','phone','pin','skills','zone','status','online','joined','notes','aadhaar','photo','aadhaarFront','aadhaarBack'],
+  services:['id','category','subcategory','name','price','duration','details','active']
 };
-var OYC_SHEETNAMES={bookings:'Bookings',partners:'Partners'};
+var OYC_SHEETNAMES={bookings:'Bookings',partners:'Partners',services:'Services'};
+var OYC_SEED=/*SEED_SERVICES*/[];
 var OYC_JSON=['items','history'];
 
 function oycSheet(name,headers){
@@ -31,7 +33,8 @@ function oycSave(db,dirty){
       if(rows.length)ss.getRange(2,1,rows.length,2).setNumberFormat('@').setValues(rows);return}
     var h=OYC_TABLES[t],sh=oycSheet(OYC_SHEETNAMES[t],h);
     var rows=db[t].map(function(o){return h.map(function(k){var v=o[k];if(OYC_JSON.indexOf(k)>=0)return JSON.stringify(v||[]);return v===undefined||v===null?'':String(v)})});
-    if(sh.getLastRow()>1)sh.getRange(2,1,sh.getLastRow()-1,h.length).clearContent();
+    sh.getRange(1,1,1,h.length).setValues([h]).setFontWeight('bold');
+    if(sh.getLastRow()>1)sh.getRange(2,1,sh.getLastRow()-1,Math.max(h.length,sh.getLastColumn())).clearContent();
     if(rows.length)sh.getRange(2,1,rows.length,h.length).setNumberFormat('@').setValues(rows);
   });
 }
@@ -43,11 +46,20 @@ function doPost(e){
     lock.waitLock(20000);
     var req=JSON.parse(e.postData.contents||'{}');
     var db=oycLoad();
+    if(OYC_ADMIN_PIN)db.settings.adminPin=OYC_ADMIN_PIN;
+    if(!db.services.length){db.services=JSON.parse(JSON.stringify(OYC_SEED));oycSave(db,['services'])}
+    if(req.action==='partnerApply'&&req.partner&&req.partner.docs)oycSaveDocs(req.partner);
     var res=oycHandle(db,req);
     if(res.ok&&res.dirty&&res.dirty.length)oycSave(db,res.dirty);
     return oycOut({ok:res.ok,data:res.data,error:res.error});
   }catch(err){return oycOut({ok:false,error:'Server busy, please try again ('+err.message+')'})}
   finally{try{lock.releaseLock()}catch(e){}}
 }
+function oycSaveDocs(p){
+  var docs=p.docs||{};delete p.docs;
+  var it=DriveApp.getFoldersByName('OYC Partner Documents'),f=it.hasNext()?it.next():DriveApp.createFolder('OYC Partner Documents');
+  ['photo','aadhaarFront','aadhaarBack'].forEach(function(k){var m=String(docs[k]||'').match(/^data:(image\/[a-z+]+);base64,(.+)$/);if(!m)return;
+    var file=f.createFile(Utilities.newBlob(Utilities.base64Decode(m[2]),m[1],oycDigits(p.phone)+'-'+String(p.name||'').replace(/\W+/g,'_')+'-'+k+'.jpg'));p[k]=file.getUrl()});
+}
 /* Run this once from the editor (select "setup" and press Run) to create the sheets. */
-function setup(){var db=oycLoad();if(!db.settings.adminPin){db.settings.adminPin='1234';oycSave(db,['settings'])}oycSave(db,['bookings','partners'])}
+function setup(){var db=oycLoad();if(!db.services.length)db.services=JSON.parse(JSON.stringify(OYC_SEED));oycSave(db,['bookings','partners','services']);DriveApp.getRootFolder();}

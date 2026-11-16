@@ -137,7 +137,12 @@ var SIMG={"pt3": "https://media.flexifunnels.io/33238/images/oyc-pt3_dsr5dytz.pn
 function svcPic(s){return SIMG[s.id]||catOf(s.cat).img}
 function catOf(id){for(var i=0;i<CATS.length;i++)if(CATS[i].id===id)return CATS[i];return CATS[0]}
 function svcOf(id){for(var i=0;i<SERVICES.length;i++)if(SERVICES[i].id===id)return SERVICES[i];return null}
-function applyCatalog(c){if(!c)return;var P=c.prices||{},O=c.off||{};SERVICES.forEach(function(s){if(P[s.id]!==undefined&&P[s.id]!=='')s.price=Number(P[s.id]);s.off=!!O[s.id]});if(c.wa)OYC.WA=String(c.wa).replace(/\D/g,'')}
+function applyCatalog(c){if(!c)return;var P=c.prices||{},O=c.off||{};SERVICES.forEach(function(s){if(P[s.id]!==undefined&&P[s.id]!=='')s.price=Number(P[s.id]);s.off=!!O[s.id]});if(c.wa)OYC.WA=String(c.wa).replace(/\D/g,'');
+  (c.services||[]).forEach(function(r){var id=String(r.id||'').trim();if(!id)return;var cat=null;CATS.forEach(function(k){if(k.id===String(r.category).trim()||k.name.toLowerCase()===String(r.category).trim().toLowerCase())cat=k.id});
+    var sv=svcOf(id);if(!sv){if(!cat)return;sv={id:id,cat:cat,sub:'',name:'',price:0,dur:'',pts:[]};SERVICES.push(sv)}
+    if(cat)sv.cat=cat;if(r.subcategory)sv.sub=String(r.subcategory);if(r.name)sv.name=String(r.name);var pr=String(r.price).replace(/[^\d.]/g,'');if(pr!=='')sv.price=Number(pr);
+    if(r.duration)sv.dur=String(r.duration);if(r.details)sv.pts=String(r.details).split('|').map(function(x){return x.trim()}).filter(Boolean);
+    sv.off=/^(no|n|off|0|false|hide|hidden)$/i.test(String(r.active||'').trim())});}
 function rupee(n){n=Number(n)||0;return '₹'+n.toLocaleString('en-IN')}
 function priceLabel(s){return s.price>0?rupee(s.price):'Free visit'}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
