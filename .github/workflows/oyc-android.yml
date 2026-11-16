@@ -14,6 +14,7 @@ on:
   push:
     paths:
       - "oyc-mobile/**"
+      - "!oyc-mobile/**/*.md"
       - ".github/workflows/oyc-android.yml"
 
 jobs:
