@@ -1,0 +1,7 @@
+node_modules/
+*.jks
+*.keystore
+*.p8
+*.mobileprovision
+*.p12
+assets/

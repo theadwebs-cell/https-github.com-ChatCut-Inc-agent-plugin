@@ -1,0 +1,40 @@
+{
+  "appId": "in.onyourcall.partner",
+  "appName": "OYC Partner",
+  "webDir": "www",
+  "server": {
+    "url": "https://onyourcall.in/oyc-partner",
+    "errorPath": "offline.html",
+    "allowNavigation": [
+      "onyourcall.in",
+      "script.google.com",
+      "script.googleusercontent.com",
+      "maps.google.com",
+      "www.google.com",
+      "nominatim.openstreetmap.org",
+      "media.flexifunnels.io"
+    ]
+  },
+  "backgroundColor": "#000000",
+  "android": {
+    "backgroundColor": "#000000",
+    "allowMixedContent": false
+  },
+  "ios": {
+    "backgroundColor": "#000000",
+    "contentInset": "always"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#000000",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_INSIDE"
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#000000",
+      "overlaysWebView": false
+    }
+  }
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">OYC Partner</string>
+    <string name="title_activity_main">OYC Partner</string>
+    <string name="package_name">in.onyourcall.partner</string>
+    <string name="custom_url_scheme">in.onyourcall.partner</string>
+</resources>

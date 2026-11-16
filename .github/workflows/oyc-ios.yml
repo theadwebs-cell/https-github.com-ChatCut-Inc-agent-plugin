@@ -1,0 +1,101 @@
+name: OYC iOS (App Store)
+
+# Without Apple secrets this only checks that the iOS apps build.
+# With the App Store Connect secrets set, it signs the app and uploads it to TestFlight / App Store Connect.
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "Which app to build"
+        type: choice
+        options: [both, customer, partner]
+        default: both
+      version_name:
+        description: "Version shown in the App Store (e.g. 1.0.1)"
+        default: "1.0"
+  push:
+    paths:
+      - "oyc-mobile/**"
+      - ".github/workflows/oyc-ios.yml"
+
+jobs:
+  build:
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [customer, partner]
+    env:
+      LOGO_URL: https://media.flexifunnels.io/33238/images/image_wlhdndac.jpg
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+    steps:
+      - name: Skip if not selected
+        id: sel
+        run: |
+          want="${{ github.event.inputs.app || 'both' }}"
+          if [ "$want" = "both" ] || [ "$want" = "${{ matrix.app }}" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; else echo "run=no" >> "$GITHUB_OUTPUT"; fi
+
+      - uses: actions/checkout@v4
+        if: steps.sel.outputs.run == 'yes'
+
+      - uses: actions/setup-node@v4
+        if: steps.sel.outputs.run == 'yes'
+        with:
+          node-version: 22
+
+      - name: Install packages
+        if: steps.sel.outputs.run == 'yes'
+        working-directory: oyc-mobile/${{ matrix.app }}
+        run: npm ci --no-audit --no-fund
+
+      - name: App icon and splash from the OYC logo
+        if: steps.sel.outputs.run == 'yes'
+        working-directory: oyc-mobile/${{ matrix.app }}
+        run: |
+          mkdir -p assets
+          curl -fsSL "$LOGO_URL" -o assets/logo-src.jpg
+          sips -s format png -z 1024 1024 assets/logo-src.jpg --out assets/icon-only.png
+          cp assets/icon-only.png assets/icon-foreground.png
+          sips -s format png -z 900 900 assets/logo-src.jpg --out assets/logo-900.png
+          sips -p 2732 2732 --padColor 000000 assets/logo-900.png --out assets/splash.png
+          cp assets/splash.png assets/splash-dark.png
+          npx --yes @capacitor/assets@3 generate --ios
+
+      - name: Sync Capacitor
+        if: steps.sel.outputs.run == 'yes'
+        working-directory: oyc-mobile/${{ matrix.app }}
+        run: npx cap sync ios
+
+      - name: Build check (no signing)
+        if: steps.sel.outputs.run == 'yes' && env.ASC_KEY_ID == ''
+        working-directory: oyc-mobile/${{ matrix.app }}/ios/App
+        run: |
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build | tail -20
+
+      - name: Sign and upload to App Store Connect
+        if: steps.sel.outputs.run == 'yes' && env.ASC_KEY_ID != ''
+        working-directory: oyc-mobile/${{ matrix.app }}/ios/App
+        env:
+          VERSION_NAME: ${{ github.event.inputs.version_name || '1.0' }}
+        run: |
+          mkdir -p ~/private_keys
+          echo "$ASC_KEY_P8" > ~/private_keys/AuthKey_${ASC_KEY_ID}.p8
+          AUTH="-authenticationKeyPath $HOME/private_keys/AuthKey_${ASC_KEY_ID}.p8 -authenticationKeyID $ASC_KEY_ID -authenticationKeyIssuerID $ASC_ISSUER_ID"
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" -allowProvisioningUpdates $AUTH \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            MARKETING_VERSION="$VERSION_NAME" CURRENT_PROJECT_VERSION="${{ github.run_number }}" archive | tail -20
+          printf '%s\n' '<?xml version="1.0" encoding="UTF-8"?>' \
+            '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+            '<plist version="1.0"><dict>' \
+            '<key>method</key><string>app-store-connect</string>' \
+            '<key>destination</key><string>upload</string>' \
+            "<key>teamID</key><string>${APPLE_TEAM_ID}</string>" \
+            '<key>signingStyle</key><string>automatic</string>' \
+            '</dict></plist>' > "$RUNNER_TEMP/ExportOptions.plist"
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/App.xcarchive" -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" -allowProvisioningUpdates $AUTH | tail -20
