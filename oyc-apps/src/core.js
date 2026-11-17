@@ -3,6 +3,7 @@ var OYC={
   API:'%%API_URL%%',            /* Google Apps Script web-app URL. Empty = demo mode (data stays in this browser) */
   WA:'919866689196',            /* WhatsApp number bookings are sent to */
   PHONE:'9866689196',
+  EMAIL:'support@onyourcall.in',
   LOGO:'https://media.flexifunnels.io/33238/images/image_wlhdndac.jpg',
   APP:'https://onyourcall.in/oyc-app',
   PARTNER:'https://onyourcall.in/oyc-partner',
